@@ -82,7 +82,7 @@ a {
       rgba(5, 7, 9, 0.76) 68%,
       rgba(5, 7, 9, 0.94) 100%
     ),
-    url("/TCT-Hero.png");
+    url("/background.png");
 
   background-size: cover;
   background-position: center;
