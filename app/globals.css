@@ -19,7 +19,9 @@ a {
 }
 
 
-/* NAVIGATION */
+/* =========================
+   NAVIGATION
+   ========================= */
 
 .navbar {
   height: 82px;
@@ -55,15 +57,20 @@ a {
 }
 
 
-/* HERO */
+/* =========================
+   HERO
+   ========================= */
 
 .hero {
   min-height: calc(100vh - 82px);
+
   display: flex;
   align-items: center;
   justify-content: flex-end;
+
   position: relative;
   overflow: hidden;
+
   padding: 80px 8%;
 
   background-image:
@@ -75,7 +82,7 @@ a {
       rgba(5, 7, 9, 0.76) 68%,
       rgba(5, 7, 9, 0.94) 100%
     ),
-    url("/background.png");
+    url("/TCT-Hero.png");
 
   background-size: cover;
   background-position: center;
@@ -85,8 +92,10 @@ a {
 .hero-content {
   position: relative;
   z-index: 2;
+
   width: 50%;
   max-width: 760px;
+
   padding-left: 4%;
 }
 
@@ -100,9 +109,11 @@ a {
 
 .hero h1 {
   margin: 18px 0 26px;
+
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(56px, 6.4vw, 108px);
   font-weight: 400;
+
   line-height: 0.84;
   letter-spacing: -5px;
 }
@@ -114,16 +125,19 @@ a {
 
 .hero h2 {
   margin: 0 0 24px;
+
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(23px, 2.2vw, 35px);
-  line-height: 1.25;
   font-style: italic;
   font-weight: 400;
+
+  line-height: 1.25;
   color: #e5ded3;
 }
 
 .hero-description {
   max-width: 620px;
+
   color: #aaa7a2;
   font-size: 17px;
   line-height: 1.75;
@@ -132,16 +146,19 @@ a {
 .hero-buttons {
   display: flex;
   gap: 16px;
+
   margin-top: 35px;
 }
 
 .button-primary,
 .button-secondary {
   padding: 15px 24px;
+
   font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 2px;
+
   transition: all 0.2s ease;
 }
 
@@ -167,7 +184,9 @@ a {
 }
 
 
-/* GENERAL SECTIONS */
+/* =========================
+   GENERAL SECTIONS
+   ========================= */
 
 .section {
   padding: 120px 10%;
@@ -176,22 +195,28 @@ a {
 
 .section h2 {
   max-width: 900px;
+
   margin: 15px 0 28px;
+
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(40px, 5vw, 72px);
   font-weight: 400;
+
   line-height: 1.08;
 }
 
 .section > p:not(.section-label) {
   max-width: 700px;
+
   color: #aaa7a2;
   font-size: 18px;
   line-height: 1.8;
 }
 
 
-/* EPISODES */
+/* =========================
+   EPISODES
+   ========================= */
 
 .episodes {
   background:
@@ -204,7 +229,9 @@ a {
 }
 
 
-/* ABOUT */
+/* =========================
+   ABOUT
+   ========================= */
 
 .about {
   background: #151515;
@@ -215,7 +242,9 @@ a {
 }
 
 
-/* RESEARCH */
+/* =========================
+   RESEARCH
+   ========================= */
 
 .research {
   background:
@@ -228,23 +257,32 @@ a {
 }
 
 
-/* CONTACT */
+/* =========================
+   CONTACT
+   ========================= */
 
 .contact {
   background: #111214;
 }
 
 
-/* FOOTER */
+/* =========================
+   FOOTER
+   ========================= */
 
 footer {
   min-height: 150px;
+
   padding: 45px 8%;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
+
   gap: 30px;
+
   border-top: 1px solid #292929;
+
   color: #858585;
 }
 
@@ -260,55 +298,98 @@ footer p {
 }
 
 
-/* MOBILE */
+/* =========================
+   MOBILE / TABLET
+   ========================= */
 
 @media (max-width: 900px) {
 
   .navbar {
+    height: 70px;
     padding: 0 5%;
+  }
+
+  .nav-brand {
+    font-size: 12px;
+    letter-spacing: 2px;
   }
 
   .nav-links {
     display: none;
   }
 
+
+  /* MOBILE HERO */
+
   .hero {
-    min-height: auto;
-    justify-content: flex-start;
+    min-height: 900px;
+
+    display: flex;
     align-items: flex-end;
+    justify-content: flex-start;
+
     text-align: left;
 
-    padding: 420px 7% 80px;
+    padding: 390px 7% 70px;
+
+    background-color: #090a0c;
 
     background-image:
       linear-gradient(
         180deg,
-        rgba(5, 7, 9, 0.02) 0%,
-        rgba(5, 7, 9, 0.12) 30%,
-        rgba(5, 7, 9, 0.72) 56%,
-        rgba(9, 10, 12, 0.98) 76%,
+        rgba(9, 10, 12, 0.00) 0%,
+        rgba(9, 10, 12, 0.03) 25%,
+        rgba(9, 10, 12, 0.18) 38%,
+        rgba(9, 10, 12, 0.65) 52%,
+        rgba(9, 10, 12, 0.95) 66%,
+        #090a0c 76%,
         #090a0c 100%
       ),
-      url("/TCT-Hero.png");
+      url("/background.png");
 
-    background-position: 35% center;
+    background-size:
+      100% 100%,
+      auto 430px;
+
+    background-position:
+      center,
+      32% top;
+
+    background-repeat: no-repeat;
   }
 
   .hero-content {
     width: 100%;
     max-width: 650px;
+
     padding: 0;
     margin: 0;
   }
 
+  .eyebrow {
+    font-size: 10px;
+    letter-spacing: 3px;
+  }
+
   .hero h1 {
-    font-size: clamp(50px, 14vw, 76px);
+    margin-top: 14px;
+
+    font-size: clamp(46px, 14vw, 72px);
+
+    line-height: 0.9;
     letter-spacing: -3px;
+  }
+
+  .hero h2 {
+    font-size: 23px;
   }
 
   .hero-description {
     margin-left: 0;
     margin-right: 0;
+
+    font-size: 16px;
+    line-height: 1.65;
   }
 
   .hero-buttons {
@@ -323,5 +404,48 @@ footer p {
   footer {
     flex-direction: column;
     align-items: flex-start;
+  }
+}
+
+
+/* =========================
+   SMALL PHONES
+   ========================= */
+
+@media (max-width: 500px) {
+
+  .hero {
+    min-height: 880px;
+
+    padding:
+      350px
+      6%
+      60px;
+
+    background-size:
+      100% 100%,
+      auto 390px;
+
+    background-position:
+      center,
+      30% top;
+  }
+
+  .hero h1 {
+    font-size: clamp(43px, 13vw, 60px);
+  }
+
+  .hero h2 {
+    font-size: 21px;
+  }
+
+  .hero-buttons {
+    gap: 12px;
+  }
+
+  .button-primary,
+  .button-secondary {
+    padding: 14px 18px;
+    font-size: 10px;
   }
 }
