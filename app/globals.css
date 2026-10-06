@@ -114,21 +114,23 @@ a {
   /* Blend the original artwork into the page */
   mix-blend-mode: screen;
 
-  -webkit-mask-image: radial-gradient(
-    ellipse at center,
-    black 48%,
-    rgba(0, 0, 0, 0.95) 62%,
-    rgba(0, 0, 0, 0.55) 76%,
-    transparent 96%
-  );
+ -webkit-mask-image: radial-gradient(
+  ellipse at center,
+  black 0%,
+  black 57%,
+  rgba(0, 0, 0, 0.9) 63%,
+  rgba(0, 0, 0, 0.35) 70%,
+  transparent 78%
+);
 
-  mask-image: radial-gradient(
-    ellipse at center,
-    black 48%,
-    rgba(0, 0, 0, 0.95) 62%,
-    rgba(0, 0, 0, 0.55) 76%,
-    transparent 96%
-  );
+mask-image: radial-gradient(
+  ellipse at center,
+  black 0%,
+  black 57%,
+  rgba(0, 0, 0, 0.9) 63%,
+  rgba(0, 0, 0, 0.35) 70%,
+  transparent 78%
+);
 }
 
 .hero-content {
