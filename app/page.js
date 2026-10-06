@@ -20,7 +20,7 @@ export default function Home() {
 
         <div className="hero-logo">
           <img
-            src="/TCT-logo.jpg"
+            src="/TCTlogo.jpg"
             alt="The Comparative Truth"
           />
         </div>
