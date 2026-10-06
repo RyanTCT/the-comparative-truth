@@ -18,13 +18,6 @@ export default function Home() {
 
       <section className="hero">
 
-        <div className="hero-logo">
-          <img
-            src="/TCTLogo.jpeg"
-            alt="The Comparative Truth"
-          />
-        </div>
-
         <div className="hero-content">
 
           <p className="eyebrow">
