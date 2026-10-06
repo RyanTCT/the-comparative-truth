@@ -59,49 +59,30 @@ a {
 
 .hero {
   min-height: calc(100vh - 82px);
-  display: grid;
-  grid-template-columns: 46% 54%;
+
+  display: flex;
   align-items: center;
-  padding: 70px 8%;
+  justify-content: flex-end;
+
   position: relative;
   overflow: hidden;
 
-  background:
+  padding: 80px 8%;
+
+  background-image:
     linear-gradient(
       90deg,
-      #020403 0%,
-      #020403 34%,
-      #07090a 52%,
-      #090a0c 70%
-    );
-}
+      rgba(5, 7, 9, 0.05) 0%,
+      rgba(5, 7, 9, 0.08) 35%,
+      rgba(5, 7, 9, 0.55) 58%,
+      rgba(5, 7, 9, 0.88) 76%,
+      rgba(5, 7, 9, 0.96) 100%
+    ),
+    url("background.png");
 
-.hero-logo {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.hero-logo {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.hero-logo img {
-  width: min(500px, 100%);
-  height: auto;
-  display: block;
-}
-.hero-content {
-  position: relative;
-  z-index: 2;
-  max-width: 760px;
-  padding-left: 8%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .eyebrow,
