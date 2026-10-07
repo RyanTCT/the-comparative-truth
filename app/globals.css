@@ -1662,10 +1662,12 @@ footer p {
 
 .contact-container {
   width: 100%;
-  display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
+  max-width: 1000px;
 
-  gap: clamp(70px, 10vw, 150px);
+  display: grid;
+  grid-template-columns: 1fr;
+
+  gap: 60px;
 
   align-items: start;
 }
