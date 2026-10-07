@@ -466,13 +466,178 @@ a {
    ========================= */
 
 .research {
+  padding: 120px 10%;
+
+  border-top: 1px solid #252525;
+
   background:
     radial-gradient(
-      circle at 85% 40%,
-      rgba(152, 65, 44, 0.09),
-      transparent 30%
+      circle at 80% 45%,
+      rgba(152, 65, 44, 0.11),
+      transparent 34%
     ),
     #0c0d0f;
+}
+
+.research-container {
+  width: 100%;
+  max-width: 1450px;
+
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+
+  gap: clamp(70px, 10vw, 150px);
+
+  align-items: center;
+}
+
+
+/* LEFT SIDE */
+
+.research-intro h2 {
+  margin: 15px 0 28px;
+
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(42px, 5vw, 72px);
+  font-weight: 400;
+
+  line-height: 1.05;
+
+  color: #eee8df;
+}
+
+.research-intro > p:not(.section-label) {
+  max-width: 560px;
+
+  margin: 0;
+
+  color: #aaa7a2;
+
+  font-size: 17px;
+  line-height: 1.8;
+}
+
+
+/* LATEST RESEARCH CARD */
+
+.research-feature {
+  position: relative;
+
+  padding: 48px 50px;
+
+  border: 1px solid rgba(193, 139, 77, 0.28);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(193, 139, 77, 0.07),
+      rgba(255, 255, 255, 0.01) 45%,
+      rgba(0, 0, 0, 0.08)
+    );
+
+  box-shadow:
+    0 30px 70px rgba(0, 0, 0, 0.22);
+}
+
+.research-feature::before {
+  content: "";
+
+  position: absolute;
+
+  top: -1px;
+  left: -1px;
+
+  width: 90px;
+  height: 2px;
+
+  background: #c18b4d;
+}
+
+.research-feature-label {
+  margin-bottom: 30px;
+
+  color: #c18b4d;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  letter-spacing: 3px;
+}
+
+.research-episode-number {
+  margin: 0 0 12px;
+
+  color: #85817b;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  letter-spacing: 3px;
+}
+
+.research-feature h3 {
+  margin: 0 0 25px;
+
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-size: clamp(30px, 3vw, 46px);
+  font-weight: 400;
+
+  line-height: 1.08;
+
+  color: #e7dfd4;
+}
+
+.research-summary {
+  max-width: 620px;
+
+  margin: 0;
+
+  color: #999691;
+
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+
+/* RESEARCH BUTTONS */
+
+.research-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  gap: 26px;
+
+  margin-top: 34px;
+}
+
+.research-button {
+  display: inline-block;
+
+  padding: 14px 19px;
+
+  border: 1px solid #a66d36;
+
+  color: #d6a267;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.research-archive-link {
+  color: #8f8b85;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
 }
 
 
@@ -661,7 +826,28 @@ footer p {
   .episode-content h2 {
     font-size: clamp(40px, 9vw, 60px);
   }
+.research {
+  padding: 90px 8%;
+}
 
+.research-container {
+  grid-template-columns: 1fr;
+
+  gap: 55px;
+
+  max-width: 650px;
+}
+
+.research-feature {
+  padding: 38px 32px;
+}
+
+.research-actions {
+  align-items: flex-start;
+  flex-direction: column;
+
+  gap: 22px;
+}
 
   /* GENERAL MOBILE SECTIONS */
 
@@ -717,7 +903,21 @@ footer p {
     font-size: 10px;
   }
 
+.research {
+  padding: 75px 6%;
+}
 
+.research-feature {
+  padding: 32px 24px;
+}
+
+.research-feature h3 {
+  font-size: 31px;
+}
+
+.research-summary {
+  font-size: 15px;
+}
   /* SMALL PHONE EPISODE */
 
   .latest-episode {
