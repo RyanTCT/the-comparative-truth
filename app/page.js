@@ -259,9 +259,12 @@ export default function Home() {
           View Episode Research →
         </span>
 
-        <span className="research-archive-link">
-          Browse Research Archive →
-        </span>
+      <a
+  href="/research"
+  className="research-archive-link"
+>
+  Browse Research Archive →
+</a>
 
       </div>
 
