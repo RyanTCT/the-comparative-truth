@@ -516,7 +516,41 @@ export default function Episode01Research() {
             endless feeds, portability, and constant availability in ways
             earlier media did not.
           </p>
+{/* PEW RESEARCH */}
 
+<article className="source-card">
+
+  <p className="source-type">
+    NATIONAL SURVEY • 2024
+  </p>
+
+  <h3>
+    Teens, Social Media and Technology 2024
+  </h3>
+
+  <p className="source-authors">
+    Michelle Faverio & Olivia Sidoti • Pew Research Center
+  </p>
+
+  <p>
+    Pew Research Center surveyed 1,391 U.S. teens ages 13 to 17
+    about their use of smartphones, social media, and the internet.
+    Nearly half of teens reported being online almost constantly,
+    while 95% reported having access to a smartphone. The findings
+    provide important context for how frequently modern digital
+    technology competes for attention in everyday life.
+  </p>
+
+  <a
+    href="https://www.pewresearch.org/internet/2024/12/12/teens-social-media-and-technology-2024/"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="source-link"
+  >
+    View Report →
+  </a>
+
+</article>
 
           <article className="source-card">
 
