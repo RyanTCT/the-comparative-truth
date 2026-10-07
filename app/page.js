@@ -116,21 +116,36 @@ export default function Home() {
                 LISTEN TO EPISODE
               </p>
 
-              <div className="platform-buttons">
+       <div className="platform-buttons">
 
-                <a href="#" className="platform-button">
-                  Apple Podcasts
-                </a>
+  <a
+    href="https://podcasts.apple.com/us/podcast/the-comparative-truth/id6809671032"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="platform-button"
+  >
+    Apple Podcasts
+  </a>
 
-                <a href="#" className="platform-button">
-                  Spotify
-                </a>
+  <a
+    href="https://open.spotify.com/episode/5QRU1cIJwpmuHAqMLUWHCu?si=4FDFKQqMTGe7ad8XMCbSug&utm_source=copy-link"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="platform-button"
+  >
+    Spotify
+  </a>
 
-                <a href="#" className="platform-button">
-                  Amazon Music
-                </a>
+  <a
+    href="https://music.amazon.com/podcasts/2269c385-7913-4c1e-8ea6-ca33814db14c/the-comparative-truth"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="platform-button"
+  >
+    Amazon Music
+  </a>
 
-              </div>
+</div>
 
             </div>
 
