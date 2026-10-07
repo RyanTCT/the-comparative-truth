@@ -1639,4 +1639,192 @@ footer p {
   }
 
 }
+/* =========================
+   CONTACT
+   ========================= */
 
+.contact {
+  position: relative;
+  overflow: hidden;
+
+  padding: 125px 10%;
+
+  border-top: 1px solid #292929;
+
+  background:
+    radial-gradient(
+      circle at 15% 55%,
+      rgba(166, 109, 54, 0.10),
+      transparent 32%
+    ),
+    #111214;
+}
+
+.contact-container {
+  width: 100%;
+  max-width: 1450px;
+
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+
+  gap: clamp(70px, 10vw, 150px);
+
+  align-items: start;
+}
+
+
+/* CONTACT INTRO */
+
+.contact-intro h2 {
+  margin: 15px 0 30px;
+
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-size: clamp(44px, 5vw, 72px);
+  font-weight: 400;
+
+  line-height: 1.03;
+
+  color: #eee8df;
+}
+
+.contact-intro > p:not(.section-label) {
+  max-width: 570px;
+
+  margin: 0;
+
+  color: #aaa7a2;
+
+  font-size: 17px;
+  line-height: 1.8;
+}
+
+
+/* CONTACT OPTIONS */
+
+.contact-options {
+  border-top: 1px solid rgba(193, 139, 77, 0.35);
+}
+
+.contact-item {
+  display: grid;
+
+  grid-template-columns: 55px 1fr;
+
+  gap: 25px;
+
+  padding: 32px 0;
+
+  border-bottom: 1px solid #302e2a;
+}
+
+.contact-number {
+  padding-top: 3px;
+
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-size: 20px;
+
+  color: rgba(193, 139, 77, 0.55);
+}
+
+.contact-item h3 {
+  margin: 0 0 10px;
+
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-size: 26px;
+  font-weight: 400;
+
+  color: #ddd6cb;
+}
+
+.contact-item p {
+  max-width: 620px;
+
+  margin: 0;
+
+  color: #8f8c87;
+
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+
+/* CONTACT BUTTON */
+
+.contact-button {
+  display: inline-block;
+
+  margin-top: 38px;
+
+  padding: 16px 22px;
+
+  border: 1px solid #a66d36;
+
+  color: #d6a267;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+  letter-spacing: 1.8px;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.contact-button:hover {
+  background: #a66d36;
+
+  color: #ffffff;
+}
+
+
+/* =========================
+   CONTACT MOBILE
+   ========================= */
+
+@media (max-width: 900px) {
+
+  .contact {
+    padding: 95px 8%;
+  }
+
+  .contact-container {
+    grid-template-columns: 1fr;
+
+    gap: 60px;
+
+    max-width: 650px;
+  }
+
+}
+
+
+@media (max-width: 500px) {
+
+  .contact {
+    padding: 75px 6%;
+  }
+
+  .contact-intro h2 {
+    font-size: 42px;
+  }
+
+  .contact-item {
+    grid-template-columns: 40px 1fr;
+
+    gap: 18px;
+
+    padding: 27px 0;
+  }
+
+  .contact-item h3 {
+    font-size: 23px;
+  }
+
+}
