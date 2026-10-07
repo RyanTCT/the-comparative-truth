@@ -1185,3 +1185,425 @@ footer p {
     font-size: 32px;
   }
 }
+/* =========================
+   EPISODE RESEARCH PAGE
+   ========================= */
+
+.episode-research-hero {
+  padding: 105px 10% 115px;
+
+  border-bottom: 1px solid #292929;
+
+  background:
+    radial-gradient(
+      circle at 78% 32%,
+      rgba(166, 109, 54, 0.12),
+      transparent 32%
+    ),
+    #0b0c0e;
+}
+
+.research-back {
+  display: inline-block;
+
+  margin-bottom: 65px;
+
+  color: #85817b;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+  letter-spacing: 2px;
+
+  transition: color 0.2s ease;
+}
+
+.research-back:hover {
+  color: #c18b4d;
+}
+
+.episode-research-hero h1 {
+  max-width: 1150px;
+
+  margin: 18px 0 35px;
+
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-size: clamp(52px, 6.5vw, 94px);
+  font-weight: 400;
+
+  line-height: 0.98;
+  letter-spacing: -3px;
+
+  color: #eee8df;
+}
+
+.episode-research-intro {
+  max-width: 760px;
+
+  color: #aaa7a2;
+
+  font-size: 18px;
+  line-height: 1.8;
+}
+
+
+/* QUESTION */
+
+.research-question {
+  max-width: 850px;
+
+  margin-top: 65px;
+  padding: 28px 0 0 30px;
+
+  border-top: 1px solid rgba(193, 139, 77, 0.35);
+  border-left: 2px solid #c18b4d;
+}
+
+.research-question span {
+  color: #c18b4d;
+
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing: 3px;
+}
+
+.research-question p {
+  margin: 12px 0 0;
+
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-size: clamp(24px, 2.5vw, 34px);
+  font-style: italic;
+
+  line-height: 1.4;
+
+  color: #d7c7ad;
+}
+
+
+/* RESEARCH BODY */
+
+.episode-research-body {
+  padding: 30px 10% 130px;
+
+  background: #0d0e10;
+}
+
+.research-section {
+  max-width: 1100px;
+
+  padding: 100px 0;
+
+  border-bottom: 1px solid #302e2a;
+}
+
+.research-section-heading {
+  display: flex;
+
+  gap: 35px;
+
+  align-items: flex-start;
+
+  margin-bottom: 30px;
+}
+
+.research-section-heading > span {
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-size: 44px;
+
+  color: rgba(193, 139, 77, 0.38);
+}
+
+.research-category {
+  margin: 0 0 10px;
+
+  color: #c18b4d;
+
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing: 3px;
+}
+
+.research-section-heading h2,
+.research-takeaway h2 {
+  margin: 0;
+
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-size: clamp(38px, 4vw, 60px);
+  font-weight: 400;
+
+  color: #e7dfd4;
+}
+
+.research-section-summary {
+  max-width: 760px;
+
+  margin: 0 0 50px 79px;
+
+  color: #999691;
+
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+
+/* SOURCE CARDS */
+
+.source-card {
+  max-width: 900px;
+
+  margin: 25px 0 25px 79px;
+  padding: 35px 38px;
+
+  border: 1px solid #302e2a;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(193, 139, 77, 0.045),
+      rgba(255, 255, 255, 0.01)
+    );
+}
+
+.source-type {
+  margin: 0 0 14px;
+
+  color: #8b857c;
+
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing: 2px;
+}
+
+.source-card h3 {
+  margin: 0 0 10px;
+
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-size: 27px;
+  font-weight: 400;
+
+  line-height: 1.25;
+
+  color: #ddd6cb;
+}
+
+.source-authors {
+  margin: 0 0 23px !important;
+
+  color: #b08353 !important;
+
+  font-size: 13px !important;
+}
+
+.source-card > p:not(.source-type):not(.source-authors) {
+  max-width: 720px;
+
+  color: #96928c;
+
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.source-link {
+  display: inline-block;
+
+  margin-top: 20px;
+
+  color: #c18b4d;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.source-link:hover {
+  color: #e0ad70;
+}
+
+.source-status {
+  display: inline-block;
+
+  margin-top: 20px;
+
+  color: #6f6c67;
+
+  font-size: 9px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+
+/* TAKEAWAY */
+
+.research-takeaway {
+  max-width: 900px;
+
+  margin-top: 110px;
+  padding: 55px;
+
+  border: 1px solid rgba(193, 139, 77, 0.28);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(193, 139, 77, 0.08),
+      rgba(255, 255, 255, 0.01)
+    );
+}
+
+.research-takeaway > p:not(.research-category) {
+  color: #aaa7a2;
+
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.research-takeaway blockquote {
+  margin: 40px 0 0;
+  padding: 25px 0 0;
+
+  border-top: 1px solid rgba(193, 139, 77, 0.3);
+
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-size: clamp(24px, 3vw, 36px);
+  font-style: italic;
+
+  line-height: 1.4;
+
+  color: #d7c7ad;
+}
+
+
+/* BOTTOM NAV */
+
+.research-page-nav {
+  max-width: 900px;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  gap: 30px;
+
+  margin-top: 65px;
+}
+
+.research-page-nav a {
+  color: #9b9690;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.research-page-nav a:hover {
+  color: #c18b4d;
+}
+
+
+/* =========================
+   EPISODE RESEARCH MOBILE
+   ========================= */
+
+@media (max-width: 900px) {
+
+  .episode-research-hero {
+    padding: 80px 8% 90px;
+  }
+
+  .research-back {
+    margin-bottom: 50px;
+  }
+
+  .episode-research-body {
+    padding: 20px 8% 100px;
+  }
+
+  .research-section-summary {
+    margin-left: 0;
+  }
+
+  .source-card {
+    margin-left: 0;
+  }
+
+  .research-takeaway {
+    padding: 42px;
+  }
+
+}
+
+
+@media (max-width: 500px) {
+
+  .episode-research-hero {
+    padding: 65px 6% 75px;
+  }
+
+  .episode-research-hero h1 {
+    font-size: 45px;
+    letter-spacing: -2px;
+  }
+
+  .episode-research-intro {
+    font-size: 16px;
+  }
+
+  .research-question {
+    margin-top: 50px;
+    padding-left: 20px;
+  }
+
+  .episode-research-body {
+    padding: 10px 6% 80px;
+  }
+
+  .research-section {
+    padding: 70px 0;
+  }
+
+  .research-section-heading {
+    gap: 20px;
+  }
+
+  .research-section-heading > span {
+    font-size: 34px;
+  }
+
+  .research-section-heading h2 {
+    font-size: 35px;
+  }
+
+  .source-card {
+    padding: 28px 24px;
+  }
+
+  .source-card h3 {
+    font-size: 24px;
+  }
+
+  .research-takeaway {
+    margin-top: 75px;
+    padding: 32px 25px;
+  }
+
+  .research-page-nav {
+    flex-direction: column;
+  }
+
+}
