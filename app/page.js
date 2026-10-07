@@ -370,7 +370,7 @@ export default function Home() {
 
 
       <a
-        href="mailto:YOUR-EMAIL-HERE"
+        href="mailto:contact@comparativetruth.com"
         className="contact-button"
       >
         Start the Conversation →
