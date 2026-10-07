@@ -163,28 +163,46 @@ export default function Home() {
 
       {/* ABOUT */}
 
-      <section id="about" className="section about">
+<section id="about" className="section about">
 
-        <p className="section-label">
-          THE PREMISE
-        </p>
+  <p className="section-label">
+    THE PREMISE
+  </p>
 
-        <h2>
-          Where Past Meets Present.
-        </h2>
+  <h2>
+    History Gives Us Another Lens.
+  </h2>
 
-        <p>
-          Every generation believes its challenges are unique.
-          New technology. New fears. New controversies.
-          New predictions about what comes next.
-        </p>
+  <p>
+    We are faced with problems, controversies, and tragedies every day.
+    Some are preventable. Some are not.
+  </p>
 
-        <p>
-          But sometimes the best way to understand where
-          we're going is to look at where we've already been.
-        </p>
+  <p>
+    History cannot predict what happens next, nor can it prevent us from
+    repeating the mistakes of the past. But it can give us a lens through
+    which to view the present—and sometimes, a clearer understanding of
+    where we may be going.
+  </p>
 
-      </section>
+  <p>
+    The Comparative Truth looks backward to better understand what is
+    happening now. We examine the history, compare it with the present,
+    and follow the evidence wherever it leads.
+  </p>
+
+  <div className="premise-statement">
+    <strong>
+      Explore. Compare. Discern. Understand.
+    </strong>
+
+    <span>
+      And then—you decide.
+    </span>
+  </div>
+
+</section>
+
 
 
       {/* RESEARCH */}
