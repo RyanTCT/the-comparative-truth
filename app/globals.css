@@ -429,6 +429,36 @@ a {
 .about h2 {
   color: #d7c7ad;
 }
+.premise-statement {
+  margin-top: 55px;
+  padding-top: 30px;
+
+  max-width: 700px;
+
+  border-top: 1px solid rgba(193, 139, 77, 0.35);
+}
+
+.premise-statement strong {
+  display: block;
+
+  color: #c18b4d;
+
+  font-size: 13px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.premise-statement span {
+  display: block;
+
+  margin-top: 12px;
+
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 26px;
+  font-style: italic;
+
+  color: #d7c7ad;
+}
 
 
 /* =========================
