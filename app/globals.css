@@ -82,7 +82,7 @@ a {
       rgba(5, 7, 9, 0.76) 68%,
       rgba(5, 7, 9, 0.94) 100%
     ),
-    url("/background.png");
+    url("/TCT-Hero.png");
 
   background-size: cover;
   background-position: center;
@@ -185,6 +185,210 @@ a {
 
 
 /* =========================
+   LATEST EPISODE
+   ========================= */
+
+.latest-episode {
+  position: relative;
+  overflow: hidden;
+
+  padding: 125px 8%;
+
+  border-top: 1px solid #292929;
+
+  background:
+    radial-gradient(
+      circle at 18% 50%,
+      rgba(166, 109, 54, 0.10),
+      transparent 34%
+    ),
+    #0d0e10;
+}
+
+.episode-container {
+  width: 100%;
+  max-width: 1450px;
+
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: minmax(340px, 0.9fr) minmax(440px, 1.1fr);
+
+  gap: clamp(60px, 8vw, 130px);
+
+  align-items: center;
+}
+
+.episode-artwork {
+  position: relative;
+}
+
+.episode-artwork::before {
+  content: "";
+
+  position: absolute;
+  top: 22px;
+  left: 22px;
+
+  width: 100%;
+  height: 100%;
+
+  border: 1px solid rgba(193, 139, 77, 0.32);
+
+  z-index: 0;
+}
+
+.episode-artwork img {
+  position: relative;
+  z-index: 1;
+
+  display: block;
+
+  width: 100%;
+  height: auto;
+
+  box-shadow:
+    0 30px 70px rgba(0, 0, 0, 0.5),
+    0 0 50px rgba(166, 109, 54, 0.06);
+}
+
+.episode-content {
+  max-width: 700px;
+}
+
+.episode-number {
+  margin: 24px 0 12px;
+
+  color: #8e8a84;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  letter-spacing: 3px;
+}
+
+.episode-content h2 {
+  margin: 0 0 30px;
+
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-size: clamp(42px, 4.5vw, 72px);
+  font-weight: 400;
+
+  line-height: 1.02;
+  letter-spacing: -2px;
+
+  color: #eee8df;
+}
+
+.episode-description {
+  max-width: 650px;
+
+  margin: 0 0 18px;
+
+  color: #aaa7a2;
+
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+.episode-meta {
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  margin-top: 30px;
+
+  color: #c18b4d;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  letter-spacing: 2px;
+}
+
+.meta-divider {
+  display: block;
+
+  width: 4px;
+  height: 4px;
+
+  border-radius: 50%;
+
+  background: #625d57;
+}
+
+.listen-area {
+  margin-top: 38px;
+}
+
+.listen-label {
+  margin: 0 0 15px;
+
+  color: #d8d2c8;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  letter-spacing: 3px;
+}
+
+.platform-buttons {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 10px;
+}
+
+.platform-button {
+  padding: 13px 18px;
+
+  border: 1px solid #4d4a46;
+
+  color: #d8d2c8;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  letter-spacing: 1.5px;
+
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    background 0.2s ease;
+}
+
+.platform-button:hover {
+  border-color: #c18b4d;
+
+  background: rgba(193, 139, 77, 0.08);
+
+  color: #c18b4d;
+}
+
+.research-link {
+  display: inline-block;
+
+  margin-top: 30px;
+
+  color: #c18b4d;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+  letter-spacing: 2px;
+
+  transition: color 0.2s ease;
+}
+
+.research-link:hover {
+  color: #e0ad70;
+}
+
+
+/* =========================
    GENERAL SECTIONS
    ========================= */
 
@@ -211,21 +415,6 @@ a {
   color: #aaa7a2;
   font-size: 18px;
   line-height: 1.8;
-}
-
-
-/* =========================
-   EPISODES
-   ========================= */
-
-.episodes {
-  background:
-    linear-gradient(
-      90deg,
-      rgba(156, 100, 45, 0.08),
-      transparent 45%
-    ),
-    #0d0e10;
 }
 
 
@@ -339,13 +528,13 @@ footer p {
         180deg,
         rgba(9, 10, 12, 0.00) 0%,
         rgba(9, 10, 12, 0.03) 22%,
-        rgba(9, 10, 12, 0.18) 34%,
-        rgba(9, 10, 12, 0.65) 46%,
-        rgba(9, 10, 12, 0.95) 58%,
+        rgba(9, 10, 12, 0.25) 34%,
+        rgba(9, 10, 12, 0.72) 46%,
+        rgba(9, 10, 12, 0.96) 58%,
         #090a0c 70%,
         #090a0c 100%
       ),
-      url("/background.png");
+      url("/TCT-Hero.png");
 
     background-size:
       100% 100%,
@@ -366,23 +555,28 @@ footer p {
     margin: 0;
   }
 
- .eyebrow {
-  display: inline-block;
+  .eyebrow {
+    display: inline-block;
 
-  color: #d9a866;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 3px;
+    color: #d9a866;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
 
-  padding: 6px 10px;
-  margin-bottom: 4px;
+    padding: 7px 18px 7px 0;
+    margin-bottom: 4px;
 
-  background: rgba(9, 10, 12, 0.68);
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
+    background: linear-gradient(
+      90deg,
+      rgba(9, 10, 12, 0.88) 0%,
+      rgba(9, 10, 12, 0.62) 65%,
+      transparent 100%
+    );
 
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
-}
+    text-shadow:
+      0 2px 6px rgba(0, 0, 0, 1),
+      0 0 12px rgba(0, 0, 0, 0.9);
+  }
 
   .hero h1 {
     margin-top: 14px;
@@ -409,6 +603,37 @@ footer p {
     justify-content: flex-start;
     flex-wrap: wrap;
   }
+
+
+  /* MOBILE EPISODE */
+
+  .latest-episode {
+    padding: 90px 7%;
+  }
+
+  .episode-container {
+    grid-template-columns: 1fr;
+
+    gap: 65px;
+
+    max-width: 650px;
+  }
+
+  .episode-artwork {
+    width: calc(100% - 18px);
+  }
+
+  .episode-artwork::before {
+    top: 18px;
+    left: 18px;
+  }
+
+  .episode-content h2 {
+    font-size: clamp(40px, 9vw, 60px);
+  }
+
+
+  /* GENERAL MOBILE SECTIONS */
 
   .section {
     padding: 90px 8%;
@@ -460,5 +685,36 @@ footer p {
   .button-secondary {
     padding: 14px 18px;
     font-size: 10px;
+  }
+
+
+  /* SMALL PHONE EPISODE */
+
+  .latest-episode {
+    padding: 75px 6%;
+  }
+
+  .episode-container {
+    gap: 55px;
+  }
+
+  .episode-content h2 {
+    font-size: 39px;
+    letter-spacing: -1px;
+  }
+
+  .episode-description {
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  .platform-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .platform-button {
+    text-align: center;
+    padding: 14px 16px;
   }
 }
