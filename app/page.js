@@ -255,9 +255,12 @@ export default function Home() {
 
       <div className="research-actions">
 
-        <span className="research-button">
-          View Episode Research →
-        </span>
+<a
+  href="/research/episode-01"
+  className="research-button"
+>
+  View Episode Research →
+</a>
 
       <a
   href="/research"
