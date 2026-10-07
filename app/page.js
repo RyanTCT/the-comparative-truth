@@ -207,22 +207,69 @@ export default function Home() {
 
       {/* RESEARCH */}
 
-      <section id="research" className="section research">
+     <section id="research" className="research">
 
-        <p className="section-label">
-          GO DEEPER
-        </p>
+  <div className="research-container">
 
-        <h2>
-          Research & Sources
-        </h2>
+    <div className="research-intro">
 
-        <p>
-          Explore the studies, historical records, archival
-          material, and reporting used to build each episode.
-        </p>
+      <p className="section-label">
+        GO DEEPER
+      </p>
 
-      </section>
+      <h2>
+        Research & Sources
+      </h2>
+
+      <p>
+        Every episode of The Comparative Truth is built from
+        historical records, academic research, contemporary
+        reporting, and other primary and secondary sources.
+      </p>
+
+    </div>
+
+
+    <div className="research-feature">
+
+      <div className="research-feature-label">
+        LATEST RESEARCH
+      </div>
+
+      <p className="research-episode-number">
+        EPISODE 01
+      </p>
+
+      <h3>
+        Is Technology Destroying
+        <br />
+        Our Attention Span?
+      </h3>
+
+      <p className="research-summary">
+        Explore the research behind Episode 01, including
+        historical concerns surrounding television and comic
+        books, modern research on smartphones and notifications,
+        and studies examining how technology affects attention.
+      </p>
+
+      <div className="research-actions">
+
+        <span className="research-button">
+          View Episode Research →
+        </span>
+
+        <span className="research-archive-link">
+          Browse Research Archive →
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
 
 
       {/* CONTACT */}
