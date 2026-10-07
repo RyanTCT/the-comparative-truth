@@ -1662,10 +1662,6 @@ footer p {
 
 .contact-container {
   width: 100%;
-  max-width: 1450px;
-
-  margin: 0 auto;
-
   display: grid;
   grid-template-columns: 0.9fr 1.1fr;
 
