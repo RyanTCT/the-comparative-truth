@@ -674,23 +674,55 @@ export default function Episode01Research() {
 
       {/* FOOTER */}
 
-      <footer>
+<footer className="site-footer">
 
-        <div>
-          <strong>
-            THE COMPARATIVE TRUTH
-          </strong>
+  <div className="footer-brand">
 
-          <p>
-            Where Past Meets Present.
-          </p>
-        </div>
+    <strong>
+      THE COMPARATIVE TRUTH
+    </strong>
 
-        <p>
-          © 2026 Comparative Truth Productions
-        </p>
+    <p>
+      Explore. Compare. Discern. Understand.
+    </p>
 
-      </footer>
+  </div>
+
+
+  <div className="footer-links">
+
+    <a href="/#episodes">
+      Episodes
+    </a>
+
+    <a href="/#about">
+      About
+    </a>
+
+    <a href="/research">
+      Research
+    </a>
+
+    <a href="/#contact">
+      Contact
+    </a>
+
+  </div>
+
+
+  <div className="footer-production">
+
+    <span>
+      A Comparative Truth Productions Podcast
+    </span>
+
+    <p>
+      © 2026 Comparative Truth Productions
+    </p>
+
+  </div>
+
+</footer>
 
     </main>
   );
