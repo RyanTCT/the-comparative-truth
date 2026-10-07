@@ -66,7 +66,7 @@ export default function Home() {
 
           <div className="episode-artwork">
             <img
-              src="/e01_artwork.png"
+              src="/E01_Artwork.png"
               alt="Episode 01 - Is Technology Destroying Our Attention Span?"
             />
           </div>
