@@ -16,6 +16,8 @@ export default function Home() {
       </nav>
 
 
+      {/* HERO */}
+
       <section className="hero">
 
         <div className="hero-content">
@@ -56,26 +58,95 @@ export default function Home() {
       </section>
 
 
-      <section id="episodes" className="section episodes">
+      {/* LATEST EPISODE */}
 
-        <p className="section-label">
-          LATEST EPISODE
-        </p>
+      <section id="episodes" className="latest-episode">
 
-        <h2>
-          What happens when yesterday's fears
-          become today's reality?
-        </h2>
+        <div className="episode-container">
 
-        <p>
-          The Comparative Truth examines modern questions
-          through the lens of history—looking at what changed,
-          what didn't, and what the comparison can actually
-          teach us.
-        </p>
+          <div className="episode-artwork">
+            <img
+              src="/e01_artwork.png"
+              alt="Episode 01 - Is Technology Destroying Our Attention Span?"
+            />
+          </div>
+
+
+          <div className="episode-content">
+
+            <p className="section-label">
+              LATEST EPISODE
+            </p>
+
+            <p className="episode-number">
+              EPISODE 01
+            </p>
+
+            <h2>
+              Is Technology Destroying
+              <br />
+              Our Attention Span?
+            </h2>
+
+            <p className="episode-description">
+              For generations, new forms of media have been blamed
+              for changing the way we think and pay attention.
+              Television was accused of shortening children's
+              attention spans. Comic books were blamed for corrupting
+              young minds. Today, the concern has shifted to
+              smartphones, notifications, and short-form video.
+            </p>
+
+            <p className="episode-description">
+              But is technology actually destroying our attention
+              span—or has the environment competing for our attention
+              simply changed?
+            </p>
+
+            <div className="episode-meta">
+              <span>EPISODE 01</span>
+              <span className="meta-divider"></span>
+              <span>24 MIN</span>
+            </div>
+
+
+            <div className="listen-area">
+
+              <p className="listen-label">
+                LISTEN TO EPISODE
+              </p>
+
+              <div className="platform-buttons">
+
+                <a href="#" className="platform-button">
+                  Apple Podcasts
+                </a>
+
+                <a href="#" className="platform-button">
+                  Spotify
+                </a>
+
+                <a href="#" className="platform-button">
+                  Amazon Music
+                </a>
+
+              </div>
+
+            </div>
+
+
+            <a href="#research" className="research-link">
+              View Research & Sources →
+            </a>
+
+          </div>
+
+        </div>
 
       </section>
 
+
+      {/* ABOUT */}
 
       <section id="about" className="section about">
 
@@ -101,6 +172,8 @@ export default function Home() {
       </section>
 
 
+      {/* RESEARCH */}
+
       <section id="research" className="section research">
 
         <p className="section-label">
@@ -119,6 +192,8 @@ export default function Home() {
       </section>
 
 
+      {/* CONTACT */}
+
       <section id="contact" className="section contact">
 
         <p className="section-label">
@@ -136,6 +211,8 @@ export default function Home() {
 
       </section>
 
+
+      {/* FOOTER */}
 
       <footer>
 
