@@ -278,24 +278,110 @@ export default function Home() {
 </section>
 
 
-      {/* CONTACT */}
+{/* CONTACT */}
 
-      <section id="contact" className="section contact">
+<section id="contact" className="contact">
 
-        <p className="section-label">
-          JOIN THE CONVERSATION
-        </p>
+  <div className="contact-container">
 
-        <h2>
-          Have something worth comparing?
-        </h2>
+    <div className="contact-intro">
 
-        <p>
-          Episode ideas, questions, historical parallels,
-          and listener feedback are always welcome.
-        </p>
+      <p className="section-label">
+        JOIN THE CONVERSATION
+      </p>
 
-      </section>
+      <h2>
+        Have Something
+        <br />
+        Worth Comparing?
+      </h2>
+
+      <p>
+        History gets more interesting when we start asking better
+        questions. If you have an episode idea, a historical parallel,
+        a source worth exploring, or a different perspective on
+        something we've covered, we want to hear it.
+      </p>
+
+    </div>
+
+
+    <div className="contact-options">
+
+      <div className="contact-item">
+
+        <span className="contact-number">
+          01
+        </span>
+
+        <div>
+          <h3>
+            Suggest an Episode
+          </h3>
+
+          <p>
+            See a story unfolding today that reminds you of something
+            from the past? Send it our way.
+          </p>
+        </div>
+
+      </div>
+
+
+      <div className="contact-item">
+
+        <span className="contact-number">
+          02
+        </span>
+
+        <div>
+          <h3>
+            Challenge the Comparison
+          </h3>
+
+          <p>
+            Think we missed something, found a source we should see,
+            or reached a conclusion worth questioning? That's part
+            of the conversation too.
+          </p>
+        </div>
+
+      </div>
+
+
+      <div className="contact-item">
+
+        <span className="contact-number">
+          03
+        </span>
+
+        <div>
+          <h3>
+            Share Your Perspective
+          </h3>
+
+          <p>
+            History rarely gives us only one way to interpret the
+            present. Tell us what you see through the lens.
+          </p>
+        </div>
+
+      </div>
+
+
+      <a
+        href="mailto:YOUR-EMAIL-HERE"
+        className="contact-button"
+      >
+        Start the Conversation →
+      </a>
+
+    </div>
+
+  </div>
+
+</section>
+
 
 
       {/* FOOTER */}
