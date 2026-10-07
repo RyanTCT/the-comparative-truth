@@ -40,7 +40,7 @@ export default function Episode01Research() {
           Concerns about technology changing the way we think are
           not new. Episode 01 examines earlier fears surrounding
           television and comic books and compares them with modern
-          research into smartphones, notifications, digital media,
+          research into smartphones, notifications, short-form video,
           and attention.
         </p>
 
@@ -60,6 +60,9 @@ export default function Episode01Research() {
 
       <section className="episode-research-body">
 
+
+        {/* SECTION 01 */}
+
         <div className="research-section">
 
           <div className="research-section-heading">
@@ -67,20 +70,87 @@ export default function Episode01Research() {
 
             <div>
               <p className="research-category">
-                MODERN TECHNOLOGY
+                ATTENTION IN A DIGITAL WORLD
               </p>
 
               <h2>
-                Smartphones & Attention
+                Attention & Switching
               </h2>
             </div>
           </div>
 
           <p className="research-section-summary">
-            Modern research complicates the simple claim that smartphones
-            have universally shortened human attention spans. Researchers
-            instead examine factors such as usage frequency, notifications,
-            task switching, inhibition, and working memory.
+            One of the most widely repeated claims about modern attention
+            is that our "attention span" has collapsed. But measuring how
+            long someone remains on a screen before switching tasks is not
+            the same thing as measuring a fixed human attention span.
+            Research into task switching provides a more useful way to
+            understand the modern attention environment.
+          </p>
+
+
+          <article className="source-card">
+
+            <p className="source-type">
+              ATTENTION RESEARCH
+            </p>
+
+            <h3>
+              Gloria Mark — Research on Attention Switching
+            </h3>
+
+            <p className="source-authors">
+              University of California, Irvine
+            </p>
+
+            <p>
+              Mark's research has tracked how long people remain focused
+              on a screen before switching to something else. Her reported
+              averages declined from roughly two and a half minutes in
+              2004 to 75 seconds in 2012 and approximately 47 seconds in
+              later observations. Importantly, these measurements describe
+              screen switching behavior—not a universal biological
+              "attention span."
+            </p>
+
+            <a
+              href="https://www.apa.org/news/podcasts/speaking-of-psychology/attention-spans"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="source-link"
+            >
+              Explore the Research →
+            </a>
+
+          </article>
+
+        </div>
+
+
+        {/* SECTION 02 */}
+
+        <div className="research-section">
+
+          <div className="research-section-heading">
+            <span>02</span>
+
+            <div>
+              <p className="research-category">
+                SMARTPHONES
+              </p>
+
+              <h2>
+                The Device in Your Pocket
+              </h2>
+            </div>
+          </div>
+
+          <p className="research-section-summary">
+            Smartphones differ from earlier forms of media in important
+            ways. They travel with us, deliver notifications throughout
+            the day, provide immediate access to information and
+            entertainment, and create repeated opportunities for attention
+            to shift.
           </p>
 
 
@@ -100,11 +170,12 @@ export default function Episode01Research() {
             </p>
 
             <p>
-              A review of research examining smartphone use and its
-              relationship with attention, inhibition, and working memory.
-              The authors emphasize that existing findings remain complex
-              and that both immediate and long-term effects require further
-              study.
+              This review examines research into smartphone use and
+              attention, inhibition, and working memory. The authors
+              emphasize that the evidence remains complex and that
+              smartphone effects depend on factors including frequency
+              of use, applications, notifications, individual differences,
+              and context.
             </p>
 
             <a
@@ -113,7 +184,7 @@ export default function Episode01Research() {
               rel="noopener noreferrer"
               className="source-link"
             >
-              View Source →
+              View Study →
             </a>
 
           </article>
@@ -134,10 +205,10 @@ export default function Episode01Research() {
             </p>
 
             <p>
-              Researchers examined whether notifications themselves can
-              interfere with attention even when a person does not actively
-              use the phone. The study found measurable disruption during
-              an attention-demanding task.
+              Participants did not need to pick up their phones for
+              attention to be affected. The researchers found that
+              receiving cellular notifications alone significantly
+              disrupted performance on an attention-demanding task.
             </p>
 
             <a
@@ -146,7 +217,44 @@ export default function Episode01Research() {
               rel="noopener noreferrer"
               className="source-link"
             >
-              View Source →
+              View Study →
+            </a>
+
+          </article>
+
+
+          <article className="source-card">
+
+            <p className="source-type">
+              EXPERIMENTAL RESEARCH • 2017
+            </p>
+
+            <h3>
+              Brain Drain: The Mere Presence of One's Own Smartphone
+              Reduces Available Cognitive Capacity
+            </h3>
+
+            <p className="source-authors">
+              Adrian F. Ward, Kristen Duke, Ayelet Gneezy & Maarten W. Bos
+            </p>
+
+            <p>
+              Across two experiments, researchers found evidence that
+              merely having one's smartphone nearby could consume limited
+              cognitive resources even when participants successfully
+              resisted checking it. In one experiment, participants whose
+              phones were in another room performed better on measures of
+              available cognitive capacity than participants whose phones
+              were on the desk.
+            </p>
+
+            <a
+              href="https://www.journals.uchicago.edu/doi/10.1086/691462"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="source-link"
+            >
+              View Study →
             </a>
 
           </article>
@@ -154,60 +262,7 @@ export default function Episode01Research() {
         </div>
 
 
-        {/* TELEVISION */}
-
-        <div className="research-section">
-
-          <div className="research-section-heading">
-            <span>02</span>
-
-            <div>
-              <p className="research-category">
-                HISTORICAL COMPARISON
-              </p>
-
-              <h2>
-                Television & Attention
-              </h2>
-            </div>
-          </div>
-
-          <p className="research-section-summary">
-            Long before smartphones and short-form video, television
-            generated similar concerns. Critics argued that rapid scene
-            changes and increasingly stimulating programming could condition
-            children to expect constant novelty and weaken sustained attention.
-          </p>
-
-          <article className="source-card">
-
-            <p className="source-type">
-              HISTORICAL RESEARCH
-            </p>
-
-            <h3>
-              Television and Children's Attention
-            </h3>
-
-            <p>
-              Episode 01 examines historical arguments surrounding programs
-              such as Sesame Street, rapid scene changes, and claims that
-              television was altering children's ability to concentrate.
-              Particular attention is given to the difference between
-              contemporary observations and conclusions supported by
-              experimental evidence.
-            </p>
-
-            <div className="source-status">
-              Additional bibliographic information being verified.
-            </div>
-
-          </article>
-
-        </div>
-
-
-        {/* COMIC BOOKS */}
+        {/* SECTION 03 */}
 
         <div className="research-section">
 
@@ -220,27 +275,126 @@ export default function Episode01Research() {
               </p>
 
               <h2>
-                The Comic Book Panic
+                Television Was Supposed to Change Us Too
               </h2>
             </div>
           </div>
 
           <p className="research-section-summary">
-            During the 1950s, comic books became the focus of a national
-            debate over juvenile delinquency, violence, and children's
-            behavior. Congressional hearings eventually placed the medium
-            under extraordinary public scrutiny.
+            Decades before smartphones, educators, journalists, and
+            researchers debated whether television—particularly rapidly
+            paced children's programming—was changing the way children
+            paid attention. Episode 01 compares those concerns with what
+            researchers were actually able to demonstrate.
           </p>
 
 
           <article className="source-card">
 
             <p className="source-type">
-              PRIMARY SOURCE • 1954
+              CHILD DEVELOPMENT • 1976
             </p>
 
             <h3>
-              Senate Hearings on Juvenile Delinquency and Comic Books
+              Young Children's Attention to "Sesame Street"
+            </h3>
+
+            <p className="source-authors">
+              Daniel R. Anderson & Stephen R. Levin
+            </p>
+
+            <p>
+              Researchers studied television attention among children
+              between one and four years old, examining how age and
+              auditory and visual characteristics of the program affected
+              viewing behavior. The study provides empirical context for
+              later claims that the formal features of children's
+              television were controlling or shortening attention.
+            </p>
+
+            <a
+              href="https://eric.ed.gov/?id=EJ157276"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="source-link"
+            >
+              View Research Record →
+            </a>
+
+          </article>
+
+
+          <article className="source-card">
+
+            <p className="source-type">
+              EXPERIMENTAL RESEARCH • 1977
+            </p>
+
+            <h3>
+              The Effects of TV Program Pacing on the Behavior
+              of Preschool Children
+            </h3>
+
+            <p className="source-authors">
+              Daniel R. Anderson, Stephen R. Levin & Elizabeth Pugzles Lorch
+            </p>
+
+            <p>
+              This study directly examined program pacing and preschool
+              children's behavior. It is particularly useful when comparing
+              public concern about rapid television pacing with evidence
+              gathered under experimental conditions.
+            </p>
+
+            <a
+              href="https://doi.org/10.1007/BF02769779"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="source-link"
+            >
+              View Study →
+            </a>
+
+          </article>
+
+        </div>
+
+
+        {/* SECTION 04 */}
+
+        <div className="research-section">
+
+          <div className="research-section-heading">
+            <span>04</span>
+
+            <div>
+              <p className="research-category">
+                MORAL PANIC
+              </p>
+
+              <h2>
+                When Comic Books Were the Threat
+              </h2>
+            </div>
+          </div>
+
+          <p className="research-section-summary">
+            In the 1950s, comic books became the focus of intense
+            concern over juvenile delinquency, violence, and children's
+            behavior. By 1954, publishers were selling approximately
+            1.2 billion comic books annually, most purchased by children.
+            The controversy eventually reached the United States Senate.
+          </p>
+
+
+          <article className="source-card">
+
+            <p className="source-type">
+              PRIMARY SOURCES • 1954
+            </p>
+
+            <h3>
+              Senate Subcommittee Investigation of Comic Books
             </h3>
 
             <p className="source-authors">
@@ -249,18 +403,18 @@ export default function Episode01Research() {
 
             <p>
               The Senate Subcommittee to Investigate Juvenile Delinquency
-              held hearings on April 21, April 22, and June 4, 1954,
-              examining claims that crime and horror comics were contributing
-              to juvenile delinquency.
+              held hearings on April 21, April 22, and June 4, 1954.
+              Testimony and evidence focused on whether crime and horror
+              comics were contributing to juvenile delinquency.
             </p>
 
             <a
-              href="https://docsteach.org/document/juvenile-delinquency-hearings/"
+              href="https://www.archives.gov/legislative/resources/education/comic-books"
               target="_blank"
               rel="noopener noreferrer"
               className="source-link"
             >
-              View Primary Source →
+              Explore Primary Sources →
             </a>
 
           </article>
@@ -281,10 +435,11 @@ export default function Episode01Research() {
             </p>
 
             <p>
-              Historical overview of the Senate hearings, the public concern
-              surrounding crime and horror comics, testimony presented to
-              Congress, and the broader national debate over their possible
-              influence on children.
+              The Library of Congress provides historical context for
+              the enormous popularity of comic books, the growing public
+              alarm surrounding crime and horror comics, the Senate
+              investigation, and the creation of the Comics Code later
+              in 1954.
             </p>
 
             <a
@@ -293,7 +448,42 @@ export default function Episode01Research() {
               rel="noopener noreferrer"
               className="source-link"
             >
-              View Source →
+              View Historical Overview →
+            </a>
+
+          </article>
+
+
+          <article className="source-card">
+
+            <p className="source-type">
+              ACADEMIC RESEARCH • 2020
+            </p>
+
+            <h3>
+              Social Media and Moral Panics: Assessing the Effects
+              of Technological Change on Societal Reaction
+            </h3>
+
+            <p className="source-authors">
+              James P. Walsh
+            </p>
+
+            <p>
+              Walsh examines the relationship between emerging media
+              systems and moral panic. The research provides a modern
+              framework for understanding how technological change can
+              become both the subject of public anxiety and a mechanism
+              through which alarm spreads.
+            </p>
+
+            <a
+              href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7201200/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="source-link"
+            >
+              View Study →
             </a>
 
           </article>
@@ -301,7 +491,75 @@ export default function Episode01Research() {
         </div>
 
 
-        {/* RESEARCH TAKEAWAY */}
+        {/* SECTION 05 */}
+
+        <div className="research-section">
+
+          <div className="research-section-heading">
+            <span>05</span>
+
+            <div>
+              <p className="research-category">
+                SHORT-FORM VIDEO
+              </p>
+
+              <h2>
+                What Makes Today's Environment Different?
+              </h2>
+            </div>
+          </div>
+
+          <p className="research-section-summary">
+            Historical comparisons are useful, but they do not make
+            every technological concern a false alarm. Short-form video
+            combines rapid content changes, algorithmic recommendation,
+            endless feeds, portability, and constant availability in ways
+            earlier media did not.
+          </p>
+
+
+          <article className="source-card">
+
+            <p className="source-type">
+              SYSTEMATIC REVIEW • 2026
+            </p>
+
+            <h3>
+              Short-Form Video, Cognitive and Mental Health Outcomes:
+              A Systematic Review
+            </h3>
+
+            <p className="source-authors">
+              Sara Arouch, Dan Edgcumbe, Sally Pezaro &
+              Ksenija Maravic Da Silva
+            </p>
+
+            <p>
+              The review examined research on short-form video use and
+              cognitive and mental-health outcomes among young adults.
+              Across the included literature, heavier use was frequently
+              associated with attentional disruption and reduced executive
+              functioning. The authors also emphasize important limitations,
+              including heavy reliance on cross-sectional studies,
+              self-report measures, and inconsistent definitions of
+              cognitive outcomes.
+            </p>
+
+            <a
+              href="https://pubmed.ncbi.nlm.nih.gov/42781066/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="source-link"
+            >
+              View Review →
+            </a>
+
+          </article>
+
+        </div>
+
+
+        {/* TAKEAWAY */}
 
         <div className="research-takeaway">
 
@@ -310,21 +568,31 @@ export default function Episode01Research() {
           </p>
 
           <h2>
-            What the Research Suggests
+            What Does the Evidence Actually Say?
           </h2>
 
           <p>
-            The historical comparison does not mean modern concerns about
-            smartphones are unfounded. Modern devices introduce features
-            earlier media did not: constant availability, personalized
-            content, notifications, social feedback, and an environment
-            designed around repeated opportunities to shift attention.
+            History gives us reason to be skeptical of sweeping claims
+            that a new form of media is suddenly destroying the human
+            ability to pay attention. Television and comic books generated
+            fears of their own, and the evidence behind those fears was
+            often more complicated than the public debate suggested.
           </p>
 
           <p>
-            At the same time, the evidence does not support reducing the
-            issue to a single claim that technology has simply
-            "destroyed our attention span."
+            But the historical comparison does not mean today's concerns
+            should be dismissed. Smartphones introduce something meaningfully
+            different: a portable, personalized environment capable of
+            delivering notifications, social feedback, entertainment,
+            information, and endless opportunities to switch attention
+            throughout the day.
+          </p>
+
+          <p>
+            The evidence is stronger for disruption, task switching,
+            cognitive load, and associations with particular patterns
+            of digital-media use than it is for the sweeping claim that
+            technology has simply "destroyed our attention span."
           </p>
 
           <blockquote>
@@ -334,6 +602,26 @@ export default function Episode01Research() {
 
         </div>
 
+
+        {/* RESEARCH NOTE */}
+
+        <div className="research-note">
+
+          <p className="research-category">
+            A NOTE ON THE RESEARCH
+          </p>
+
+          <p>
+            Research rarely provides a simple yes-or-no answer. Studies
+            differ in methodology, population, measures, and limitations.
+            Sources are presented here so listeners can examine the evidence,
+            consider the limitations, and reach their own conclusions.
+          </p>
+
+        </div>
+
+
+        {/* BOTTOM NAVIGATION */}
 
         <div className="research-page-nav">
 
