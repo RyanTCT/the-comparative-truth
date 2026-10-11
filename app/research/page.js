@@ -30,7 +30,7 @@ export default function ResearchArchive() {
           Research & Sources
         </h1>
 
-        <p>
+        <p className="research-intro-lead">
           The Comparative Truth begins with a question, but the
           answer depends on the evidence.
         </p>
