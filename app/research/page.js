@@ -97,10 +97,6 @@ export default function ResearchArchive() {
               attention switching, and digital media.
             </p>
 
-            <div className="archive-meta">
-              11 RESEARCH SOURCES LISTED
-            </div>
-
             <a
               href="/research/episode-01"
               className="archive-link"
