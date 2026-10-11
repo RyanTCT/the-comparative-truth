@@ -1929,3 +1929,8 @@ a {
 .archive-episode-details { min-width: 0; }
 @media (max-width: 700px) { .archive-episode-layout { grid-template-columns: 120px minmax(0, 1fr); gap: 18px; } }
 @media (max-width: 500px) { .archive-episode-layout { grid-template-columns: 1fr; } .archive-artwork { max-width: 200px; } }
+
+/* Align research link with episode text, without affecting artwork centering */
+.archive-research-aligned { margin-top: 16px; margin-left: 230px; }
+@media (max-width: 700px) { .archive-research-aligned { margin-left: 138px; } }
+@media (max-width: 500px) { .archive-research-aligned { margin-left: 0; } }
