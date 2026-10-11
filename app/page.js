@@ -91,6 +91,7 @@ export default function Home() {
 
               <div className="platform-buttons">
                 <a href="https://podcasts.apple.com/us/podcast/are-we-capable-of-containing-ai/id6809671032?i=1000795198049" target="_blank" rel="noopener noreferrer" className="platform-button">Apple Podcasts</a>
+                <a href="https://open.spotify.com/episode/1FDu0a9108FBsteslFNPRg?si=UuYTOBf2Sf6_YWtTIoj0LQ" target="_blank" rel="noopener noreferrer" className="platform-button">Spotify</a>
                 <a href="https://music.amazon.com/podcasts/2269c385-7913-4c1e-8ea6-ca33814db14c/episodes/56d8d279-9155-4bb4-bbde-739b7a541d24/the-comparative-truth-are-we-capable-of-containing-ai" target="_blank" rel="noopener noreferrer" className="platform-button">Amazon Music</a>
               </div>
 
