@@ -1922,3 +1922,18 @@ a {
   }
 
 }
+
+/* Episode archive artwork beside episode details */
+.archive-episode-layout { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 30px; align-items: center; margin-top: 16px; }
+.archive-artwork { display: block; width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: cover; box-shadow: 0 12px 32px rgba(0,0,0,.4); }
+.archive-episode-details { min-width: 0; }
+@media (max-width: 700px) { .archive-episode-layout { grid-template-columns: 120px minmax(0, 1fr); gap: 18px; } }
+@media (max-width: 500px) { .archive-episode-layout { grid-template-columns: 1fr; } .archive-artwork { max-width: 200px; } }
+
+/* Align research link with episode text, without affecting artwork centering */
+.archive-research-aligned { margin-top: 16px; margin-left: 230px; }
+@media (max-width: 700px) { .archive-research-aligned { margin-left: 138px; } }
+@media (max-width: 500px) { .archive-research-aligned { margin-left: 0; } }
+
+/* Research archive introductory statement */
+.research-page-hero > p.research-intro-lead:not(.section-label) { font-size: clamp(19px, 2.2vw, 24px); font-weight: 400; line-height: 1.5; color: #c18b4d; max-width: 1050px; }

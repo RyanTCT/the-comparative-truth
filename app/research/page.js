@@ -30,7 +30,7 @@ export default function ResearchArchive() {
           Research & Sources
         </h1>
 
-        <p>
+        <p className="research-intro-lead">
           The Comparative Truth begins with a question, but the
           answer depends on the evidence.
         </p>
@@ -61,7 +61,18 @@ export default function ResearchArchive() {
         </div>
 
 
-        {/* EPISODE 01 */}
+        {/* EPISODE 02 */}
+        <article className="archive-entry">
+          <div className="archive-number">02</div>
+          <div className="archive-content">
+            <p className="archive-episode-label">EPISODE 02</p>
+            <h3>Are We Capable of Containing AI?</h3>
+            <p>Research into autonomous AI security, the OpenAI–Hugging Face incident, U.S. Senate testimony, Y2K preparedness, and October 2026 AI accountability developments.</p>
+            <a href="/research/episode-02" className="archive-link">View Episode Research →</a>
+          </div>
+        </article>
+
+                {/* EPISODE 01 */}
 
         <article className="archive-entry">
 
@@ -85,10 +96,6 @@ export default function ResearchArchive() {
               of smartphones, notifications, short-form video,
               attention switching, and digital media.
             </p>
-
-            <div className="archive-meta">
-              SOURCE COUNT BEING VERIFIED
-            </div>
 
             <a
               href="/research/episode-01"

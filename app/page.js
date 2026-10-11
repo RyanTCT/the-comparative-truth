@@ -66,8 +66,8 @@ export default function Home() {
 
           <div className="episode-artwork">
             <img
-              src="/E01_artwork.png"
-              alt="Episode 01 - Is Technology Destroying Our Attention Span?"
+              src="/E02_artwork.png"
+              alt="Episode 02 - Are We Capable of Containing AI?"
             />
           </div>
 
@@ -78,81 +78,30 @@ export default function Home() {
               LATEST EPISODE
             </p>
 
-            <p className="episode-number">
-              EPISODE 01
-            </p>
-
-            <h2>
-              Is Technology Destroying
-              <br />
-              Our Attention Span?
-            </h2>
-
-            <p className="episode-description">
-              For generations, new forms of media have been blamed
-              for changing the way we think and pay attention.
-              Television was accused of shortening children's
-              attention spans. Comic books were blamed for corrupting
-              young minds. Today, the concern has shifted to
-              smartphones, notifications, and short-form video.
-            </p>
-
-            <p className="episode-description">
-              But is technology actually destroying our attention
-              span—or has the environment competing for our attention
-              simply changed?
-            </p>
-
-            <div className="episode-meta">
-              <span>EPISODE 01</span>
-              <span className="meta-divider"></span>
-              <span>24 MIN</span>
-            </div>
-
-
+            <p className="episode-number">EPISODE 02</p>
+            <h2>Are We Capable of<br />Containing AI?</h2>
+            <p className="episode-description">As autonomous AI agents become increasingly capable, questions about cybersecurity, safeguards, and accountability are becoming harder to ignore.</p>
+            <p className="episode-description">We examine the OpenAI–Hugging Face security incident, testimony from a U.S. Senate hearing, and a cybersecurity professional's perspective—then look back at Y2K to ask what history can teach us about preparing for technological risks.</p>
+            <div className="episode-meta"><span>EPISODE 02</span></div>
             <div className="listen-area">
 
               <p className="listen-label">
                 LISTEN TO EPISODE
               </p>
 
-       <div className="platform-buttons">
-
-  <a
-    href="https://podcasts.apple.com/us/podcast/the-comparative-truth/id6809671032"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="platform-button"
-  >
-    Apple Podcasts
-  </a>
-
-  <a
-    href="https://open.spotify.com/episode/5QRU1cIJwpmuHAqMLUWHCu?si=4FDFKQqMTGe7ad8XMCbSug&utm_source=copy-link"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="platform-button"
-  >
-    Spotify
-  </a>
-
-  <a
-    href="https://music.amazon.com/podcasts/2269c385-7913-4c1e-8ea6-ca33814db14c/the-comparative-truth"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="platform-button"
-  >
-    Amazon Music
-  </a>
-
-</div>
+              <div className="platform-buttons">
+                <a href="https://podcasts.apple.com/us/podcast/are-we-capable-of-containing-ai/id6809671032?i=1000795198049" target="_blank" rel="noopener noreferrer" className="platform-button">Apple Podcasts</a>
+                <a href="https://open.spotify.com/episode/1FDu0a9108FBsteslFNPRg?si=UuYTOBf2Sf6_YWtTIoj0LQ" target="_blank" rel="noopener noreferrer" className="platform-button">Spotify</a>
+                <a href="https://music.amazon.com/podcasts/2269c385-7913-4c1e-8ea6-ca33814db14c/episodes/56d8d279-9155-4bb4-bbde-739b7a541d24/the-comparative-truth-are-we-capable-of-containing-ai" target="_blank" rel="noopener noreferrer" className="platform-button">Amazon Music</a>
+              </div>
 
             </div>
 
 
-            <a href="#research" className="research-link">
+            <a href="/research/episode-02" className="research-link">
               View Research & Sources →
             </a>
+            <div><a href="/episodes" className="research-link">Browse All Episodes →</a></div>
 
           </div>
 
@@ -236,27 +185,13 @@ export default function Home() {
         LATEST RESEARCH
       </div>
 
-      <p className="research-episode-number">
-        EPISODE 01
-      </p>
-
-      <h3>
-        Is Technology Destroying
-        <br />
-        Our Attention Span?
-      </h3>
-
-      <p className="research-summary">
-        Explore the research behind Episode 01, including
-        historical concerns surrounding television and comic
-        books, modern research on smartphones and notifications,
-        and studies examining how technology affects attention.
-      </p>
-
+      <p className="research-episode-number">EPISODE 02</p>
+      <h3>Are We Capable of<br />Containing AI?</h3>
+      <p className="research-summary">Explore the original reporting, AI security disclosures, Senate testimony, historical Y2K assessments, and October 2026 developments behind Episode 02.</p>
       <div className="research-actions">
 
 <a
-  href="/research/episode-01"
+  href="/research/episode-02"
   className="research-button"
 >
   View Episode Research →
