@@ -1936,4 +1936,4 @@ a {
 @media (max-width: 500px) { .archive-research-aligned { margin-left: 0; } }
 
 /* Research archive introductory statement */
-.research-page-hero .research-intro-lead { font-size: clamp(19px, 2.2vw, 24px); font-weight: 600; line-height: 1.5; color: #e0d9cf; max-width: 780px; }
+.research-page-hero .research-intro-lead { font-size: clamp(19px, 2.2vw, 24px); font-weight: 600; line-height: 1.5; color: #c18b4d; max-width: 1050px; }
