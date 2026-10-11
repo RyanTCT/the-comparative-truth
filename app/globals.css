@@ -1924,7 +1924,7 @@ a {
 }
 
 /* Episode archive artwork beside episode details */
-.archive-episode-layout { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 30px; align-items: start; margin-top: 16px; }
+.archive-episode-layout { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 30px; align-items: center; margin-top: 16px; }
 .archive-artwork { display: block; width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: cover; box-shadow: 0 12px 32px rgba(0,0,0,.4); }
 .archive-episode-details { min-width: 0; }
 @media (max-width: 700px) { .archive-episode-layout { grid-template-columns: 120px minmax(0, 1fr); gap: 18px; } }
