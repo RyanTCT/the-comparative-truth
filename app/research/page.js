@@ -98,7 +98,7 @@ export default function ResearchArchive() {
             </p>
 
             <div className="archive-meta">
-              SOURCE COUNT BEING VERIFIED
+              11 RESEARCH SOURCES LISTED
             </div>
 
             <a
