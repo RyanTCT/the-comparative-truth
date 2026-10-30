@@ -182,7 +182,7 @@ export default function Home() {
       </div>
 
       <p className="research-episode-number">EPISODE 03</p>
-      <h3>Are We Capable of<br />Containing AI?</h3>
+      <h3>Is Technology<br />Empowering Scammers?</h3>
       <p className="research-summary">Explore historical fraud records, modern AI impersonation cases, Senate testimony, FBI fraud data and victim assistance resources behind Episode 03.</p>
       <div className="research-actions">
 
