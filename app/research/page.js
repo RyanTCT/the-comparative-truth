@@ -61,6 +61,9 @@ export default function ResearchArchive() {
         </div>
 
 
+        {/* EPISODE 03 */}
+        <article className="archive-entry"><div className="archive-number">03</div><div className="archive-content"><p className="archive-episode-label">EPISODE 03</p><h3>Is Technology Empowering Scammers?</h3><p>From the Spanish Prisoner and Charles Ponzi to voice cloning, deepfake video calls, modern financial fraud and 2026 U.S. Senate testimony.</p><a href="/research/episode-03" className="archive-link">View Episode Research →</a></div></article>
+
         {/* EPISODE 02 */}
         <article className="archive-entry">
           <div className="archive-number">02</div>
