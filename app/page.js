@@ -1,3 +1,5 @@
+import InvestigatorMenu from "./components/InvestigatorMenu";
+
 export default function Home() {
   return (
     <main>
@@ -12,6 +14,7 @@ export default function Home() {
           <a href="#about">About</a>
           <a href="#research">Research</a>
           <a href="/join-the-show">Join the Show</a>
+          <InvestigatorMenu />
         </div>
       </nav>
 
