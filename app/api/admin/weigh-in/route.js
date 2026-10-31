@@ -30,7 +30,7 @@ export async function GET(request){
 }
 async function authorizeWrite(request){
  const token=request.headers.get("authorization")?.match(/^Bearer (.+)$/)?.[1];
- const base=process.env.NEXT_PUBLIC_SUPABASE_URL?.replace(/\\/$/,"");
+ const base=process.env.NEXT_PUBLIC_SUPABASE_URL?.replace(/\/$/,"");
  const pub=process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,secret=process.env.SUPABASE_SECRET_KEY;
  if(!token||!base||!pub||!secret)return null;
  const userRes=await fetch(base+"/auth/v1/user",{headers:{apikey:pub,Authorization:"Bearer "+token},cache:"no-store"});
