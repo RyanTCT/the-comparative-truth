@@ -42,7 +42,7 @@ async function authorizeWrite(request){
 }
 const response=(body,status=200)=>NextResponse.json(body,{status,headers:{"Cache-Control":"no-store"}});
 async function db(auth,path,method,body,prefer="return=representation"){
- const res=await fetch(auth.base+"/rest/v1/"+path,{method,headers:{...auth.headers,Prefer:prefer},body:JSON.stringify(body),cache:"no-store"});
+ const res=await fetch(auth.base+"/rest/v1/"+path,{method,headers:{...auth.headers,Prefer:prefer},...(body==null?{}:{body:JSON.stringify(body)}),cache:"no-store"});
  if(!res.ok){console.error("Weigh In write failed",path.split("?")[0],res.status,(await res.text()).slice(0,350));throw new Error("Database update failed");}
  return prefer==="return=minimal"?null:res.json();
 }
@@ -86,8 +86,10 @@ export async function DELETE(request){
   const check=await fetch(auth.base+"/rest/v1/"+path,{headers:auth.headers,cache:"no-store"});
   if(!check.ok)throw new Error("Vote check failed");
   if((await check.json()).length)return response({error:"This question has votes and cannot be deleted. Unpublish it to preserve results."},409);
-  const deleted=await db(auth,"weigh_in_questions?id=eq."+encodeURIComponent(body.id),"DELETE",null);
-  if(!deleted.length)return response({error:"Question not found"},404);
+  const deleted=await fetch(auth.base+"/rest/v1/weigh_in_questions?id=eq."+encodeURIComponent(body.id)+"&select=id",{method:"DELETE",headers:{...auth.headers,Prefer:"return=representation"},cache:"no-store"});
+  if(!deleted.ok){const detail=(await deleted.text()).slice(0,300);console.error("Weigh In delete rejected",deleted.status,detail);return response({error:"Database rejected deletion. Check server logs for details."},503)}
+  const rows=await deleted.json();
+  if(!rows.length)return response({error:"Question not found or deletion not permitted"},404);
   return response({ok:true});
  }catch(e){console.error("Weigh In delete error",e.message);return response({error:"Unable to delete question"},503)}
 }
