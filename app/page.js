@@ -13,6 +13,7 @@ export default function Home() {
           <a href="#episodes">Episodes</a>
           <a href="#about">About</a>
           <a href="#research">Research</a>
+          <a href="/community">Community</a>
           <a href="/join-the-show">Join the Show</a>
           <InvestigatorMenu />
         </div>
