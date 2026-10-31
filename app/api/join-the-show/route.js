@@ -6,6 +6,53 @@ const limits = { name: 120, email: 200, topic: 200, background: 2000, perspectiv
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const invalid = (message, status = 400) => NextResponse.json({ error: message }, { status, headers: { "Cache-Control": "no-store" } });
 
+
+async function notifyNewSubmission(type, fields) {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    console.warn("Submission saved; Resend notification is not configured.");
+    return;
+  }
+  const label = type === "guest" ? "Guest Application" : "Investigation Suggestion";
+  const safe = (value) => String(value || "").replace(/[&<>"']/g, (char) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  })[char]);
+  const details = [
+    ["Submission", label],
+    ["Name", fields.name],
+    ["Email", fields.email || "Not provided"],
+    ["Topic", fields.topic],
+  ];
+  const html = `<div style="font-family:Arial,sans-serif;max-width:640px;margin:auto;color:#242424">
+    <h1 style="color:#9d713c">New Incoming Lead</h1>
+    <p>A new ${safe(label.toLowerCase())} was saved to The Comparative Truth.</p>
+    ${details.map(([title,value]) => `<p><strong>${safe(title)}:</strong> ${safe(value)}</p>`).join("")}
+    <p><a href="https://www.comparativetruth.com/admin">Open the Investigation Desk →</a></p>
+    <p style="font-size:12px;color:#777">Sign in to review the complete submission and update its status.</p>
+  </div>`;
+  try {
+    const response = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { Authorization: "Bearer " + apiKey, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        from: "The Comparative Truth <notifications@comparativetruth.com>",
+        to: ["jointheshow@comparativetruth.com"],
+        subject: "Investigation Desk: New " + label,
+        html,
+      }),
+      signal: AbortSignal.timeout(8000),
+      cache: "no-store",
+    });
+    if (!response.ok) {
+      let code = "unknown";
+      try { const data = await response.json(); code = data?.name || data?.statusCode || "unknown"; } catch {}
+      console.error("Resend notification failed", { status: response.status, code });
+    }
+  } catch (error) {
+    console.error("Resend notification request failed", error?.name || "unknown");
+  }
+}
+
 export async function POST(request) {
   const origin = request.headers.get("origin");
   const allowedOrigin = process.env.NEXT_PUBLIC_SITE_URL || "https://www.comparativetruth.com";
@@ -75,6 +122,7 @@ export async function POST(request) {
       console.error("Join submission upstream failure", { status: response.status, code: errorCode });
       return invalid("We couldn't save your submission. Reference: " + diagnosticId + "_" + errorCode, 502);
     }
+    await notifyNewSubmission(submission_type, fields);
     return NextResponse.json({ ok: true }, { status: 201, headers: { "Cache-Control": "no-store" } });
   } catch (error) {
     console.error("Join submission request failed:", error?.name || "unknown");
