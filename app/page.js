@@ -15,8 +15,8 @@ export default function Home() {
           <a href="#research">Research</a>
           <a href="/community">Community</a>
           <a href="/join-the-show">Join the Show</a>
-          <InvestigatorMenu />
         </div>
+        <InvestigatorMenu />
       </nav>
 
 
