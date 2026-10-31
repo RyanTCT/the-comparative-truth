@@ -1981,3 +1981,8 @@ a {
 .join-success { color: #b5d4b0; border-left-color: #83ad7c; }
 .join-error { color: #efb5a7; border-left-color: #ce7563; }
 .join-submit:disabled { opacity: .65; cursor: wait; }
+
+/* Keep required-field asterisks inline so optional and required inputs align. */
+.join-form-row > label { display: block; }
+.join-form-row > label > span { display: inline; }
+.join-form-row > label > input { display: block; margin-top: 11px; }
