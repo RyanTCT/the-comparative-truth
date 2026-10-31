@@ -20,6 +20,8 @@ export async function GET(request){
   const projectId=process.env.VERCEL_ANALYTICS_PROJECT_ID;
   const teamId=process.env.VERCEL_ANALYTICS_TEAM_ID;
   if(!token||!projectId)return NextResponse.json({error:"Analytics configuration incomplete"},{status:503});
+  if(!projectId.startsWith("prj_"))return NextResponse.json({error:"Project ID format is invalid"},{status:503});
+  if(teamId&&!teamId.startsWith("team_"))return NextResponse.json({error:"Team ID format is invalid; expected team_ prefix"},{status:503});
   const requested=Number(new URL(request.url).searchParams.get("days"));
   const days=[7,30,90].includes(requested)?requested:30;
   const end=new Date(),start=new Date(end);
@@ -33,7 +35,7 @@ export async function GET(request){
    if(by)url.searchParams.set("by",by);
    if(limit)url.searchParams.set("limit",String(limit));
    const res=await fetch(url,{headers:{Authorization:"Bearer "+token},cache:"no-store"});
-   if(!res.ok)throw new Error("Vercel "+kind+" "+(by||"total")+" returned HTTP "+res.status);
+   if(!res.ok){const body=await res.json().catch(()=>({}));const code=String(body?.error?.code||"UNKNOWN").replace(/[^A-Z0-9_]/gi,"").slice(0,60);throw new Error("Vercel "+kind+" "+(by||"total")+" HTTP "+res.status+" ("+code+")");}
    return (await res.json()).data;
   }
   const [trend,pages,referrers]=await Promise.all([query("aggregate","day"),query("aggregate","requestPath",8),query("aggregate","referrerHostname",8)]);
