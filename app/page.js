@@ -11,7 +11,7 @@ export default function Home() {
           <a href="#episodes">Episodes</a>
           <a href="#about">About</a>
           <a href="#research">Research</a>
-          <a href="#contact">Contact</a>
+          <a href="/join-the-show">Join the Show</a>
         </div>
       </nav>
 
@@ -301,10 +301,10 @@ export default function Home() {
 
 
       <a
-        href="mailto:contact@comparativetruth.com"
+        href="/join-the-show"
         className="contact-button"
       >
-        Start the Conversation →
+        Join the Show →
       </a>
 
     </div>
