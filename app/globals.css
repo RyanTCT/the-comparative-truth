@@ -2137,3 +2137,8 @@ a {
 .investigator-initial{font-size:17px;font-weight:700;line-height:1;color:inherit}
 .investigator-dropdown-action{display:block;width:100%;padding:13px 12px;text-align:left;background:transparent;border:0;color:#eee8df;font:500 13px Arial,Helvetica,sans-serif;cursor:pointer}
 .investigator-dropdown-action:hover{background:rgba(193,139,77,.12);color:#e9b675}
+
+/* Public Investigator profile */
+.investigator-profile-current{display:flex;flex-direction:column;gap:10px;padding:18px 20px;margin:0 0 26px;border:1px solid rgba(193,139,77,.35);background:rgba(193,139,77,.06)}
+.investigator-profile-current span{color:#a8a19a;font-size:10px;letter-spacing:2px}
+.investigator-profile-current strong{color:#e2b17b;font:normal 26px Georgia,serif;overflow-wrap:anywhere}
