@@ -52,13 +52,13 @@ drop policy if exists "Verified Investigators create threads" on public.communit
 create policy "Verified Investigators create threads" on public.community_threads for insert to authenticated with check (
  author_id=auth.uid() and not is_hidden and not is_locked
  and exists(select 1 from public.investigator_profiles p where p.user_id=auth.uid())
- and exists(select 1 from auth.users u where u.id=auth.uid() and u.email_confirmed_at is not null)
+ and public.is_verified_investigator()
 );
 drop policy if exists "Verified Investigators create comments" on public.community_comments;
 create policy "Verified Investigators create comments" on public.community_comments for insert to authenticated with check (
  author_id=auth.uid() and not is_hidden
  and exists(select 1 from public.investigator_profiles p where p.user_id=auth.uid())
  and exists(select 1 from public.community_threads t where t.id=thread_id and not t.is_hidden and not t.is_locked)
- and exists(select 1 from auth.users u where u.id=auth.uid() and u.email_confirmed_at is not null)
+ and public.is_verified_investigator()
 );
 -- No client-side update/delete permissions. Moderation will use protected server routes.
