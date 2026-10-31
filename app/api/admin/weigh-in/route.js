@@ -12,7 +12,7 @@ export async function GET(request){
   if(!userRes.ok)return NextResponse.json({error:"Not authorized"},{status:403});
   const user=await userRes.json();
   if(!user.id)return NextResponse.json({error:"Not authorized"},{status:403});
-  const headers={apikey:secret,Authorization:"Bearer "+secret};
+  const headers={apikey:secret};
   const adminRes=await fetch(base+"/rest/v1/admin_users?user_id=eq."+encodeURIComponent(user.id)+"&select=user_id",{headers,cache:"no-store"});
   if(!adminRes.ok||!(await adminRes.json()).length)return NextResponse.json({error:"Not authorized"},{status:403});
   async function read(path){
