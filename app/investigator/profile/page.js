@@ -18,7 +18,7 @@ export default function InvestigatorProfile(){
    setUser(current);
    const {data,error:profileError}=await supabase.from("investigator_profiles").select("display_name,name_changed_at").eq("user_id",current.id).maybeSingle();
    if(!active)return;
-   if(profileError)setError("Unable to load your Investigator profile. Please try refreshing.");
+   if(profileError){console.error("Investigator profile lookup failed:",profileError);setError("Unable to check your existing profile. You can still try claiming a name.");}
    else {setProfile(data);setName(data?.display_name||"");}
    setLoading(false);
   }
