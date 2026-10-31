@@ -66,12 +66,18 @@ export async function POST(request) {
       signal: AbortSignal.timeout(10000),
     });
     if (!response.ok) {
-      console.error("Supabase submission insert failed:", response.status);
-      return invalid("We couldn't save your submission. Please try again later.", 502);
+      const diagnosticId = "SUPABASE_" + response.status;
+      let errorCode = "unknown";
+      try {
+        const errorBody = await response.json();
+        if (typeof errorBody?.code === "string" && /^[A-Za-z0-9_]{1,30}$/.test(errorBody.code)) errorCode = errorBody.code;
+      } catch {}
+      console.error("Join submission upstream failure", { status: response.status, code: errorCode });
+      return invalid("We couldn't save your submission. Reference: " + diagnosticId + "_" + errorCode, 502);
     }
     return NextResponse.json({ ok: true }, { status: 201, headers: { "Cache-Control": "no-store" } });
   } catch (error) {
     console.error("Join submission request failed:", error?.name || "unknown");
-    return invalid("We couldn't save your submission. Please try again later.", 502);
+    return invalid("We couldn't save your submission. Reference: CONNECTION_ERROR", 502);
   }
 }
