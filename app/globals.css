@@ -2132,3 +2132,8 @@ a {
 .investigator-text-button{padding:0;border:0;background:transparent;color:#e1ac69;text-decoration:underline;text-underline-offset:3px;font:inherit;cursor:pointer}
 .investigator-text-button:hover{color:#f0c18a}
 .investigator-text-button:disabled{opacity:.6;cursor:wait}
+
+/* Signed-in Investigator menu */
+.investigator-initial{font-size:17px;font-weight:700;line-height:1;color:inherit}
+.investigator-dropdown-action{display:block;width:100%;padding:13px 12px;text-align:left;background:transparent;border:0;color:#eee8df;font:500 13px Arial,Helvetica,sans-serif;cursor:pointer}
+.investigator-dropdown-action:hover{background:rgba(193,139,77,.12);color:#e9b675}
