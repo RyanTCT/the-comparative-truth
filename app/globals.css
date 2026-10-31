@@ -2012,3 +2012,6 @@ a {
 .admin-status{display:flex;align-items:center;gap:14px;margin-top:24px;color:#d9a66a}
 .admin-error{color:#f4a89b;border-left:3px solid #ce7563;padding:12px}
 @media(max-width:600px){.admin-wrap{padding-top:44px}.admin-login,.admin-card{padding:20px}}
+
+.admin-login .admin-text-button{background:none;border:0;color:#d9a66a;padding:4px 0;text-align:left;font-weight:normal;text-decoration:underline;align-self:flex-start}
+.admin-notice{color:#b5d4b0;border-left:3px solid #83ad7c;padding:12px}
