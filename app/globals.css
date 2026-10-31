@@ -2127,3 +2127,8 @@ a {
 .investigator-auth-success h2{font:normal 27px Georgia,serif;color:#e1ac69}
 .investigator-auth-success p{color:#c6c1b8;line-height:1.75}
 @media(max-width:600px){.investigator-auth-card{padding:28px 23px}.investigator-back{margin-bottom:35px}}
+
+/* Investigator password recovery link */
+.investigator-text-button{padding:0;border:0;background:transparent;color:#e1ac69;text-decoration:underline;text-underline-offset:3px;font:inherit;cursor:pointer}
+.investigator-text-button:hover{color:#f0c18a}
+.investigator-text-button:disabled{opacity:.6;cursor:wait}
