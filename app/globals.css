@@ -2015,3 +2015,8 @@ a {
 
 .admin-login .admin-text-button{background:none;border:0;color:#d9a66a;padding:4px 0;text-align:left;font-weight:normal;text-decoration:underline;align-self:flex-start}
 .admin-notice{color:#b5d4b0;border-left:3px solid #83ad7c;padding:12px}
+
+.admin-password-field{display:flex;position:relative;align-items:center}
+.admin-password-field input{width:100%;padding-right:76px}
+.admin-login .admin-visibility{position:absolute;right:9px;top:50%;transform:translateY(-50%);width:auto;background:transparent;border:0;color:#d9a66a;padding:8px;font-size:13px;font-weight:600;cursor:pointer}
+.admin-login .admin-visibility:focus-visible{outline:2px solid #c18b4d;outline-offset:2px}
