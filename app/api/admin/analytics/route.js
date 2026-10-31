@@ -33,10 +33,11 @@ export async function GET(request){
    if(by)url.searchParams.set("by",by);
    if(limit)url.searchParams.set("limit",String(limit));
    const res=await fetch(url,{headers:{Authorization:"Bearer "+token},cache:"no-store"});
-   if(!res.ok)throw new Error("Analytics API returned "+res.status);
+   if(!res.ok)throw new Error("Vercel "+kind+" "+(by||"total")+" returned HTTP "+res.status);
    return (await res.json()).data;
   }
-  const [totals,trend,pages,referrers]=await Promise.all([query("count"),query("aggregate","day"),query("aggregate","requestPath",8),query("aggregate","referrerHostname",8)]);
+  const [trend,pages,referrers]=await Promise.all([query("aggregate","day"),query("aggregate","requestPath",8),query("aggregate","referrerHostname",8)]);
+  const totals={pageviews:trend.reduce((n,row)=>n+Number(row.pageviews||0),0),visitors:null};
   return NextResponse.json({days,totals,trend,pages,referrers},{headers:{"Cache-Control":"no-store"}});
- }catch(e){console.error("Analytics error",e.message);return NextResponse.json({error:"Analytics unavailable. Verify token permissions."},{status:503,headers:{"Cache-Control":"no-store"}})}
+ }catch(e){console.error("Analytics error",e.message);return NextResponse.json({error:e.message.startsWith("Vercel ")?e.message:"Analytics service unavailable"},{status:503,headers:{"Cache-Control":"no-store"}})}
 }
