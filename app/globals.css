@@ -1972,3 +1972,12 @@ a {
 .join-submit:hover {background:#c18b4d;}
 @media(max-width:900px) {.join-hero{padding:85px 8% 75px}.join-body{padding:75px 8% 95px}.join-form-shell{grid-template-columns:1fr}.join-mobile-back{display:inline-block;color:#c18b4d;font-size:12px}.join-hero h1{letter-spacing:-2px;}}
 @media(max-width:600px) {.join-hero{padding:70px 6% 65px}.join-body{padding:65px 6% 85px}.join-options,.join-form-row{grid-template-columns:1fr}.join-options{gap:15px;margin-bottom:50px}.join-option{min-height:210px;padding:25px}.join-form-shell{padding-top:40px}.join-hero>p:not(.section-label){font-size:16px}.join-hero h1{font-size:clamp(46px,11vw,66px)}}
+
+/* Join the Show: field alignment, hidden spam trap, and feedback */
+.join-form-row > label { min-width: 0; }
+.join-form input, .join-form textarea { box-sizing: border-box; max-width: 100%; }
+.join-honeypot { position: absolute !important; width: 1px !important; height: 1px !important; padding: 0 !important; margin: -1px !important; overflow: hidden !important; clip: rect(0, 0, 0, 0) !important; white-space: nowrap !important; border: 0 !important; }
+.join-form .join-honeypot input { width: 1px; height: 1px; }
+.join-success { color: #b5d4b0; border-left-color: #83ad7c; }
+.join-error { color: #efb5a7; border-left-color: #ce7563; }
+.join-submit:disabled { opacity: .65; cursor: wait; }
