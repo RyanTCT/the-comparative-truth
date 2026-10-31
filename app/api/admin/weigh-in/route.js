@@ -75,3 +75,19 @@ export async function PATCH(request){
   return response({ok:true});
  }catch{return response({error:"Unable to update publication status"},503)}
 }
+
+export async function DELETE(request){
+ let auth;try{auth=await authorizeWrite(request)}catch{return response({error:"Admin service unavailable"},503)}
+ if(!auth)return response({error:"Not authorized"},403);
+ let body;try{body=await request.json()}catch{return response({error:"Invalid request"},400)}
+ if(typeof body?.id!=="string"||!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(body.id))return response({error:"Invalid question ID"},400);
+ try{
+  const path="weigh_in_votes?question_id=eq."+encodeURIComponent(body.id)+"&select=id&limit=1";
+  const check=await fetch(auth.base+"/rest/v1/"+path,{headers:auth.headers,cache:"no-store"});
+  if(!check.ok)throw new Error("Vote check failed");
+  if((await check.json()).length)return response({error:"This question has votes and cannot be deleted. Unpublish it to preserve results."},409);
+  const deleted=await db(auth,"weigh_in_questions?id=eq."+encodeURIComponent(body.id),"DELETE",null);
+  if(!deleted.length)return response({error:"Question not found"},404);
+  return response({ok:true});
+ }catch(e){console.error("Weigh In delete error",e.message);return response({error:"Unable to delete question"},503)}
+}
