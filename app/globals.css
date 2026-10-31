@@ -2176,3 +2176,6 @@ a {
 .navbar>.investigator-menu .investigator-dropdown a{display:block;padding:13px 12px;color:#eee8df;font-size:13px;letter-spacing:.25px;font-weight:500;text-transform:none}
 .navbar>.investigator-menu .investigator-dropdown a:hover{background:rgba(193,139,77,.12);color:#e9b675}
 @media(max-width:900px){.navbar>.investigator-menu{margin-left:auto}.navbar>.investigator-menu .investigator-dropdown{right:0}}
+
+/* Keep the account circle pinned to the right edge of the mobile header. */
+@media(max-width:900px){.navbar{display:flex;align-items:center;justify-content:space-between}.navbar>.investigator-menu{margin-left:auto;margin-right:0}}
