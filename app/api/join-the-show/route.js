@@ -51,7 +51,6 @@ export async function POST(request) {
       headers: {
         "Content-Type": "application/json",
         "apikey": key,
-        "Authorization": "Bearer " + key,
         "Prefer": "return=minimal",
       },
       body: JSON.stringify({
