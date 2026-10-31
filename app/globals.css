@@ -2020,3 +2020,17 @@ a {
 .admin-password-field input{width:100%;padding-right:76px}
 .admin-login .admin-visibility{position:absolute;right:9px;top:50%;transform:translateY(-50%);width:auto;background:transparent;border:0;color:#d9a66a;padding:8px;font-size:13px;font-weight:600;cursor:pointer}
 .admin-login .admin-visibility:focus-visible{outline:2px solid #c18b4d;outline-offset:2px}
+
+
+/* Investigation Desk overview, search, and status filtering */
+.admin-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:26px 0 28px}
+.admin-stats>div{background:#111215;border:1px solid #3c342d;padding:21px;display:flex;flex-direction:column;gap:12px}
+.admin-stats span{color:#aaa39a;font-size:12px;letter-spacing:.4px}
+.admin-stats strong{font:normal 36px Georgia,serif;color:#d9a66a}
+.admin-controls{display:grid;grid-template-columns:minmax(0,2fr) minmax(180px,1fr);gap:16px;margin-top:30px}
+.admin-controls label{display:flex;flex-direction:column;gap:10px;font-size:13px;color:#d7cec1}
+.admin-controls input,.admin-controls select{box-sizing:border-box;width:100%;min-width:0;background:#111215;border:1px solid #575046;padding:13px;color:#f2eee6;font:inherit;border-radius:0}
+.admin-controls input:focus,.admin-controls select:focus{outline:2px solid #c18b4d;outline-offset:1px}
+.admin-results{font-size:13px;color:#aaa39a;margin:0 0 18px}
+@media(max-width:700px){.admin-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-controls{grid-template-columns:1fr}}
+@media(max-width:400px){.admin-stats>div{padding:15px}.admin-stats strong{font-size:30px}}
