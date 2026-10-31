@@ -17,7 +17,7 @@ export async function GET(request){
   if(!adminRes.ok||!(await adminRes.json()).length)return NextResponse.json({error:"Not authorized"},{status:403});
   async function read(path){
    const res=await fetch(base+"/rest/v1/"+path,{headers,cache:"no-store"});
-   if(!res.ok)throw new Error("Unable to retrieve voting data");
+   if(!res.ok){const detail=await res.text();console.error("Weigh In Supabase read failed",{table:path.split("?")[0],status:res.status,detail:detail.slice(0,500)});throw new Error("Unable to retrieve voting data");}
    return res.json();
   }
   const [questions,options,votes]=await Promise.all([
