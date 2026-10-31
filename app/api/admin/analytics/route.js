@@ -24,14 +24,14 @@ export async function GET(request){
   if(teamId&&!teamId.startsWith("team_"))return NextResponse.json({error:"Team ID format is invalid; expected team_ prefix"},{status:503});
   const requested=Number(new URL(request.url).searchParams.get("days"));
   const days=[7,30,90].includes(requested)?requested:30;
-  const end=new Date(),start=new Date(end);
-  start.setUTCDate(start.getUTCDate()-days+1);
+  const end=new Date(),start=new Date(end.getTime()-days*24*60*60*1000);
   async function query(kind,by,limit){
    const url=new URL("https://api.vercel.com/v1/query/web-analytics/visits/"+kind);
    url.searchParams.set("projectId",projectId);
    if(teamId)url.searchParams.set("teamId",teamId);
-   url.searchParams.set("since",start.toISOString().slice(0,10));
-   url.searchParams.set("until",end.toISOString().slice(0,10));
+   url.searchParams.set("since",start.toISOString());
+   url.searchParams.set("until",end.toISOString());
+   url.searchParams.set("filter","environment eq 'production'");
    if(by)url.searchParams.set("by",by);
    if(limit)url.searchParams.set("limit",String(limit));
    const res=await fetch(url,{headers:{Authorization:"Bearer "+token},cache:"no-store"});
