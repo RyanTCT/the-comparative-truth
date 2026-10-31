@@ -1,5 +1,5 @@
-import "./community.css";
 "use client";
+import "./community.css";
 import {useEffect,useState} from "react";
 import Link from "next/link";
 import {createClient} from "@supabase/supabase-js";
