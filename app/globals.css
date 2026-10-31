@@ -2142,3 +2142,6 @@ a {
 .investigator-profile-current{display:flex;flex-direction:column;gap:10px;padding:18px 20px;margin:0 0 26px;border:1px solid rgba(193,139,77,.35);background:rgba(193,139,77,.06)}
 .investigator-profile-current span{color:#a8a19a;font-size:10px;letter-spacing:2px}
 .investigator-profile-current strong{color:#e2b17b;font:normal 26px Georgia,serif;overflow-wrap:anywhere}
+
+/* Distinguish the public Investigator name from the gold account label. */
+.investigator-dropdown-label .investigator-dropdown-username{color:#eee8df;letter-spacing:.5px}
