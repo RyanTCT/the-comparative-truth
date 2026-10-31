@@ -80,13 +80,14 @@ export async function DELETE(request){
  let auth;try{auth=await authorizeWrite(request)}catch{return response({error:"Admin service unavailable"},503)}
  if(!auth)return response({error:"Not authorized"},403);
  let body;try{body=await request.json()}catch{return response({error:"Invalid request"},400)}
- if(typeof body?.id!=="string"||!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(body.id))return response({error:"Invalid question ID"},400);
+ const id=typeof body?.id==="string"?body.id.trim():"";
+ if(!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)){console.error("Weigh In DELETE invalid ID",{type:typeof body?.id,length:id.length,preview:id.slice(0,8)});return response({error:"Invalid question ID (received "+(id.length?`${id.length} characters`:"no ID")+")"},400)}
  try{
   const path="weigh_in_votes?question_id=eq."+encodeURIComponent(body.id)+"&select=id&limit=1";
   const check=await fetch(auth.base+"/rest/v1/"+path,{headers:auth.headers,cache:"no-store"});
   if(!check.ok)throw new Error("Vote check failed");
   if((await check.json()).length)return response({error:"This question has votes and cannot be deleted. Unpublish it to preserve results."},409);
-  const deleted=await fetch(auth.base+"/rest/v1/weigh_in_questions?id=eq."+encodeURIComponent(body.id)+"&select=id",{method:"DELETE",headers:{...auth.headers,Prefer:"return=representation"},cache:"no-store"});
+  const deleted=await fetch(auth.base+"/rest/v1/weigh_in_questions?id=eq."+encodeURIComponent(id)+"&select=id",{method:"DELETE",headers:{...auth.headers,Prefer:"return=representation"},cache:"no-store"});
   if(!deleted.ok){const detail=(await deleted.text()).slice(0,300);console.error("Weigh In delete rejected",deleted.status,detail);return response({error:"Database rejected deletion. Check server logs for details."},503)}
   const rows=await deleted.json();
   if(!rows.length)return response({error:"Question not found or deletion not permitted"},404);
