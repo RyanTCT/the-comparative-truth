@@ -38,8 +38,9 @@ export async function GET(request){
    if(!res.ok){const body=await res.json().catch(()=>({}));const code=String(body?.error?.code||"UNKNOWN").replace(/[^A-Z0-9_]/gi,"").slice(0,60);throw new Error("Vercel "+kind+" "+(by||"total")+" HTTP "+res.status+" ("+code+")");}
    return (await res.json()).data;
   }
-  const [trend,pages,referrers]=await Promise.all([query("aggregate","day"),query("aggregate","requestPath",8),query("aggregate","referrerHostname",8)]);
-  const totals={pageviews:trend.reduce((n,row)=>n+Number(row.pageviews||0),0),visitors:null};
+  const [summary,trend,pages,referrers]=await Promise.all([query("aggregate","environment"),query("aggregate","day"),query("aggregate","requestPath",8),query("aggregate","referrerHostname",8)]);
+  const production=Array.isArray(summary)?summary.find(row=>row.environment==="production"):null;
+  const totals={pageviews:production?Number(production.pageviews||0):trend.reduce((n,row)=>n+Number(row.pageviews||0),0),visitors:production&&production.visitors!=null?Number(production.visitors):null};
   return NextResponse.json({days,totals,trend,pages,referrers},{headers:{"Cache-Control":"no-store"}});
  }catch(e){console.error("Analytics error",e.message);return NextResponse.json({error:e.message.startsWith("Vercel ")?e.message:"Analytics service unavailable"},{status:503,headers:{"Cache-Control":"no-store"}})}
 }
