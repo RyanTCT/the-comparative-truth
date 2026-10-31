@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { createHmac } from "node:crypto";
+import { isIP } from "node:net";
 
 export const runtime = "nodejs";
 
@@ -89,6 +91,47 @@ export async function POST(request) {
   const key = process.env.SUPABASE_SECRET_KEY;
   if (!url || !key || !/^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/.test(url)) {
     console.error("Join submission endpoint is not configured.");
+    return invalid("Submissions are temporarily unavailable. Please try again later.", 503);
+  }
+
+  // Vercel supplies the client address through its trusted forwarding headers.
+  // Reject requests with no usable address rather than sharing one global limit.
+  const forwarded = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
+  const realIp = request.headers.get("x-real-ip")?.trim();
+  const visitorIp = [realIp, forwarded].find(value => value && isIP(value));
+  if (!visitorIp) {
+    console.error("Join submission missing valid visitor address.");
+    return invalid("Submissions are temporarily unavailable. Please try again later.", 503);
+  }
+
+  // HMAC avoids storing raw visitor IPs; the existing server-only key is never sent.
+  const visitorHash = createHmac("sha256", key)
+    .update("join-show-rate-limit:v1:" + visitorIp).digest("hex");
+  try {
+    const check = await fetch(url.replace(/\/$/, "") + "/rest/v1/rpc/check_submission_rate_limit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "apikey": key },
+      body: JSON.stringify({ p_visitor_hash: visitorHash }),
+      cache: "no-store",
+      signal: AbortSignal.timeout(8000),
+    });
+    if (!check.ok) {
+      console.error("Submission rate-limit check failed", { status: check.status });
+      return invalid("Submissions are temporarily unavailable. Please try again later.", 503);
+    }
+    const allowed = await check.json();
+    if (allowed === false) {
+      return NextResponse.json(
+        { error: "You've reached the limit of five submissions per hour. Please try again later." },
+        { status: 429, headers: { "Cache-Control": "no-store", "Retry-After": "3600" } }
+      );
+    }
+    if (allowed !== true) {
+      console.error("Submission rate-limit returned unexpected result.");
+      return invalid("Submissions are temporarily unavailable. Please try again later.", 503);
+    }
+  } catch (error) {
+    console.error("Submission rate-limit request failed", error?.name || "unknown");
     return invalid("Submissions are temporarily unavailable. Please try again later.", 503);
   }
 
