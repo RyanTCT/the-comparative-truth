@@ -2098,3 +2098,8 @@ a {
 .nav-links .investigator-dropdown a{display:block;padding:13px 12px;color:#eee8df;font-size:11px;letter-spacing:1px}
 .nav-links .investigator-dropdown a:hover{background:rgba(193,139,77,.12);color:#e9b675}
 @media(max-width:720px){.navbar{padding:0 4%;height:auto;min-height:82px;gap:12px}.nav-brand{font-size:11px;letter-spacing:1px}.nav-links{gap:12px;flex-wrap:wrap;justify-content:flex-end}.nav-links>a{font-size:9px;letter-spacing:0}.investigator-dropdown{right:0}}
+
+
+/* Investigator dropdown: clear non-interactive heading and readable menu items */
+.investigator-dropdown-label{padding:9px 12px 12px;margin-bottom:5px;border-bottom:1px solid rgba(193,139,77,.38);color:#b99a72;letter-spacing:1.3px;cursor:default;user-select:none}
+.nav-links .investigator-dropdown a{text-transform:none;letter-spacing:.25px;font-size:13px;font-weight:500}
