@@ -2034,3 +2034,13 @@ a {
 .admin-results{font-size:13px;color:#aaa39a;margin:0 0 18px}
 @media(max-width:700px){.admin-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-controls{grid-template-columns:1fr}}
 @media(max-width:400px){.admin-stats>div{padding:15px}.admin-stats strong{font-size:30px}}
+
+
+/* Investigation Desk archive workflow */
+.admin-view-tabs{display:flex;flex-wrap:wrap;gap:10px;margin:30px 0 8px;padding-bottom:14px;border-bottom:1px solid #3c342d}
+.admin-view-tabs button,.admin-card-actions button{border:1px solid #7c5d38;background:transparent;color:#d9a66a;padding:12px 18px;font:inherit;cursor:pointer}
+.admin-view-tabs button.active{background:#c18b4d;color:#090a0c;font-weight:700}
+.admin-card-actions{display:flex;justify-content:flex-end;margin-top:16px}
+.admin-card-actions button{font-size:13px}
+.admin-card-actions button:hover,.admin-view-tabs button:not(.active):hover{background:#30251b}
+.admin-card-actions button:disabled{opacity:.55;cursor:wait}
