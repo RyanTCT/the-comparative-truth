@@ -2044,3 +2044,27 @@ a {
 .admin-card-actions button{font-size:13px}
 .admin-card-actions button:hover,.admin-view-tabs button:not(.active):hover{background:#30251b}
 .admin-card-actions button:disabled{opacity:.55;cursor:wait}
+
+
+/* Investigation Desk 2.0 */
+.admin-wrap:has(.admin-shell){max-width:1500px}
+.admin-shell{display:grid;grid-template-columns:245px minmax(0,1fr);gap:34px;align-items:start}
+.admin-sidebar{position:sticky;top:24px;border:1px solid #3c342d;background:#111215;padding:22px 14px;display:flex;flex-direction:column;gap:7px}
+.admin-sidebar .section-label{padding:4px 12px 16px;font-size:10px}
+.admin-sidebar button,.admin-sidebar-link{display:flex;align-items:center;gap:13px;width:100%;padding:14px 13px;text-align:left;background:transparent;border:1px solid transparent;color:#d7cec1;font:inherit;font-size:14px;cursor:pointer;text-decoration:none}
+.admin-sidebar button.selected{background:#2c2117;border-color:#805d38;color:#e7b57c}
+.admin-sidebar button:hover,.admin-sidebar-link:hover{color:#e7b57c}
+.admin-sidebar button span{width:20px;text-align:center;color:#c18b4d}
+.admin-badge{margin-left:auto;border-radius:12px;background:#c18b4d;color:#090a0c;padding:2px 7px;font-size:11px}
+.admin-sidebar-link{border-top:1px solid #3c342d;margin-top:15px;padding-top:20px}
+.admin-sidebar .admin-sidebar-signout{color:#b9a99a}
+.admin-main{min-width:0}
+.admin-section-title{font:normal clamp(30px,4vw,48px) Georgia,serif;margin:12px 0}
+.admin-overview-panel{border:1px solid #3c342d;background:#111215;padding:26px;margin:22px 0}
+.admin-overview-panel h3{font:normal 26px Georgia,serif;margin:0 0 15px;color:#e6d6c2}
+.admin-overview-panel p{color:#b5aaa0;line-height:1.7}
+.admin-chart-placeholder{display:flex;align-items:center;justify-content:center;min-height:220px;margin-top:20px;border:1px dashed #66533f;color:#b49b7f;text-align:center;padding:20px;background:linear-gradient(180deg,#171719,#101113)}
+.admin-section-action,.admin-mobile-menu{background:transparent;border:1px solid #7c5d38;color:#d9a66a;padding:12px 18px;font:inherit;cursor:pointer}
+.admin-mobile-menu{display:none}
+@media(max-width:850px){.admin-shell{grid-template-columns:1fr;gap:16px}.admin-mobile-menu{display:block;width:100%;text-align:left}.admin-sidebar{display:none;position:static}.admin-sidebar.open{display:flex}.admin-main{width:100%}}
+@media(max-width:600px){.admin-overview-panel{padding:18px}.admin-chart-placeholder{min-height:160px}}
