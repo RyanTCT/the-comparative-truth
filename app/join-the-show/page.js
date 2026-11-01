@@ -1,3 +1,4 @@
+import SiteHeader from "../components/SiteHeader";
 "use client";
 
 import { useState } from "react";
@@ -40,11 +41,7 @@ export default function JoinTheShow() {
 
   return (
     <main>
-      <nav className="navbar">
-        <a href="/" className="nav-brand">THE COMPARATIVE TRUTH</a>
-        <div className="nav-links"><a href="/episodes">Episodes</a><a href="/#about">About</a><a href="/research">Research</a><a href="/join-the-show">Join the Show</a></div>
-        <a className="join-mobile-back" href="/">← Home</a>
-      </nav>
+      <SiteHeader />
 
       <section className="join-hero">
         <p className="section-label">YOUR VOICE. YOUR PERSPECTIVE.</p>

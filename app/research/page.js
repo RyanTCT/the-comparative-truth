@@ -1,21 +1,11 @@
+import SiteHeader from "../components/SiteHeader";
 export default function ResearchArchive() {
   return (
     <main>
 
       {/* NAVIGATION */}
 
-      <nav className="navbar">
-        <a href="/" className="nav-brand">
-          THE COMPARATIVE TRUTH
-        </a>
-
-        <div className="nav-links">
-          <a href="/#episodes">Episodes</a>
-          <a href="/#about">About</a>
-          <a href="/research">Research</a>
-          <a href="/#contact">Contact</a>
-        </div>
-      </nav>
+      <SiteHeader />
 
 
       {/* RESEARCH ARCHIVE HERO */}

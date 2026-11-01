@@ -77,3 +77,16 @@
 .community-page>.navbar .nav-brand{text-decoration:none;color:#eee8df;white-space:nowrap}
 .community-page>.navbar .nav-links a{text-decoration:none}
 @media(max-width:720px){.community-page>.navbar{height:auto;min-height:82px;flex-wrap:wrap;padding-top:12px;padding-bottom:12px}.community-page>.navbar .nav-links{justify-content:center;order:3;width:100%}.community-page>.navbar .investigator-menu{margin-left:auto}}
+
+/* Editorial-style compact discussion thread */
+.community-evidence{background:transparent;border:0;border-bottom:1px solid rgba(193,139,77,.19);padding:14px 0 16px;margin:0}
+.community-evidence:first-of-type{padding-top:8px}
+.community-evidence h2{font-size:clamp(22px,3vw,30px);margin:9px 0 10px}
+.community-evidence small{display:block;color:#aaa39b;font-size:12px}
+.community-evidence .community-content{font-size:14px;line-height:1.65;margin:10px 0 8px}
+.community-evidence .section-label{font-size:10px;letter-spacing:2px}
+.community-evidence .community-back{font-size:12px;color:#c18b4d}
+.community-body>h3{margin:17px 0 6px;font-size:19px}
+.community-body>.community-back{display:inline-block;margin:0 0 8px;font-size:13px}
+.community-evidence+.community-evidence{padding-top:13px}
+.community-page .community-crumb{margin-bottom:10px}
