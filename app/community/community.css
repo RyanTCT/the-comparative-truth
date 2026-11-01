@@ -90,3 +90,5 @@
 .community-body>.community-back{display:inline-block;margin:0 0 8px;font-size:13px}
 .community-evidence+.community-evidence{padding-top:13px}
 .community-page .community-crumb{margin-bottom:10px}
+
+.community-footer-back{background:transparent;border:0;padding:0;color:#c18b4d;cursor:pointer;font:inherit;font-size:11px;letter-spacing:1.6px;text-align:left}.community-footer-back:hover{text-decoration:underline}
