@@ -41,7 +41,7 @@ export default function InvestigatorMenu(){
    {initial?<span className="investigator-initial" aria-hidden="true">{initial}</span>:<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-4 3-6 7-6s7 2 7 6"/></svg>}
   </button>
   {open&&<div className="investigator-dropdown" role="menu"><span className="investigator-dropdown-label">{user?<><span>INVESTIGATOR: </span><span className="investigator-dropdown-username">{displayName||"SET UP PROFILE"}</span></>:"INVESTIGATOR ACCESS"}</span>
-   {user?<><a role="menuitem" href="/investigator/profile">My Investigator Profile</a>{isAdmin&&<a role="menuitem" href="/community/admin">Community Admin</a>}<button type="button" role="menuitem" className="investigator-dropdown-action" onClick={signOut}>Sign Out</button></>:<><a role="menuitem" href="/investigator/register">Become an Investigator</a><a role="menuitem" href="/investigator/login">Investigator Login</a></>}
+   {user?<><a role="menuitem" href="/investigator/profile">My Investigator Profile</a>{isAdmin&&<a role="menuitem" href="/admin?section=community">Investigation Desk</a>}<button type="button" role="menuitem" className="investigator-dropdown-action" onClick={signOut}>Sign Out</button></>:<><a role="menuitem" href="/investigator/register">Become an Investigator</a><a role="menuitem" href="/investigator/login">Investigator Login</a></>}
   </div>}
  </div>;
 }
