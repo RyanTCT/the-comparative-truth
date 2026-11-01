@@ -14,7 +14,11 @@ async function database(path,method="GET",body,prefer){
   console.error("Community database operation failed",{status:response.status,code,operation:method,resource:path.split("?")[0]});
   const error=new Error("Database operation failed");error.dbStatus=response.status;error.dbCode=code;throw error;
  }
- return response.status===204?null:response.json();
+ // PostgREST may return 201 Created with an empty body for Prefer: return=minimal.
+ // Do not parse an empty response as JSON: the database write may have succeeded.
+ const raw=await response.text();
+ if(!raw.trim())return null;
+ try{return JSON.parse(raw)}catch{throw Error("Unexpected database response format")}
 }
 async function userFor(request){
  const token=request.headers.get("authorization")?.match(/^Bearer (.+)$/)?.[1];
