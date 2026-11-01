@@ -3,7 +3,12 @@ import {useState} from "react";
 import Link from "next/link";
 import {createClient} from "@supabase/supabase-js";
 
-const supabase=createClient(process.env.NEXT_PUBLIC_SUPABASE_URL,process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true}});
+let browserSupabase;
+function getSupabase(){
+ if(typeof window==="undefined")return null;
+ if(!browserSupabase)browserSupabase=createClient(process.env.NEXT_PUBLIC_SUPABASE_URL,process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true}});
+ return browserSupabase;
+}
 
 export default function InvestigatorRegistration(){
  const [email,setEmail]=useState(""),[password,setPassword]=useState(""),[confirm,setConfirm]=useState(""),[busy,setBusy]=useState(false),[error,setError]=useState(""),[success,setSuccess]=useState(false);
@@ -13,7 +18,7 @@ export default function InvestigatorRegistration(){
   if(password!==confirm){setError("Passwords do not match.");return}
   setBusy(true);
   try{
-   const {data,error:signUpError}=await supabase.auth.signUp({email:email.trim(),password,options:{emailRedirectTo:window.location.origin+"/investigator/login"}});
+   const {data,error:signUpError}=await getSupabase().auth.signUp({email:email.trim(),password,options:{emailRedirectTo:window.location.origin+"/investigator/login"}});
    if(signUpError)throw signUpError;
    if(!data?.user)throw new Error("Registration could not be completed. Please try again.");
    setSuccess(true);setPassword("");setConfirm("");
