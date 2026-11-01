@@ -29,6 +29,7 @@ export default function Community(){
  },[]);
  useEffect(()=>{load();supabase.auth.getSession().then(({data})=>setSession(data.session));const {data:{subscription}}=supabase.auth.onAuthStateChange((_event,s)=>setSession(s));return()=>subscription.unsubscribe()},[load]);
  useEffect(()=>{if(thread)loadComments(thread.id);else setComments([])},[thread,loadComments]);
+ useEffect(()=>{const id=new URLSearchParams(window.location.search).get("thread");if(!id||!threads.length||!categories.length)return;const match=threads.find(t=>t.id===id);if(match){setCategory(categories.find(c=>c.id===match.category_id)||null);setThread(match);setCommentPage(1)}},[threads,categories]);
  async function call(payload){
   const {data}=await supabase.auth.getSession();
   if(!data.session?.access_token)throw Error("Please sign in to participate.");
