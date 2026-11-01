@@ -16,7 +16,7 @@ async function authorize(request){
 }
 async function db(auth,table,method="GET",body=null,prefer="return=representation"){
  const res=await fetch(auth.base+"/rest/v1/"+table,{method,headers:{...auth.headers,Prefer:prefer},...(body===null?{}:{body:JSON.stringify(body)}),cache:"no-store"});
- if(!res.ok){console.error("Community title database request failed",res.status,(await res.text()).slice(0,350));throw Error("Database request failed");}
+ if(!res.ok){const detail=(await res.text()).slice(0,350);console.error("Community title database request failed",res.status,detail);const missing=res.status===404||detail.includes("PGRST205")||detail.includes("42P01");throw Error(missing?"Community title tables are missing. Run supabase/community_titles.sql in the Supabase SQL Editor.":res.status===409?"That title or assignment already exists.":"Community title database request failed (HTTP "+res.status+"). Check database permissions and server logs.");}
  return prefer==="return=minimal"?null:res.json();
 }
 async function handle(request,method){
@@ -55,7 +55,7 @@ async function handle(request,method){
    else return reply({error:"Invalid assignment action"},400);
   }
   return reply({ok:true});
- }catch(e){console.error("Community title admin failure",e.message);return reply({error:"Could not complete request. Check that the community titles SQL has been run and the values are valid."},503)}
+ }catch(e){console.error("Community title admin failure",e.message);return reply({error:e.message||"Community titles request failed."},503)}
 }
 export const GET=request=>handle(request,"GET");
 export const POST=request=>handle(request,"POST");
