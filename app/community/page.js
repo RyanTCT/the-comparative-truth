@@ -90,7 +90,7 @@ export default function Community(){
  const filtered=threads.filter(t=>[t.title,t.body,profiles[t.author_id]||""].join(" ").toLowerCase().includes(query.toLowerCase())).sort((a,b)=>sort==="oldest"?new Date(a.created_at)-new Date(b.created_at):new Date(b.created_at)-new Date(a.created_at));
  const author=id=>profiles[id]||"Investigator";
  const designation=id=>titles[id]?.name||"Investigator";
- const insignia=id=>{const name=designation(id).toLowerCase();return name==="host & founder"?"◆":name==="featured guest"?"★":name==="moderator"?"⚒":name==="administrator"?"✦":name==="lead investigator"?"✧":"●"};
+ const insignia=id=>{const name=designation(id).toLowerCase();return name==="host & founder"?"◆":name==="featured guest"?"★":name==="moderator"?"🔨":name==="administrator"?"✦":name==="lead investigator"?"✧":"●"};
  const identity=id=><span className="community-identity"><strong>{author(id)}</strong><span className={"community-identity-icon"+(designation(id)==="Host & Founder"?" founder":"")} style={{color:titles[id]?.badge_color||"#99948c"}} aria-label={designation(id)}>{insignia(id)}</span><span className="community-identity-role">{designation(id)}</span></span>;
  const refreshReplies=async id=>{const {data,error}=await getSupabase().from("community_comments").select("id,thread_id,author_id,body,created_at,updated_at").eq("thread_id",id).order("created_at");if(error){setError("Unable to refresh replies.");return}setReplyMap(v=>({...v,[id]:data||[]}));setReplyCounts(v=>({...v,[id]:(data||[]).length}))};
  return <main className="community-page">
