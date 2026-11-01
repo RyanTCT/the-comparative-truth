@@ -17,7 +17,7 @@ async function admin(request){
  if(!r.ok)return null;
  const u=await r.json();
  if(!u.id||!u.email_confirmed_at)return null;
- const rows=await db("community_admins?user_id=eq."+encodeURIComponent(u.id)+"&select=user_id");
+ const rows=await db("admin_users?user_id=eq."+encodeURIComponent(u.id)+"&select=user_id");
  return rows.length?u:null;
 }
 const uuid=x=>typeof x==="string"&&/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(x);
