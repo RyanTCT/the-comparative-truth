@@ -69,3 +69,4 @@
 .community-home-back{display:inline-flex;align-items:center;gap:6px;padding:7px 0!important;font-size:13px!important;font-weight:600;letter-spacing:.2px}
 .community-home-back:hover{text-decoration:underline}
 @media(max-width:800px){.community-hero{padding-left:6%;padding-right:6%}}
+\n/* Shared website navigation on Community */\n.community-page>.navbar{position:relative;z-index:20;width:100%;height:82px;box-sizing:border-box}\n.community-page>.navbar .nav-brand{text-decoration:none;color:#eee8df;white-space:nowrap}\n.community-page>.navbar .nav-links a{text-decoration:none}\n@media(max-width:720px){.community-page>.navbar{height:auto;min-height:82px;flex-wrap:wrap;padding-top:12px;padding-bottom:12px}.community-page>.navbar .nav-links{justify-content:center;order:3;width:100%}.community-page>.navbar .investigator-menu{margin-left:auto}}\n

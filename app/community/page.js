@@ -2,6 +2,7 @@
 import "./community.css";
 import {useCallback,useEffect,useState} from "react";
 import Link from "next/link";
+import SiteHeader from "../components/SiteHeader";
 import {createClient} from "@supabase/supabase-js";
 const supabase=createClient(process.env.NEXT_PUBLIC_SUPABASE_URL,process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY);
 const RULES="Challenge the argument. Respect the individual. Share sources when possible. No harassment, threats, hateful abuse, spam, impersonation, or sharing private information. Contributions may be moderated.";
@@ -55,7 +56,7 @@ export default function Community(){
  const filtered=threads.filter(t=>(!category||t.category_id===category.id)&&[t.title,t.body,profiles[t.author_id]||""].join(" ").toLowerCase().includes(query.toLowerCase())).sort((a,b)=>sort==="oldest"?new Date(a.created_at)-new Date(b.created_at):new Date(b.created_at)-new Date(a.created_at));
  const author=id=>profiles[id]||"Investigator";
  return <main className="community-page">
-  <header className="community-top"><Link href="/">← THE COMPARATIVE TRUTH</Link><Link href="/investigator/profile">INVESTIGATOR PROFILE →</Link></header>
+  <SiteHeader />
   <section className="community-hero"><p className="section-label">THE COMPARATIVE TRUTH • COMMUNITY</p><h1>The Investigation <em>Continues.</em></h1><p>Examine the evidence. Challenge assumptions. Share perspectives. The conversation doesn't end when the episode does.</p><div className="community-principle">CHALLENGE THE ARGUMENT. RESPECT THE INDIVIDUAL.</div></section>
   <section className="community-body">
    <nav className="community-crumb"><button className="community-home-back" type="button" onClick={()=>{setCategory(null);setThread(null);setWriting(false);setQuery("");setVisible(10)}}>← {category?"Back to Community":"Community"}</button>{category&&<><span> / </span><button onClick={()=>{setThread(null);setWriting(false)}}>{category.title}</button></>}{thread&&<span> / {thread.title}</span>}</nav>

@@ -1,23 +1,10 @@
-import InvestigatorMenu from "./components/InvestigatorMenu";
+import SiteHeader from "./components/SiteHeader";
 
 export default function Home() {
   return (
     <main>
 
-      <nav className="navbar">
-        <div className="nav-brand">
-          THE COMPARATIVE TRUTH
-        </div>
-
-        <div className="nav-links">
-          <a href="#episodes">Episodes</a>
-          <a href="#about">About</a>
-          <a href="#research">Research</a>
-          <a href="/community">Community</a>
-          <a href="/join-the-show">Join the Show</a>
-        </div>
-        <InvestigatorMenu />
-      </nav>
+      <SiteHeader />
 
 
       {/* HERO */}
