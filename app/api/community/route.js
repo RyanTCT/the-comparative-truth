@@ -8,7 +8,12 @@ const publicKey=process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 const secret=process.env.SUPABASE_SECRET_KEY;
 async function database(path,method="GET",body,prefer){
  const response=await fetch(base+"/rest/v1/"+path,{method,headers:{apikey:secret,"Content-Type":"application/json",...(prefer?{Prefer:prefer}:{})},...(body===undefined?{}:{body:JSON.stringify(body)}),cache:"no-store"});
- if(!response.ok)throw Error("Database request failed ("+response.status+")");
+ if(!response.ok){
+  const detail=await response.json().catch(()=>({}));
+  const code=typeof detail.code==="string"?detail.code:"";
+  console.error("Community database operation failed",{status:response.status,code,operation:method,resource:path.split("?")[0]});
+  const error=new Error("Database operation failed");error.dbStatus=response.status;error.dbCode=code;throw error;
+ }
  return response.status===204?null:response.json();
 }
 async function userFor(request){
@@ -66,5 +71,12 @@ export async function POST(request){
   if(await screen(body))return reply({error:"This contribution requires moderator review and was not published."},422);
   await database("community_comments","POST",{thread_id:data.thread_id,author_id:user.id,body},"return=minimal");
   return reply({ok:true},201);
- }catch(error){console.error("Community posting error:",error.message);return reply({error:"Posting is temporarily unavailable, or the daily posting limit has been reached."},503)}
+ }catch(error){
+  console.error("Community posting error:",error.message);
+  if(error.dbCode==="P0001")return reply({error:"You have reached the Community posting limit for the last 24 hours."},429);
+  if(error.dbCode==="42501"||error.dbStatus===401||error.dbStatus===403)return reply({error:"The Community database rejected this request (permissions). An administrator needs to check the server configuration.",code:"DATABASE_PERMISSIONS"},503);
+  if(error.dbCode==="42P01"||error.dbCode==="PGRST205")return reply({error:"A required Community database table is unavailable. Please contact the administrator.",code:"DATABASE_TABLE"},503);
+  if(error.message==="Moderation unavailable"||error.name==="AbortError")return reply({error:"Content screening is temporarily unavailable. Your draft has not been published.",code:"MODERATION_UNAVAILABLE"},503);
+  return reply({error:"Unable to publish right now. Your draft has been preserved. Please try again later.",code:"POST_FAILED"},503);
+ }
 }

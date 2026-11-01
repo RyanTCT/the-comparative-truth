@@ -54,3 +54,11 @@
 .community-tools .community-search-toggle svg{display:block;width:19px;height:19px;flex-shrink:0}
 .community-tools .community-search-toggle:hover,.community-tools .community-search-toggle:focus-visible{color:#c18b4d!important;background:rgba(193,139,77,.08)!important;border-color:rgba(193,139,77,.25)!important;outline:none}
 .community-tools .community-search-toggle[aria-expanded="true"]{color:#c18b4d!important}
+
+/* Keep search and sorting together on the right; search expands left */
+.community-tools{justify-content:flex-end;align-items:center}
+.community-search-group{display:flex;align-items:center;gap:8px;margin-left:auto;min-width:0}
+.community-search-group input{flex:0 1 260px;width:260px;min-width:100px}
+.community-tools .community-search-toggle{margin-right:0;flex-shrink:0}
+.community-tools select{flex-shrink:0}
+@media(max-width:650px){.community-tools{flex-direction:row;justify-content:flex-end;flex-wrap:wrap}.community-search-group{flex:1;justify-content:flex-end}.community-search-group input{width:min(55vw,260px);flex:0 1 auto}}
