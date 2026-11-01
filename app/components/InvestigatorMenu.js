@@ -2,7 +2,12 @@
 import {useEffect,useRef,useState} from "react";
 import {createClient} from "@supabase/supabase-js";
 
-const supabase=createClient(process.env.NEXT_PUBLIC_SUPABASE_URL,process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true}});
+let browserSupabase;
+function getSupabase(){
+ if(typeof window==="undefined")return null;
+ if(!browserSupabase)browserSupabase=createClient(process.env.NEXT_PUBLIC_SUPABASE_URL,process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true}});
+ return browserSupabase;
+}
 
 export default function InvestigatorMenu(){
  const [open,setOpen]=useState(false);
@@ -12,8 +17,8 @@ export default function InvestigatorMenu(){
  const root=useRef(null);
  useEffect(()=>{
   let active=true;
-  supabase.auth.getUser().then(({data})=>{if(active)setUser(data?.user||null)}).catch(()=>{if(active)setUser(null)});
-  const {data:{subscription}}=supabase.auth.onAuthStateChange((_event,session)=>{if(active)setUser(session?.user||null)});
+  getSupabase().auth.getUser().then(({data})=>{if(active)setUser(data?.user||null)}).catch(()=>{if(active)setUser(null)});
+  const {data:{subscription}}=getSupabase().auth.onAuthStateChange((_event,session)=>{if(active)setUser(session?.user||null)});
   const close=e=>{if(root.current&&!root.current.contains(e.target))setOpen(false)};
   const esc=e=>{if(e.key==="Escape")setOpen(false)};
   document.addEventListener("pointerdown",close);
@@ -24,17 +29,17 @@ export default function InvestigatorMenu(){
   let active=true;
   if(!user?.id){setDisplayName(null);setIsAdmin(false);return;}
   async function loadName(){
-   const {data,error}=await supabase.from("investigator_profiles").select("display_name").eq("user_id",user.id).maybeSingle();
+   const {data,error}=await getSupabase().from("investigator_profiles").select("display_name").eq("user_id",user.id).maybeSingle();
    if(active)setDisplayName(error?null:(data?.display_name||null));
   }
   loadName();
-  supabase.auth.getSession().then(async ({data})=>{if(!data.session?.access_token)return;try{const r=await fetch("/api/community/admin",{headers:{Authorization:"Bearer "+data.session.access_token}});if(active)setIsAdmin(r.ok)}catch{if(active)setIsAdmin(false)}});
+  getSupabase().auth.getSession().then(async ({data})=>{if(!data.session?.access_token)return;try{const r=await fetch("/api/community/admin",{headers:{Authorization:"Bearer "+data.session.access_token}});if(active)setIsAdmin(r.ok)}catch{if(active)setIsAdmin(false)}});
   const refresh=()=>loadName();
   window.addEventListener("focus",refresh);
   document.addEventListener("visibilitychange",refresh);
   return()=>{active=false;window.removeEventListener("focus",refresh);document.removeEventListener("visibilitychange",refresh);};
  },[user?.id]);
- async function signOut(){setOpen(false);const {error}=await supabase.auth.signOut();if(!error){setUser(null);window.location.assign("/");}}
+ async function signOut(){setOpen(false);const {error}=await getSupabase().auth.signOut();if(!error){setUser(null);window.location.assign("/");}}
  const initial=(displayName||user?.email)?.trim()?.charAt(0)?.toUpperCase();
  return <div className="investigator-menu" ref={root}>
   <button type="button" className="investigator-trigger" aria-label="Investigator account menu" aria-haspopup="menu" aria-expanded={open} onClick={()=>setOpen(v=>!v)}>
