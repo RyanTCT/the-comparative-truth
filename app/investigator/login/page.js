@@ -4,7 +4,12 @@ import Link from "next/link";
 import {useRouter} from "next/navigation";
 import {createClient} from "@supabase/supabase-js";
 
-const supabase=createClient(process.env.NEXT_PUBLIC_SUPABASE_URL,process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true}});
+let browserSupabase;
+function getSupabase(){
+ if(typeof window==="undefined")return null;
+ if(!browserSupabase)browserSupabase=createClient(process.env.NEXT_PUBLIC_SUPABASE_URL,process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true}});
+ return browserSupabase;
+}
 
 export default function InvestigatorLogin(){
  const router=useRouter();
@@ -12,9 +17,9 @@ export default function InvestigatorLogin(){
  async function submit(e){
   e.preventDefault();setError("");setNotice("");setBusy(true);
   try{
-   const {data,error:loginError}=await supabase.auth.signInWithPassword({email:email.trim(),password});
+   const {data,error:loginError}=await getSupabase().auth.signInWithPassword({email:email.trim(),password});
    if(loginError)throw loginError;
-   if(!data?.user?.email_confirmed_at){await supabase.auth.signOut();throw new Error("Please verify your email address before signing in.");}
+   if(!data?.user?.email_confirmed_at){await getSupabase().auth.signOut();throw new Error("Please verify your email address before signing in.");}
    router.replace("/");
    router.refresh();
   }catch(err){setError(err.message||"Unable to sign in. Please try again.");}
@@ -25,7 +30,7 @@ export default function InvestigatorLogin(){
   if(!email.trim()){setError("Enter your email address above to request a password reset.");return;}
   setBusy(true);
   try{
-   const {error:resetError}=await supabase.auth.resetPasswordForEmail(email.trim(),{redirectTo:window.location.origin+"/investigator/reset-password"});
+   const {error:resetError}=await getSupabase().auth.resetPasswordForEmail(email.trim(),{redirectTo:window.location.origin+"/investigator/reset-password"});
    if(resetError)throw resetError;
    setNotice("If an account exists for this email, a password reset link will arrive shortly. Check your spam folder too.");
   }catch(err){setError(err.message||"Unable to send a password reset email.");}
