@@ -195,3 +195,14 @@
 .community-replying-to button{border:0;background:none;color:#aaa39a;cursor:pointer;margin-left:8px}
 .community-forum-meta .community-identity{gap:5px}
 @media(max-width:600px){.community-reply-line{gap:5px 8px}.community-reply-controls{margin-left:0}.community-identity-role{font-size:10px}}
+
+/* Author-only contribution menus */
+.community-forum-meta,.community-reply-line{position:relative}
+.community-forum-meta .community-owner-menu{margin-left:auto}
+.community-reply-line .community-owner-menu{position:absolute;right:0;top:0}
+.community-reply-line .community-reply-meta{padding-right:48px}
+.community-owner-menu{position:relative;z-index:2}
+.community-menu-trigger{border:0;background:transparent;color:#c89550;cursor:pointer;font-size:16px;letter-spacing:2px;padding:2px 8px;line-height:1.2}
+.community-menu-popover{position:absolute;right:0;top:100%;min-width:130px;background:#242424;border:1px solid #55432c;border-radius:7px;box-shadow:0 8px 20px #0008;z-index:10;padding:5px}
+.community-menu-popover button{display:block;width:100%;text-align:left;background:transparent;border:0;color:#e7d5b8;padding:9px 12px;cursor:pointer;border-radius:4px}
+.community-menu-popover button:hover{background:#3b3227}
