@@ -175,3 +175,23 @@
 .community-post-prompt{margin-bottom:0}
 .community-section-list .community-inline-replies{margin-left:0}
 @media(max-width:600px){.community-section-list{gap:18px;margin-top:20px}.community-forum-heading{padding:13px 14px}.community-forum-heading h3{font-size:17px}.community-forum-row{padding:14px 12px;gap:9px}.community-forum-icon{width:30px;height:34px}.community-forum-icon svg{width:25px;height:25px}.community-forum-title{font-size:14px}.community-forum-row-main>p{font-size:11px}.community-forum-expanded{padding:14px 13px}.community-forum-heading>span{font-size:10px}}
+
+/* Compact evidence rows and actual assigned community titles */
+.community-identity{display:inline-flex;align-items:center;gap:5px;flex-wrap:wrap;min-width:0}
+.community-identity strong{font-size:12px;color:#ded6ca;font-weight:600}
+.community-identity-icon{font-size:12px;line-height:1}
+.community-identity-icon.founder{color:#d7a34f!important;font-size:14px}
+.community-identity-role{font-size:11px;color:#a49d92}
+.community-reply-line{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+.community-reply-meta{display:contents}
+.community-reply-line>p{display:inline;margin:0;color:#cfc8bf;font-size:12px;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere;min-width:0}
+.community-inline-reply{padding:10px 0}
+.community-reply-controls{display:inline-flex;gap:10px;margin-left:4px}
+.community-reply-controls button{border:0;background:none;color:#c18b4d;padding:0;font-size:11px;cursor:pointer}
+.community-reply-controls button:hover{text-decoration:underline}
+.community-reply-controls button:disabled{opacity:.5}
+.community-reply-line time,.community-meta-dot{color:#928c84;font-size:11px}
+.community-replying-to{font-size:12px;color:#d8ad77;margin-bottom:9px}
+.community-replying-to button{border:0;background:none;color:#aaa39a;cursor:pointer;margin-left:8px}
+.community-forum-meta .community-identity{gap:5px}
+@media(max-width:600px){.community-reply-line{gap:5px 8px}.community-reply-controls{margin-left:0}.community-identity-role{font-size:10px}}
