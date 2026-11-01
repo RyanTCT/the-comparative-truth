@@ -4,7 +4,12 @@ import {useCallback,useEffect,useState} from "react";
 import Link from "next/link";
 import SiteHeader from "../components/SiteHeader";
 import {createClient} from "@supabase/supabase-js";
-const supabase=createClient(process.env.NEXT_PUBLIC_SUPABASE_URL,process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY);
+let browserSupabase;
+function getSupabase(){
+ if(typeof window==="undefined")return null;
+ if(!browserSupabase)browserSupabase=createClient(process.env.NEXT_PUBLIC_SUPABASE_URL,process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY);
+ return browserSupabase;
+}
 const RULES="Challenge the argument. Respect the individual. Share sources when possible. No harassment, threats, hateful abuse, spam, impersonation, or sharing private information. Contributions may be moderated.";
 export default function Community(){
  const [categories,setCategories]=useState([]),[threads,setThreads]=useState([]),[comments,setComments]=useState([]),[profiles,setProfiles]=useState({});
@@ -15,23 +20,23 @@ export default function Community(){
  const load=useCallback(async()=>{
   setLoading(true);setError("");
   const [c,t,p]=await Promise.all([
-   supabase.from("community_categories").select("id,slug,title,description,sort_order").order("sort_order"),
-   supabase.from("community_threads").select("id,category_id,author_id,title,body,created_at,updated_at,is_locked").order("created_at",{ascending:false}).limit(500),
-   supabase.from("investigator_profiles").select("user_id,display_name").limit(1000)
+   getSupabase().from("community_categories").select("id,slug,title,description,sort_order").order("sort_order"),
+   getSupabase().from("community_threads").select("id,category_id,author_id,title,body,created_at,updated_at,is_locked").order("created_at",{ascending:false}).limit(500),
+   getSupabase().from("investigator_profiles").select("user_id,display_name").limit(1000)
   ]);
   if(c.error||t.error)setError("Unable to load Community discussions.");
   else{setCategories(c.data||[]);setThreads(t.data||[]);setProfiles(Object.fromEntries((p.data||[]).map(x=>[x.user_id,x.display_name])))}
   setLoading(false);
  },[]);
  const loadComments=useCallback(async id=>{
-  const {data,error}=await supabase.from("community_comments").select("id,thread_id,author_id,body,created_at,updated_at").eq("thread_id",id).order("created_at");
+  const {data,error}=await getSupabase().from("community_comments").select("id,thread_id,author_id,body,created_at,updated_at").eq("thread_id",id).order("created_at");
   if(error)setError("Unable to load evidence.");else setComments(data||[]);
  },[]);
- useEffect(()=>{load();supabase.auth.getSession().then(({data})=>setSession(data.session));const {data:{subscription}}=supabase.auth.onAuthStateChange((_event,s)=>setSession(s));return()=>subscription.unsubscribe()},[load]);
+ useEffect(()=>{load();getSupabase().auth.getSession().then(({data})=>setSession(data.session));const {data:{subscription}}=getSupabase().auth.onAuthStateChange((_event,s)=>setSession(s));return()=>subscription.unsubscribe()},[load]);
  useEffect(()=>{if(thread)loadComments(thread.id);else setComments([])},[thread,loadComments]);
  useEffect(()=>{const id=new URLSearchParams(window.location.search).get("thread");if(!id||!threads.length||!categories.length)return;const match=threads.find(t=>t.id===id);if(match){setCategory(categories.find(c=>c.id===match.category_id)||null);setThread(match);setCommentPage(1)}},[threads,categories]);
  async function call(payload){
-  const {data}=await supabase.auth.getSession();
+  const {data}=await getSupabase().auth.getSession();
   if(!data.session?.access_token)throw Error("Please sign in to participate.");
   const response=await fetch("/api/community",{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+data.session.access_token},body:JSON.stringify(payload)});
   const result=await response.json();
@@ -69,7 +74,7 @@ export default function Community(){
   try{
    const result=await call(thread?{kind:"comment",thread_id:thread.id,body}:{kind:"thread",category_id:category.id,title,body});
    if(thread)await loadComments(thread.id);
-   else{await load();const {data}=await supabase.from("community_threads").select("id,category_id,author_id,title,body,created_at,updated_at,is_locked").eq("id",result.id).single();if(data)setThread(data)}
+   else{await load();const {data}=await getSupabase().from("community_threads").select("id,category_id,author_id,title,body,created_at,updated_at,is_locked").eq("id",result.id).single();if(data)setThread(data)}
    setBody("");setTitle("");setWriting(false);setPreview(false);setNotice("Your contribution has been published.");
   }catch(e){if(e.code==="GUIDELINES_REQUIRED"){setChecked(false);setGuidelines(true);setError("Please accept the Community Guidelines to publish.")}else setError(e.message)}
   finally{setBusy(false)}
