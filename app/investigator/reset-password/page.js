@@ -2,14 +2,19 @@
 import {useEffect,useState} from "react";
 import Link from "next/link";
 import {createClient} from "@supabase/supabase-js";
-const supabase=createClient(process.env.NEXT_PUBLIC_SUPABASE_URL,process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+let browserSupabase;
+function getSupabase(){
+ if(typeof window==="undefined")return null;
+ if(!browserSupabase)browserSupabase=createClient(process.env.NEXT_PUBLIC_SUPABASE_URL,process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+ return browserSupabase;
+}
 export default function ResetPassword(){
  const [password,setPassword]=useState(""),[confirm,setConfirm]=useState(""),[ready,setReady]=useState(false),[busy,setBusy]=useState(false),[error,setError]=useState(""),[done,setDone]=useState(false);
  useEffect(()=>{
   let active=true;
-  async function check(){const {data}=await supabase.auth.getSession();if(active)setReady(Boolean(data?.session));}
+  async function check(){const {data}=await getSupabase().auth.getSession();if(active)setReady(Boolean(data?.session));}
   check();
-  const {data:listener}=supabase.auth.onAuthStateChange((_event,session)=>{if(active)setReady(Boolean(session));});
+  const {data:listener}=getSupabase().auth.onAuthStateChange((_event,session)=>{if(active)setReady(Boolean(session));});
   return()=>{active=false;listener.subscription.unsubscribe();};
  },[]);
  async function submit(e){
@@ -17,7 +22,7 @@ export default function ResetPassword(){
   if(password.length<8){setError("Use at least 8 characters.");return;}
   if(password!==confirm){setError("Passwords do not match.");return;}
   setBusy(true);
-  try{const {error:resetError}=await supabase.auth.updateUser({password});if(resetError)throw resetError;setDone(true);await supabase.auth.signOut();}
+  try{const {error:resetError}=await getSupabase().auth.updateUser({password});if(resetError)throw resetError;setDone(true);await getSupabase().auth.signOut();}
   catch(err){setError(err.message||"Could not update password.");}finally{setBusy(false);}
  }
  return <main className="investigator-auth-page"><Link className="investigator-back" href="/">← The Comparative Truth</Link><section className="investigator-auth-card"><p className="section-label">THE COMPARATIVE TRUTH • COMMUNITY</p><h1>Reset your <em>Password.</em></h1>
