@@ -4,7 +4,12 @@ import Link from "next/link";
 import {useRouter} from "next/navigation";
 import {createClient} from "@supabase/supabase-js";
 
-const supabase=createClient(process.env.NEXT_PUBLIC_SUPABASE_URL,process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true}});
+let browserSupabase;
+function getSupabase(){
+ if(typeof window==="undefined")return null;
+ if(!browserSupabase)browserSupabase=createClient(process.env.NEXT_PUBLIC_SUPABASE_URL,process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true}});
+ return browserSupabase;
+}
 
 export default function InvestigatorProfile(){
  const router=useRouter();
@@ -12,11 +17,11 @@ export default function InvestigatorProfile(){
  useEffect(()=>{
   let active=true;
   async function load(){
-   const {data:{user:current},error:authError}=await supabase.auth.getUser();
+   const {data:{user:current},error:authError}=await getSupabase().auth.getUser();
    if(!active)return;
    if(authError||!current){router.replace("/investigator/login");return;}
    setUser(current);
-   const {data,error:profileError}=await supabase.from("investigator_profiles").select("display_name,name_changed_at").eq("user_id",current.id).maybeSingle();
+   const {data,error:profileError}=await getSupabase().from("investigator_profiles").select("display_name,name_changed_at").eq("user_id",current.id).maybeSingle();
    if(!active)return;
    if(profileError){console.error("Investigator profile lookup failed:",profileError);setError("Unable to check your existing profile. You can still try claiming a name.");}
    else {setProfile(data);setName(data?.display_name||"");}
@@ -30,7 +35,7 @@ export default function InvestigatorProfile(){
   if(!/^[A-Za-z0-9_]{3,24}$/.test(name.trim())){setError("Use 3–24 letters, numbers, or underscores.");return;}
   setSaving(true);
   try{
-   const {data,error:saveError}=await supabase.rpc("set_investigator_display_name",{requested_name:name.trim()});
+   const {data,error:saveError}=await getSupabase().rpc("set_investigator_display_name",{requested_name:name.trim()});
    if(saveError)throw saveError;
    setProfile({display_name:data,name_changed_at:new Date().toISOString()});setName(data);
    setSuccess("Your public Investigator name has been saved.");
