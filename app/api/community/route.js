@@ -7,7 +7,7 @@ const base=process.env.NEXT_PUBLIC_SUPABASE_URL?.replace(/\/$/,"");
 const publicKey=process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 const secret=process.env.SUPABASE_SECRET_KEY;
 async function database(path,method="GET",body,prefer){
- const response=await fetch(base+"/rest/v1/"+path,{method,headers:{apikey:secret,Authorization:"Bearer "+secret,"Content-Type":"application/json",...(prefer?{Prefer:prefer}:{})},...(body===undefined?{}:{body:JSON.stringify(body)}),cache:"no-store"});
+ const response=await fetch(base+"/rest/v1/"+path,{method,headers:{apikey:secret,"Content-Type":"application/json",...(prefer?{Prefer:prefer}:{})},...(body===undefined?{}:{body:JSON.stringify(body)}),cache:"no-store"});
  if(!response.ok)throw Error("Database request failed ("+response.status+")");
  return response.status===204?null:response.json();
 }
