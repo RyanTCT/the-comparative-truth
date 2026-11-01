@@ -2,11 +2,16 @@
 import {useEffect,useState} from "react";
 import {createClient} from "@supabase/supabase-js";
 import "./CommunityModeration.css";
-const supabase=createClient(process.env.NEXT_PUBLIC_SUPABASE_URL,process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY);
+let browserSupabase;
+function getSupabase(){
+ if(typeof window==="undefined")return null;
+ if(!browserSupabase)browserSupabase=createClient(process.env.NEXT_PUBLIC_SUPABASE_URL,process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY);
+ return browserSupabase;
+}
 export default function CommunityModeration(){
  const [data,setData]=useState(null),[error,setError]=useState(""),[busy,setBusy]=useState(false),[tab,setTab]=useState("threads"),[query,setQuery]=useState("");
  async function request(payload){
-  const {data:{session}}=await supabase.auth.getSession();
+  const {data:{session}}=await getSupabase().auth.getSession();
   if(!session?.access_token)throw Error("Sign in to your Investigator account first.");
   const r=await fetch("/api/community/admin",{method:payload?"POST":"GET",headers:{"Content-Type":"application/json",Authorization:"Bearer "+session.access_token},...(payload?{body:JSON.stringify(payload)}:{})});
   const value=await r.json();if(!r.ok)throw Error(value.error||"Request failed");return value;
