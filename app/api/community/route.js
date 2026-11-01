@@ -48,7 +48,7 @@ export async function POST(request){
   const user=await userFor(request);
   if(!user)return reply({error:"Sign in with a verified Investigator account and a username to participate."},401);
   const data=await request.json();
-  if(!["accept","thread","comment"].includes(data.kind))return reply({error:"Unknown action."},400);
+  if(!["accept","thread","comment","edit_thread","edit_comment","delete_comment","withdraw_thread"].includes(data.kind))return reply({error:"Unknown action."},400);
   if(data.kind==="accept"){
    if(data.accept!==true)return reply({error:"You must accept the Community Guidelines."},400);
    await database("community_guideline_acceptances?on_conflict=user_id","POST",{user_id:user.id,version:VERSION,accepted_at:new Date().toISOString()},"resolution=merge-duplicates,return=minimal");
@@ -56,6 +56,46 @@ export async function POST(request){
   }
   const acceptance=await database("community_guideline_acceptances?user_id=eq."+encodeURIComponent(user.id)+"&version=eq."+VERSION+"&select=user_id");
   if(!acceptance.length)return reply({error:"Please accept the Community Guidelines before posting.",code:"GUIDELINES_REQUIRED"},403);
+  if(["edit_thread","edit_comment","delete_comment","withdraw_thread"].includes(data.kind)){
+   const isThread=data.kind.endsWith("thread");
+   const id=isThread?data.thread_id:data.comment_id;
+   if(typeof id!=="string"||!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id))return reply({error:"Invalid contribution."},400);
+   const table=isThread?"community_threads":"community_comments";
+   const records=await database(table+"?id=eq."+encodeURIComponent(id)+"&select=*");
+   const record=records[0];
+   if(!record||record.is_hidden)return reply({error:"Contribution not found."},404);
+   if(record.author_id!==user.id)return reply({error:"You can only manage your own contributions."},403);
+   if(data.kind==="edit_thread"){
+    if(record.is_locked)return reply({error:"This investigation is locked."},403);
+    const title=typeof data.title==="string"?data.title.trim():"";
+    const body=typeof data.body==="string"?data.body.trim():"";
+    if(title.length<5||title.length>120||body.length<10||body.length>5000)return reply({error:"Title must be 5–120 characters and opening evidence 10–5,000 characters."},400);
+    if(await screen(title+"\n"+body))return reply({error:"This edit requires moderator review and was not published."},422);
+    await database(table+"?id=eq."+encodeURIComponent(id)+"&author_id=eq."+encodeURIComponent(user.id),"PATCH",{title,body,updated_at:new Date().toISOString()},"return=minimal");
+    return reply({ok:true});
+   }
+   if(data.kind==="edit_comment"){
+    const parent=await database("community_threads?id=eq."+encodeURIComponent(record.thread_id)+"&select=is_hidden,is_locked");
+    if(!parent.length||parent[0].is_hidden||parent[0].is_locked)return reply({error:"This investigation is closed."},403);
+    const body=typeof data.body==="string"?data.body.trim():"";
+    if(body.length<2||body.length>2000)return reply({error:"Evidence must be 2–2,000 characters."},400);
+    if(await screen(body))return reply({error:"This edit requires moderator review and was not published."},422);
+    await database(table+"?id=eq."+encodeURIComponent(id)+"&author_id=eq."+encodeURIComponent(user.id),"PATCH",{body,updated_at:new Date().toISOString()},"return=minimal");
+    return reply({ok:true});
+   }
+   if(data.kind==="delete_comment"){
+    await database(table+"?id=eq."+encodeURIComponent(id)+"&author_id=eq."+encodeURIComponent(user.id),"DELETE",undefined,"return=minimal");
+    return reply({ok:true});
+   }
+   const replies=await database("community_comments?thread_id=eq."+encodeURIComponent(id)+"&select=id&limit=1");
+   if(replies.length){
+    // Preserve existing contributions while closing and anonymizing the opening evidence.
+    await database(table+"?id=eq."+encodeURIComponent(id)+"&author_id=eq."+encodeURIComponent(user.id),"PATCH",{title:"Investigation Withdrawn",body:"This investigation was withdrawn by its author. Existing replies have been preserved to maintain the continuity of the discussion.",is_locked:true,updated_at:new Date().toISOString()},"return=minimal");
+    return reply({ok:true,withdrawn:true});
+   }
+   await database(table+"?id=eq."+encodeURIComponent(id)+"&author_id=eq."+encodeURIComponent(user.id),"PATCH",{is_hidden:true,is_locked:true,updated_at:new Date().toISOString()},"return=minimal");
+   return reply({ok:true,withdrawn:true});
+  }
   const body=typeof data.body==="string"?data.body.trim():"";
   if(data.kind==="thread"){
    const title=typeof data.title==="string"?data.title.trim():"";
