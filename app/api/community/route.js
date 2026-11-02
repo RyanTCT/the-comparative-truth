@@ -139,7 +139,7 @@ export async function POST(request){
   const selected=Array.isArray(data.mentioned_user_ids)?[...new Set(data.mentioned_user_ids)].slice(0,10):[];
   if(selected.length&&inserted?.[0]?.id){
    const matches=await database("investigator_profiles?user_id=in.("+selected.filter(x=>typeof x==="string"&&/^[0-9a-f-]{36}$/i.test(x)).map(encodeURIComponent).join(",")+")&select=user_id,display_name");
-   const valid=(matches||[]).filter(p=>p.user_id!==user.id&&new RegExp("(^|[^A-Za-z0-9_])@"+p.display_name.replace(/[.*+?^${}()|[\]\\]/g,"\\  await database("community_comments","POST",{thread_id:data.thread_id,author_id:user.id,body},"return=minimal");")+"(?=$|[^A-Za-z0-9_])","i").test(body));
+   const valid=(matches||[]).filter(p=>p.user_id!==user.id&&body.toLowerCase().split(/[^a-z0-9_@]+/).includes("@"+p.display_name.toLowerCase()));
    if(valid.length)await database("community_mentions","POST",valid.map(p=>({comment_id:inserted[0].id,mentioned_user_id:p.user_id})),"return=minimal");
   }
   return reply({ok:true},201);
