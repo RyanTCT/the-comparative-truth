@@ -5,6 +5,13 @@ let client;
 function db(){if(!client)client=createClient(process.env.NEXT_PUBLIC_SUPABASE_URL,process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY);return client}
 export default function ReplyComposer({initial="",target=null,onSubmit,onCancel,busy}){
  const [value,setValue]=useState(initial),[suggestions,setSuggestions]=useState([]),[active,setActive]=useState(0),[mentions,setMentions]=useState([]);
+ useEffect(()=>{
+  if(!initial.startsWith("@"))return;
+  let alive=true;
+  const username=initial.slice(1).trim();
+  db().from("investigator_profiles").select("user_id,display_name").eq("display_name",username).limit(1).then(({data})=>{if(alive&&data?.[0])setMentions(v=>[...v,data[0]])});
+  return()=>{alive=false};
+ },[initial]);
  const match=value.match(/(?:^|\s)@([a-zA-Z0-9_]{0,40})$/);
  useEffect(()=>{
   if(!match){setSuggestions([]);return}
