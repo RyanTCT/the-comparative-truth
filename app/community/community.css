@@ -238,3 +238,9 @@
 .community-inline-reply > .community-reply-body { display:block; width:100%; margin:8px 0 0; padding:0; text-align:left; white-space:pre-wrap; overflow-wrap:anywhere; }
 .community-reply-target { color:#b5a08a; font-size:11px; }
 .community-reply-target > span { color:#665544; margin:0 6px; }
+
+/* Compact evidence rows: height follows content */
+.community-section-list .community-inline-reply{min-height:0;height:auto;padding:8px 0 9px}
+.community-section-list .community-inline-reply>.community-reply-line{min-height:0;height:auto;line-height:1.3}
+.community-section-list .community-inline-reply>.community-reply-body{margin:3px 0 0!important;line-height:1.5;font-size:12px}
+.community-section-list .community-inline-replies{margin-top:11px}
