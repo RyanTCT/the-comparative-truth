@@ -48,11 +48,26 @@ export async function POST(request){
   const user=await userFor(request);
   if(!user)return reply({error:"Sign in with a verified Investigator account and a username to participate."},401);
   const data=await request.json();
-  if(!["accept","thread","comment","edit_thread","edit_comment","delete_comment","withdraw_thread"].includes(data.kind))return reply({error:"Unknown action."},400);
+  if(!["accept","thread","comment","edit_thread","edit_comment","delete_comment","withdraw_thread","toggle_like"].includes(data.kind))return reply({error:"Unknown action."},400);
   if(data.kind==="accept"){
    if(data.accept!==true)return reply({error:"You must accept the Community Guidelines."},400);
    await database("community_guideline_acceptances?on_conflict=user_id","POST",{user_id:user.id,version:VERSION,accepted_at:new Date().toISOString()},"resolution=merge-duplicates,return=minimal");
    return reply({ok:true});
+  }
+  if(data.kind==="toggle_like"){
+   const id=data.comment_id;
+   if(typeof id!=="string"||!/^[0-9a-f-]{36}$/i.test(id))return reply({error:"Invalid contribution."},400);
+   const rows=await database("community_comments?id=eq."+encodeURIComponent(id)+"&select=id,author_id,thread_id,is_hidden");
+   const comment=rows[0];
+   if(!comment||comment.is_hidden)return reply({error:"Contribution not found."},404);
+   if(comment.author_id===user.id)return reply({error:"You cannot like your own contribution."},403);
+   const parent=await database("community_threads?id=eq."+encodeURIComponent(comment.thread_id)+"&select=is_hidden,is_locked");
+   if(!parent.length||parent[0].is_hidden||parent[0].is_locked)return reply({error:"This investigation is closed."},403);
+   const filter="comment_id=eq."+encodeURIComponent(id)+"&user_id=eq."+encodeURIComponent(user.id);
+   const existing=await database("community_comment_likes?"+filter+"&select=comment_id");
+   if(existing.length)await database("community_comment_likes?"+filter,"DELETE",undefined,"return=minimal");
+   else await database("community_comment_likes","POST",{comment_id:id,user_id:user.id},"return=minimal");
+   return reply({ok:true,liked:!existing.length});
   }
   const acceptance=await database("community_guideline_acceptances?user_id=eq."+encodeURIComponent(user.id)+"&version=eq."+VERSION+"&select=user_id");
   if(!acceptance.length)return reply({error:"Please accept the Community Guidelines before posting.",code:"GUIDELINES_REQUIRED"},403);
@@ -113,7 +128,20 @@ export async function POST(request){
   if(!threads.length||threads[0].is_hidden)return reply({error:"Investigation not found."},404);
   if(threads[0].is_locked)return reply({error:"This investigation is closed."},403);
   if(await screen(body))return reply({error:"This contribution requires moderator review and was not published."},422);
-  await database("community_comments","POST",{thread_id:data.thread_id,author_id:user.id,body},"return=minimal");
+  let parentId=null;
+  if(data.parent_comment_id!=null){
+   if(typeof data.parent_comment_id!=="string"||!/^[0-9a-f-]{36}$/i.test(data.parent_comment_id))return reply({error:"Invalid reply target."},400);
+   const target=await database("community_comments?id=eq."+encodeURIComponent(data.parent_comment_id)+"&select=id,thread_id,parent_comment_id,is_hidden");
+   if(!target.length||target[0].is_hidden||target[0].thread_id!==data.thread_id)return reply({error:"Reply target not found."},404);
+   parentId=target[0].parent_comment_id||target[0].id;
+  }
+  const inserted=await database("community_comments","POST",{thread_id:data.thread_id,author_id:user.id,body,parent_comment_id:parentId},"return=representation");
+  const selected=Array.isArray(data.mentioned_user_ids)?[...new Set(data.mentioned_user_ids)].slice(0,10):[];
+  if(selected.length&&inserted?.[0]?.id){
+   const matches=await database("investigator_profiles?user_id=in.("+selected.filter(x=>typeof x==="string"&&/^[0-9a-f-]{36}$/i.test(x)).map(encodeURIComponent).join(",")+")&select=user_id,display_name");
+   const valid=(matches||[]).filter(p=>p.user_id!==user.id&&new RegExp("(^|[^A-Za-z0-9_])@"+p.display_name.replace(/[.*+?^${}()|[\]\\]/g,"\\  await database("community_comments","POST",{thread_id:data.thread_id,author_id:user.id,body},"return=minimal");")+"(?=$|[^A-Za-z0-9_])","i").test(body));
+   if(valid.length)await database("community_mentions","POST",valid.map(p=>({comment_id:inserted[0].id,mentioned_user_id:p.user_id})),"return=minimal");
+  }
   return reply({ok:true},201);
  }catch(error){
   console.error("Community posting error:",error.message);
