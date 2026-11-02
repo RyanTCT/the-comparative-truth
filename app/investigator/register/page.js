@@ -1,6 +1,5 @@
 "use client";
-import {useState} from "react";
-import {useSearchParams} from "next/navigation";
+import {useEffect,useState} from "react";
 import Link from "next/link";
 import {createClient} from "@supabase/supabase-js";
 
@@ -12,8 +11,8 @@ function getSupabase(){
 }
 
 export default function InvestigatorRegistration(){
- const params=useSearchParams();
- const fromReply=params.get("reason")==="community-reply";
+ const [fromReply,setFromReply]=useState(false);
+ useEffect(()=>{setFromReply(new URLSearchParams(window.location.search).get("reason")==="community-reply")},[]);
  const [email,setEmail]=useState(""),[password,setPassword]=useState(""),[confirm,setConfirm]=useState(""),[busy,setBusy]=useState(false),[error,setError]=useState(""),[success,setSuccess]=useState(false);
  async function submit(e){
   e.preventDefault();setError("");
