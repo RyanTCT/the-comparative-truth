@@ -251,3 +251,16 @@
 .community-like-action.is-liked{color:#c7a36b}
 .community-like-action:disabled{cursor:default;opacity:.7}
 .community-reply-right{display:flex;align-items:center;gap:12px}
+
+/* One-level Community discussion layout */
+.community-reply-group{margin-bottom:16px}
+.community-reply-group>.community-inline-reply{margin-bottom:9px}
+.community-inline-reply.community-child-reply{margin-left:24px;margin-bottom:9px}
+.community-child-arrow{color:#bd9b60;margin-right:6px}
+.community-reply-body{margin-top:4px;margin-bottom:9px}
+.community-reply-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.community-thread-composer{margin-top:8px;margin-bottom:10px}
+.community-mention-wrapper{position:relative}
+.community-mention-suggestions{position:absolute;left:0;right:0;top:100%;z-index:30;background:#242321;border:1px solid #a98b56;border-radius:6px;box-shadow:0 10px 25px #0008;max-height:220px;overflow:auto}
+.community-mention-suggestions button{display:block;width:100%;text-align:left;background:transparent;color:#eee4d4;border:0;padding:9px 12px;cursor:pointer}
+.community-mention-suggestions button:hover,.community-mention-suggestions button[aria-selected="true"]{background:#473b29;color:#f4cf8d}
