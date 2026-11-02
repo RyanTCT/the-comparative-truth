@@ -152,3 +152,12 @@ export async function POST(request){
   return reply({error:"Unable to publish right now. Your draft has been preserved. Please try again later.",code:"POST_FAILED"},503);
  }
 }
+export async function GET(request){
+ try{
+  const url=new URL(request.url);if(url.searchParams.get("kind")!=="likes")return reply({error:"Unknown request."},400);
+  const ids=(url.searchParams.get("ids")||"").split(",").filter(id=>/^[0-9a-f-]{36}$/i.test(id)).slice(0,100);
+  if(!ids.length)return reply({likes:[]});
+  const rows=await database("community_comment_likes?comment_id=in.("+ids.map(encodeURIComponent).join(",")+")&select=comment_id,user_id");
+  return reply({likes:rows||[]});
+ }catch(e){console.error("Community like read failed",e.message);return reply({error:"Unable to load likes."},503)}
+}

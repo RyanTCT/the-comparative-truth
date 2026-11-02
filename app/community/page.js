@@ -95,12 +95,11 @@ export default function Community(){
  const filtered=threads.filter(t=>[t.title,t.body,profiles[t.author_id]||""].join(" ").toLowerCase().includes(query.toLowerCase())).sort((a,b)=>sort==="oldest"?new Date(a.created_at)-new Date(b.created_at):new Date(b.created_at)-new Date(a.created_at));
  const author=id=>profiles[id]||"Investigator";
  const designation=id=>titles[id]?.name||"Investigator";
- const insignia=id=>{const name=designation(id).toLowerCase();return name==="host & founder"?"◆":name==="featured guest"?"★":name==="moderator"?"🔨":name==="administrator"?"✦":name==="lead investigator"?"✧":"●"};
- const identity=id=><span className="community-identity"><strong>{author(id)}</strong><span className={"community-identity-icon"+(designation(id)==="Host & Founder"?" founder":"")} style={{color:titles[id]?.badge_color||"#99948c"}} aria-label={designation(id)}>{insignia(id)}</span>{session?.user?.id===id&&<em className="community-identity-you">You</em>}<span className="community-identity-role">{designation(id)}</span></span>;
+ const insignia=id=>{const name=designation(id).toLowerCase();return (name==="host & founder"||name==="founder & host")?"◆":name==="featured guest"?"★":name==="moderator"?"🔨":name==="administrator"?"✦":name==="lead investigator"?"✧":"●"};
+ const identity=id=><span className="community-identity"><strong>{author(id)}</strong><span className={"community-identity-icon"+(["Host & Founder","Founder & Host"].includes(designation(id))?" founder":"")} style={{color:titles[id]?.badge_color||"#99948c"}} aria-label={designation(id)}>{insignia(id)}</span>{session?.user?.id===id&&<em className="community-identity-you">You</em>}<span className="community-identity-role">{designation(id)}</span></span>;
  const loadLikes=async ids=>{
   if(!ids.length)return;
-  const {data,error}=await getSupabase().from("community_comment_likes").select("comment_id,user_id").in("comment_id",ids);
-  if(error)return;
+  let data;try{const response=await fetch("/api/community?kind=likes&ids="+ids.map(encodeURIComponent).join(","),{cache:"no-store"});if(!response.ok)throw Error("Like counts unavailable");data=(await response.json()).likes}catch(e){console.warn("Like read unavailable",e.message);return;}
   const counts={},mine={};for(const row of data||[]){counts[row.comment_id]=(counts[row.comment_id]||0)+1;if(row.user_id===session?.user?.id)mine[row.comment_id]=true}
   setLikes(v=>({...v,...Object.fromEntries(ids.map(id=>[id,counts[id]||0]))}));
   setLikedByMe(v=>({...v,...Object.fromEntries(ids.map(id=>[id,!!mine[id]]))}));
@@ -108,7 +107,7 @@ export default function Community(){
  const toggleLike=async comment=>{
   if(!session){registerToReply();return}
   if(session.user.id===comment.author_id||busy)return;
-  setBusy(true);setError("");try{const result=await call({kind:"toggle_like",comment_id:comment.id});setLikedByMe(v=>({...v,[comment.id]:!!result.liked}));setLikes(v=>({...v,[comment.id]:Math.max(0,(v[comment.id]||0)+(result.liked?1:-1))}));await loadLikes([comment.id])}catch(e){setError(e.message)}finally{setBusy(false)}
+  setBusy(true);setError("");try{const result=await call({kind:"toggle_like",comment_id:comment.id});setLikedByMe(v=>({...v,[comment.id]:!!result.liked}));setLikes(v=>({...v,[comment.id]:Math.max(0,(v[comment.id]||0)+(result.liked?1:-1))}));/* Preserve confirmed server state; a separate read can be blocked by RLS. */}catch(e){setError(e.message)}finally{setBusy(false)}
  };
  const refreshReplies=async id=>{const {data,error}=await getSupabase().from("community_comments").select("id,thread_id,author_id,body,created_at,updated_at,parent_comment_id,reply_to_comment_id").eq("thread_id",id).order("created_at");if(error){setError("Unable to refresh replies.");return}await loadLikes((data||[]).map(r=>r.id));setReplyMap(v=>({...v,[id]:data||[]}));setReplyCounts(v=>({...v,[id]:(data||[]).length}))};
  return <main className="community-page">
