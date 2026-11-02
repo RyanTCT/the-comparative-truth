@@ -140,7 +140,7 @@ export async function POST(request){
   if(selected.length&&inserted?.[0]?.id){
    const matches=await database("investigator_profiles?user_id=in.("+selected.filter(x=>typeof x==="string"&&/^[0-9a-f-]{36}$/i.test(x)).map(encodeURIComponent).join(",")+")&select=user_id,display_name");
    const valid=(matches||[]).filter(p=>p.user_id!==user.id&&body.toLowerCase().split(/[^a-z0-9_@]+/).includes("@"+p.display_name.toLowerCase()));
-   if(valid.length)await database("community_mentions","POST",valid.map(p=>({comment_id:inserted[0].id,mentioned_user_id:p.user_id})),"return=minimal");
+   if(valid.length){try{await database("community_mentions","POST",valid.map(p=>({comment_id:inserted[0].id,mentioned_user_id:p.user_id})),"return=minimal")}catch(mentionError){console.error("Reply published but mention indexing failed",mentionError.message)}}
   }
   return reply({ok:true},201);
  }catch(error){
