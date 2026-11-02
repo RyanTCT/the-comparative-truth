@@ -123,6 +123,15 @@ export default function Community(){
  const rows=replyMap[t.id]||[];
  const children=rows.filter(r=>r.parent_comment_id);
  const parents=rows.filter(r=>!r.parent_comment_id);
+ const orderReplies=(items,parentId)=>{
+  const ordered=[];const seen=new Set();
+  const visit=target=>{
+   items.filter(r=>r.reply_to_comment_id===target&&!seen.has(r.id)).sort((a,b)=>new Date(a.created_at)-new Date(b.created_at)).forEach(r=>{seen.add(r.id);ordered.push(r);visit(r.id)});
+  };
+  visit(parentId);
+  items.filter(r=>!seen.has(r.id)).sort((a,b)=>new Date(a.created_at)-new Date(b.created_at)).forEach(r=>{if(!seen.has(r.id)){seen.add(r.id);ordered.push(r);visit(r.id)}});
+  return ordered;
+ };
  const renderEditor=(r)=>activeReply?.thread===t.id&&activeReply?.after===r?.id&&<ReplyComposer key={r?.id||"root"} target={r?author(r.author_id):null} initial={r&&r.parent_comment_id?"@"+author(r.author_id)+" ":""} busy={busy} onCancel={()=>setActiveReply(null)} onSubmit={async(body,mentioned_user_ids)=>{setBusy(true);setError("");try{await call({kind:"comment",thread_id:t.id,parent_comment_id:r?.id||null,body,mentioned_user_ids});await refreshReplies(t.id);setActiveReply(null)}catch(err){if(err.code==="GUIDELINES_REQUIRED"){setChecked(false);setGuidelines(true)}setError(err.message)}finally{setBusy(false)}}}/>;
  const openEditor=r=>{if(!session){registerToReply();return}setActiveReply({thread:t.id,after:r?.id||null})};
  const renderRow=(r,indented=false)=><div className={"community-inline-reply"+(indented?" community-child-reply":"")} key={r.id}>
@@ -132,7 +141,7 @@ export default function Community(){
   {session?.user?.id===r.author_id&&<div className="community-owner-menu"><button type="button" className="community-menu-trigger" aria-label="Post options" aria-expanded={ownerMenu==="comment-"+r.id} onClick={()=>setOwnerMenu(v=>v==="comment-"+r.id?null:"comment-"+r.id)}>•••</button>{ownerMenu==="comment-"+r.id&&<div className="community-menu-popover"><button type="button" onClick={()=>{setOwnerMenu(null);beginEdit("comment",r)}}>Edit</button><button type="button" disabled={busy} onClick={()=>{setOwnerMenu(null);setDeleteTarget({kind:"delete_comment",id:r.id})}}>Delete post</button></div>}</div>}
   </div></div><p className="community-reply-body"><RichText text={r.body.replace(/^↳ Replying to [^\n]+\n/,"")}/></p>{renderEditor(r)}
  </div>;
- return <>{parents.map(p=><div key={p.id} className="community-reply-group">{renderRow(p)}{children.filter(r=>r.parent_comment_id===p.id).sort((a,b)=>new Date(a.created_at)-new Date(b.created_at)).map(r=>renderRow(r,true))}</div>)}
+ return <>{parents.map(p=><div key={p.id} className="community-reply-group">{renderRow(p)}{orderReplies(children.filter(r=>r.parent_comment_id===p.id),p.id).map(r=>renderRow(r,true))}</div>)}
  {rows.length===0&&<p className="community-empty-replies">No replies yet.</p>}
  {!t.is_locked&&(activeReply?.thread===t.id&&activeReply.after===null?renderEditor(null):<button type="button" className="community-reply-prompt" onClick={()=>openEditor(null)}>Write a reply…</button>)}</>;
 })()}
