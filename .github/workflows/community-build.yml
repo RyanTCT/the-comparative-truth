@@ -2,6 +2,7 @@ name: Community Board build verification
 on:
   push:
     branches:
+      - main
       - feature/community-completion-20261102
   workflow_dispatch:
 jobs:
@@ -16,7 +17,7 @@ jobs:
       SUPABASE_SECRET_KEY: "build-placeholder-secret"
       OPENAI_API_KEY: "build-placeholder-key"
     steps:
-      - name: Check out development branch
+      - name: Check out repository
         uses: actions/checkout@v4
       - name: Set up Node
         uses: actions/setup-node@v4
