@@ -1,5 +1,6 @@
 "use client";
 import {useState} from "react";
+import {useSearchParams} from "next/navigation";
 import Link from "next/link";
 import {createClient} from "@supabase/supabase-js";
 
@@ -11,6 +12,8 @@ function getSupabase(){
 }
 
 export default function InvestigatorRegistration(){
+ const params=useSearchParams();
+ const fromReply=params.get("reason")==="community-reply";
  const [email,setEmail]=useState(""),[password,setPassword]=useState(""),[confirm,setConfirm]=useState(""),[busy,setBusy]=useState(false),[error,setError]=useState(""),[success,setSuccess]=useState(false);
  async function submit(e){
   e.preventDefault();setError("");
@@ -28,6 +31,7 @@ export default function InvestigatorRegistration(){
  return <main className="investigator-auth-page"><Link className="investigator-back" href="/">← The Comparative Truth</Link><section className="investigator-auth-card">
  <p className="section-label">THE COMPARATIVE TRUTH • COMMUNITY</p><h1>Become an <em>Investigator.</em></h1>
  {success?<div role="status" className="investigator-auth-success"><h2>Check your inbox.</h2><p>If your email is eligible for registration, a verification message will arrive at <strong>{email.trim()}</strong>. Follow its link to confirm your account before voting.</p><p>Already verified? <Link href="/investigator/login">Investigator Login →</Link></p></div>:<>
+ {fromReply&&<p role="status" className="investigator-auth-description" style={{borderLeft:"3px solid #c18b4d",padding:"12px 15px",background:"#252321",color:"#e8d6bc"}}>Create your free Investigator account to reply and participate in The Comparative Truth Community.</p>}
  <p className="investigator-auth-description">Join the conversation. Examine the evidence. Weigh in on the questions behind each episode. Membership is free.</p>
  <form onSubmit={submit} className="investigator-auth-form">
  <label>Email address<input type="email" autoComplete="email" required maxLength={254} value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@example.com"/></label>
