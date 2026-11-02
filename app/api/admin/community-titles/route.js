@@ -50,7 +50,7 @@ async function handle(request,method){
    if(!/^[0-9a-f-]{36}$/i.test(body.title_id||"")||!/^[0-9a-f-]{36}$/i.test(body.user_id||""))return reply({error:"Invalid assignment"},400);
    const titles=await db(auth,"community_titles?id=eq."+encodeURIComponent(body.title_id)+"&select=is_default");
    if(!titles.length||titles[0].is_default)return reply({error:"Select a special title"},400);
-   if(body.assign===true)await db(auth,"investigator_title_assignments","POST",{user_id:body.user_id,title_id:body.title_id}, "resolution=merge-duplicates,return=representation");
+   if(body.assign===true){await db(auth,"investigator_title_assignments?user_id=eq."+encodeURIComponent(body.user_id),"DELETE",null,"return=minimal");await db(auth,"investigator_title_assignments","POST",{user_id:body.user_id,title_id:body.title_id}, "resolution=merge-duplicates,return=representation");}
    else if(body.assign===false)await db(auth,"investigator_title_assignments?user_id=eq."+encodeURIComponent(body.user_id)+"&title_id=eq."+encodeURIComponent(body.title_id),"DELETE",null,"return=minimal");
    else return reply({error:"Invalid assignment action"},400);
   }
