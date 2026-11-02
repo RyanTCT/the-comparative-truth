@@ -1,0 +1,29 @@
+name: Community Board build verification
+on:
+  push:
+    branches:
+      - feature/community-completion-20261102
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+      NEXT_PUBLIC_SUPABASE_URL: "https://example.supabase.co"
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: "build-placeholder-key"
+      SUPABASE_SECRET_KEY: "build-placeholder-secret"
+      OPENAI_API_KEY: "build-placeholder-key"
+    steps:
+      - name: Check out development branch
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Verify production build
+        run: npm run build
