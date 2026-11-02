@@ -234,3 +234,7 @@
 .community-delete-actions button{border:1px solid #66533e;background:#302c27;color:#e8d7be;border-radius:5px;padding:10px 17px;cursor:pointer}
 .community-delete-actions .community-delete-confirm{border-color:#965d51;background:#60372f;color:#fff0eb}
 .community-delete-actions button:disabled{opacity:.5;cursor:wait}
+
+.community-inline-reply > .community-reply-body { display:block; width:100%; margin:8px 0 0; padding:0; text-align:left; white-space:pre-wrap; overflow-wrap:anywhere; }
+.community-reply-target { color:#b5a08a; font-size:11px; }
+.community-reply-target > span { color:#665544; margin:0 6px; }
