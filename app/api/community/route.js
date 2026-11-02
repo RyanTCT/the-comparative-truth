@@ -135,7 +135,7 @@ export async function POST(request){
    if(!target.length||target[0].is_hidden||target[0].thread_id!==data.thread_id)return reply({error:"Reply target not found."},404);
    parentId=target[0].parent_comment_id||target[0].id;
   }
-  const inserted=await database("community_comments","POST",{thread_id:data.thread_id,author_id:user.id,body,parent_comment_id:parentId},"return=representation");
+  const inserted=await database("community_comments","POST",{thread_id:data.thread_id,author_id:user.id,body,parent_comment_id:parentId,reply_to_comment_id:data.parent_comment_id||null},"return=representation");
   const selected=Array.isArray(data.mentioned_user_ids)?[...new Set(data.mentioned_user_ids)].slice(0,10):[];
   if(selected.length&&inserted?.[0]?.id){
    const matches=await database("investigator_profiles?user_id=in.("+selected.filter(x=>typeof x==="string"&&/^[0-9a-f-]{36}$/i.test(x)).map(encodeURIComponent).join(",")+")&select=user_id,display_name");
