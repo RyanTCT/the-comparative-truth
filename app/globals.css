@@ -2224,3 +2224,7 @@ a {
 .notification-panel .notification-panel-actions{justify-content:flex-end;display:flex;gap:15px;margin:15px 0 2px;padding-top:11px;border-top:1px solid rgba(193,139,77,.38)}
 .notification-panel .notification-panel-actions button{color:#b99a72;font-size:11px;letter-spacing:.15px}
 .notification-panel .notification-panel-actions button:hover{color:#f1c58b}
+
+/* Desktop header: prevent navigation overlap with profile and notification controls */
+@media(min-width:901px){.navbar{display:flex;gap:clamp(18px,2vw,36px);justify-content:space-between}.navbar .nav-brand{flex:0 0 auto;white-space:nowrap}.navbar .nav-links{flex:1 1 auto;min-width:0;display:flex;align-items:center;justify-content:center;gap:clamp(10px,1.6vw,28px);margin-left:0}.navbar .nav-links a{white-space:nowrap}.navbar .site-header-controls{flex:0 0 auto;margin-left:0}}@media(min-width:901px) and (max-width:1250px){.navbar{padding-left:3%;padding-right:3%}.navbar .nav-links{gap:12px}.navbar .nav-links a{font-size:10px;letter-spacing:.4px}}@media(min-width:901px) and (max-width:1060px){.navbar .nav-links{display:none!important}.navbar .mobile-nav-toggle{display:flex}}
+.notification-badge{background:#e9c489!important;color:#17120b!important;border:2px solid #090a0c;min-width:20px;height:20px;line-height:15px;font-size:11px;font-weight:800;top:-5px;right:-8px;box-shadow:0 0 0 1px rgba(255,255,255,.2)}

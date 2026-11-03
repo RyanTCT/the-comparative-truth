@@ -143,7 +143,7 @@ export async function POST(request){
    parentId=target[0].parent_comment_id||target[0].id;replyTarget=target[0];
   }
   const inserted=await database("community_comments","POST",{thread_id:data.thread_id,author_id:user.id,body,parent_comment_id:parentId,reply_to_comment_id:data.parent_comment_id||null},"return=representation");
-  const notificationUrl="/community";
+  const notificationUrl="/community?thread="+encodeURIComponent(data.thread_id)+"&comment="+encodeURIComponent(inserted?.[0]?.id||"");
   if(replyTarget)await notify(replyTarget.author_id,user.id,"reply","New reply to your contribution","An Investigator replied to your evidence.",notificationUrl,"reply_alerts");
   else await notify(threads[0].author_id,user.id,"thread_reply","New evidence in your investigation","An Investigator contributed to your discussion.",notificationUrl,"thread_reply_alerts");
   const selected=Array.isArray(data.mentioned_user_ids)?[...new Set(data.mentioned_user_ids)].slice(0,10):[];
