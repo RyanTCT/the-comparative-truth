@@ -264,3 +264,7 @@
 .community-mention-suggestions{position:absolute;left:0;right:0;top:100%;z-index:30;background:#242321;border:1px solid #a98b56;border-radius:6px;box-shadow:0 10px 25px #0008;max-height:220px;overflow:auto}
 .community-mention-suggestions button{display:block;width:100%;text-align:left;background:transparent;color:#eee4d4;border:0;padding:9px 12px;cursor:pointer}
 .community-mention-suggestions button:hover,.community-mention-suggestions button[aria-selected="true"]{background:#473b29;color:#f4cf8d}
+
+.community-child-reply{border-left:2px solid rgba(193,139,77,.42);margin-left:16px;padding-left:15px}.community-reply-context{color:#bd9c75;font-size:11px;margin:3px 0 6px}.community-like-action:disabled{opacity:.7}
+
+.community-child-reply{border-left:2px solid rgba(193,139,77,.42);margin-left:16px;padding-left:15px}.community-reply-context{color:#bd9c75;font-size:11px;margin:3px 0 6px}

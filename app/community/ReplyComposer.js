@@ -5,6 +5,8 @@ let client;
 function db(){if(!client)client=createClient(process.env.NEXT_PUBLIC_SUPABASE_URL,process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY);return client}
 export default function ReplyComposer({initial="",target=null,onSubmit,onCancel,busy}){
  const caret=useRef(initial.length);
+ const input=useRef(null);
+ useEffect(()=>{const el=input.current;if(!el)return;el.focus();el.setSelectionRange(initial.length,initial.length);caret.current=initial.length},[initial]);
  const [value,setValue]=useState(initial),[suggestions,setSuggestions]=useState([]),[active,setActive]=useState(0),[mentions,setMentions]=useState([]);
  useEffect(()=>{
   if(!initial.startsWith("@"))return;
@@ -43,7 +45,7 @@ export default function ReplyComposer({initial="",target=null,onSubmit,onCancel,
  return <form className="community-inline-form community-thread-composer" onSubmit={submit}>
   {target&&<div className="community-replying-to">↳ Replying to {target}</div>}
   <div className="community-mention-wrapper">
-   <textarea autoFocus required minLength={2} maxLength={2000} rows={3} placeholder="Write a reply or share a source… Use @ to mention an Investigator." value={value} onChange={e=>{caret.current=e.target.selectionStart;setValue(e.target.value)}} onClick={e=>{caret.current=e.target.selectionStart;setValue(v=>v)}} onKeyDown={keyDown}/>
+   <textarea ref={input} autoFocus required minLength={2} maxLength={2000} rows={3} placeholder="Write a reply or share a source… Use @ to mention an Investigator." value={value} onChange={e=>{caret.current=e.target.selectionStart;setValue(e.target.value)}} onClick={e=>{caret.current=e.target.selectionStart;setValue(v=>v)}} onKeyDown={keyDown}/>
    {suggestions.length>0&&<div className="community-mention-suggestions" role="listbox" aria-label="Investigator usernames">{suggestions.map((p,i)=><button type="button" role="option" aria-selected={i===active} key={p.user_id} onMouseDown={e=>e.preventDefault()} onClick={()=>choose(p)}>{p.display_name}</button>)}</div>}
   </div>
   <div><button type="button" onClick={onCancel}>Cancel</button><button className="community-action" disabled={busy}>{busy?"Posting…":"Post Reply"}</button></div>

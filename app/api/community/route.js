@@ -30,6 +30,13 @@ async function userFor(request){
  const profiles=await database("investigator_profiles?user_id=eq."+encodeURIComponent(user.id)+"&select=user_id,display_name");
  return profiles[0]?.display_name?.trim()?user:null;
 }
+async function notify(recipient,actor,type,title,message,url,preference){
+ if(!recipient||recipient===actor)return;
+ try{
+  if(preference){const prefs=await database("investigator_notification_preferences?user_id=eq."+encodeURIComponent(recipient)+"&select="+preference);if(prefs[0]?.[preference]===false)return}
+  await database("investigator_notifications","POST",{recipient_id:recipient,actor_id:actor,notification_type:type,title,message,target_url:url},"return=minimal");
+ }catch(e){console.error("Notification delivery failed",e.message)}
+}
 async function screen(text){
  if(!process.env.OPENAI_API_KEY)throw Error("Moderation unavailable");
  const controller=new AbortController();
@@ -124,23 +131,26 @@ export async function POST(request){
   }
   if(body.length<2||body.length>2000)return reply({error:"Evidence must be 2–2,000 characters."},400);
   if(!/^[0-9a-f-]{36}$/i.test(data.thread_id||""))return reply({error:"Invalid investigation."},400);
-  const threads=await database("community_threads?id=eq."+encodeURIComponent(data.thread_id)+"&select=id,is_locked,is_hidden");
+  const threads=await database("community_threads?id=eq."+encodeURIComponent(data.thread_id)+"&select=id,is_locked,is_hidden,author_id,title");
   if(!threads.length||threads[0].is_hidden)return reply({error:"Investigation not found."},404);
   if(threads[0].is_locked)return reply({error:"This investigation is closed."},403);
   if(await screen(body))return reply({error:"This contribution requires moderator review and was not published."},422);
-  let parentId=null;
+  let parentId=null;let replyTarget=null;
   if(data.parent_comment_id!=null){
    if(typeof data.parent_comment_id!=="string"||!/^[0-9a-f-]{36}$/i.test(data.parent_comment_id))return reply({error:"Invalid reply target."},400);
-   const target=await database("community_comments?id=eq."+encodeURIComponent(data.parent_comment_id)+"&select=id,thread_id,parent_comment_id,is_hidden");
+   const target=await database("community_comments?id=eq."+encodeURIComponent(data.parent_comment_id)+"&select=id,thread_id,parent_comment_id,is_hidden,author_id");
    if(!target.length||target[0].is_hidden||target[0].thread_id!==data.thread_id)return reply({error:"Reply target not found."},404);
-   parentId=target[0].parent_comment_id||target[0].id;
+   parentId=target[0].parent_comment_id||target[0].id;replyTarget=target[0];
   }
   const inserted=await database("community_comments","POST",{thread_id:data.thread_id,author_id:user.id,body,parent_comment_id:parentId,reply_to_comment_id:data.parent_comment_id||null},"return=representation");
+  const notificationUrl="/community";
+  if(replyTarget)await notify(replyTarget.author_id,user.id,"reply","New reply to your contribution","An Investigator replied to your evidence.",notificationUrl,"reply_alerts");
+  else await notify(threads[0].author_id,user.id,"thread_reply","New evidence in your investigation","An Investigator contributed to your discussion.",notificationUrl,"thread_reply_alerts");
   const selected=Array.isArray(data.mentioned_user_ids)?[...new Set(data.mentioned_user_ids)].slice(0,10):[];
   if(selected.length&&inserted?.[0]?.id){
    const matches=await database("investigator_profiles?user_id=in.("+selected.filter(x=>typeof x==="string"&&/^[0-9a-f-]{36}$/i.test(x)).map(encodeURIComponent).join(",")+")&select=user_id,display_name");
    const valid=(matches||[]).filter(p=>p.user_id!==user.id&&body.toLowerCase().split(/[^a-z0-9_@]+/).includes("@"+p.display_name.toLowerCase()));
-   if(valid.length){try{await database("community_mentions","POST",valid.map(p=>({comment_id:inserted[0].id,mentioned_user_id:p.user_id})),"return=minimal")}catch(mentionError){console.error("Reply published but mention indexing failed",mentionError.message)}}
+   if(valid.length){try{await database("community_mentions","POST",valid.map(p=>({comment_id:inserted[0].id,mentioned_user_id:p.user_id})),"return=minimal")}catch(mentionError){console.error("Reply published but mention indexing failed",mentionError.message)}await Promise.all(valid.map(p=>notify(p.user_id,user.id,"mention","You were mentioned","An Investigator mentioned you in a Community reply.",notificationUrl,"mention_alerts")))}
   }
   return reply({ok:true},201);
  }catch(error){
