@@ -61,6 +61,20 @@ export async function POST(request){
    await database("community_guideline_acceptances?on_conflict=user_id","POST",{user_id:user.id,version:VERSION,accepted_at:new Date().toISOString()},"resolution=merge-duplicates,return=minimal");
    return reply({ok:true});
   }
+  if(data.kind==="toggle_thread_like"){
+   const id=data.thread_id;
+   if(typeof id!=="string"||!/^[0-9a-f-]{36}$/i.test(id))return reply({error:"Invalid investigation."},400);
+   const threads=await database("community_threads?id=eq."+encodeURIComponent(id)+"&select=id,author_id,is_hidden,is_locked");
+   const thread=threads[0];
+   if(!thread||thread.is_hidden)return reply({error:"Investigation not found."},404);
+   if(thread.author_id===user.id)return reply({error:"You cannot like your own investigation."},403);
+   if(thread.is_locked)return reply({error:"This investigation is closed."},403);
+   const filter="thread_id=eq."+encodeURIComponent(id)+"&user_id=eq."+encodeURIComponent(user.id);
+   const existing=await database("community_thread_likes?"+filter+"&select=thread_id");
+   if(existing.length)await database("community_thread_likes?"+filter,"DELETE",undefined,"return=minimal");
+   else await database("community_thread_likes","POST",{thread_id:id,user_id:user.id},"return=minimal");
+   return reply({ok:true,liked:!existing.length});
+  }
   if(data.kind==="toggle_like"){
    const id=data.comment_id;
    if(typeof id!=="string"||!/^[0-9a-f-]{36}$/i.test(id))return reply({error:"Invalid contribution."},400);
@@ -164,10 +178,10 @@ export async function POST(request){
 }
 export async function GET(request){
  try{
-  const url=new URL(request.url);if(url.searchParams.get("kind")!=="likes")return reply({error:"Unknown request."},400);
+  const url=new URL(request.url);const kind=url.searchParams.get("kind");if(!["likes","thread_likes"].includes(kind))return reply({error:"Unknown request."},400);
   const ids=(url.searchParams.get("ids")||"").split(",").filter(id=>/^[0-9a-f-]{36}$/i.test(id)).slice(0,100);
   if(!ids.length)return reply({likes:[]});
-  const rows=await database("community_comment_likes?comment_id=in.("+ids.map(encodeURIComponent).join(",")+")&select=comment_id,user_id");
+  const rows=kind==="thread_likes"?await database("community_thread_likes?thread_id=in.("+ids.map(encodeURIComponent).join(",")+")&select=thread_id,user_id"):await database("community_comment_likes?comment_id=in.("+ids.map(encodeURIComponent).join(",")+")&select=comment_id,user_id");
   return reply({likes:rows||[]});
  }catch(e){console.error("Community like read failed",e.message);return reply({error:"Unable to load likes."},503)}
 }
