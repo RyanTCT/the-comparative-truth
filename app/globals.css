@@ -2213,3 +2213,14 @@ a {
 .site-header-controls .investigator-dropdown>a{display:block;width:100%;padding:13px 12px;color:#eee8df;font-size:13px;line-height:1.45;letter-spacing:.25px;font-weight:500;text-transform:none;white-space:normal}
 .site-header-controls .investigator-dropdown>a:hover,.site-header-controls .investigator-dropdown>a:focus-visible{background:rgba(193,139,77,.12);color:#e9b675}
 .site-header-controls .investigator-dropdown-action{display:block;width:100%;padding:13px 12px}
+
+/* Investigator Alerts: visual hierarchy and icon controls */
+.notification-panel-header{padding:1px 2px 12px;margin-bottom:8px;border-bottom:1px solid rgba(193,139,77,.38)}
+.notification-panel-header strong{font-size:15px;font-weight:700}
+.notification-panel .notification-settings-toggle{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;padding:4px;border:0;background:transparent;color:#aaa39a;border-radius:50%;transition:color .2s,background .2s}
+.notification-panel .notification-settings-toggle:hover,.notification-panel .notification-settings-toggle:focus-visible{color:#d9a565;background:rgba(193,139,77,.1)}
+.notification-panel .notification-entry{border-top:0;border-bottom:1px solid rgba(193,139,77,.26);padding:13px 10px}
+.notification-panel .notification-entry:last-of-type{border-bottom:1px solid rgba(193,139,77,.26)}
+.notification-panel .notification-panel-actions{justify-content:flex-end;display:flex;gap:15px;margin:15px 0 2px;padding-top:11px;border-top:1px solid rgba(193,139,77,.38)}
+.notification-panel .notification-panel-actions button{color:#b99a72;font-size:11px;letter-spacing:.15px}
+.notification-panel .notification-panel-actions button:hover{color:#f1c58b}
