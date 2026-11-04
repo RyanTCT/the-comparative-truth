@@ -9,7 +9,8 @@ export default function InvestigatorDirectory({session}){
   catch(e){setError(e.message)}finally{setBusy(false)}
  }
  useEffect(()=>{load()},[session?.access_token]);
- const profiles=useMemo(()=>[...(data?.profiles||[])].filter(p=>(p.display_name||"").toLowerCase().includes(search.toLowerCase())).sort((a,b)=>(a.display_name||"").localeCompare(b.display_name||"")),[data,search]);
+ const matches=useMemo(()=>search.trim()?[...(data?.profiles||[])].filter(p=>(p.display_name||"").toLowerCase().includes(search.trim().toLowerCase())).sort((a,b)=>(a.display_name||"").localeCompare(b.display_name||"")):[],[data,search]);
+ const profiles=matches.slice(0,10);
  const current=data?.profiles?.find(p=>p.user_id===selected);
  const threads=(data?.threads||[]).filter(t=>t.author_id===selected);
  const comments=(data?.comments||[]).filter(c=>c.author_id===selected);
@@ -25,18 +26,18 @@ export default function InvestigatorDirectory({session}){
   <h3>Investigator Directory</h3><p>Search registered Investigators, review contributions, and manage moderator assignments. Engagement badges and recognition titles are separate from permissions.</p>
   {error&&<p className="admin-error" role="alert">{error}</p>}
   <div style={{display:"flex",gap:12,flexWrap:"wrap",alignItems:"end",marginBottom:18}}>
-   <label style={{flex:"1 1 230px"}}>Search Investigators<input type="search" value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search by display name" style={{width:"100%",padding:10,marginTop:6}}/></label>
+   <label style={{flex:"1 1 230px"}}>Search Investigators<input type="search" value={search} onChange={e=>{setSearch(e.target.value);setSelected(null)}} placeholder="Search by display name" style={{width:"100%",padding:10,marginTop:6}}/></label>
    <button type="button" className="admin-section-action" disabled={busy} onClick={load}>{busy?"Loading…":"Refresh directory ↻"}</button>
   </div>
-  {data&&<p>{profiles.length} of {data.profiles.length} Investigators shown</p>}
+  {data&&(search.trim()?<p>Showing {profiles.length} of {matches.length} matching Investigators{matches.length>10?" (refine your search for more)":""}.</p>:<p>Search for an Investigator by username.</p>)}
   {data&&!data.moderatorRolesReady&&<p className="admin-error">Moderator assignments are unavailable until the Batch 2 role SQL is applied. The directory remains read-only for roles.</p>}
   <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(250px,1fr))",gap:16}}>
    <div style={{maxHeight:460,overflowY:"auto"}}>
     {profiles.map(p=>{const admin=data.admins.includes(p.user_id),mod=data.moderators.includes(p.user_id);return <button key={p.user_id} type="button" className="admin-section-action" style={{display:"block",width:"100%",textAlign:"left",marginBottom:8,borderColor:selected===p.user_id?"#d6a34a":undefined}} onClick={()=>setSelected(p.user_id)}>{p.display_name||"Investigator"} <small>· {admin?"Administrator":mod?"Moderator":"Investigator"}</small></button>})}
-    {data&&!profiles.length&&<p>No Investigators match that search.</p>}
+    {data&&!!search.trim()&&!profiles.length&&<p>No Investigators match that search.</p>}
    </div>
    <div>
-    {!current?<p>Select an Investigator to view their activity.</p>:<>
+    {!current?<p>{search.trim()?"Select an Investigator to view their activity.":"Enter a username above to find an Investigator."}</p>:<>
      <h3>{current.display_name||"Investigator"}</h3>
      <p>{threads.length} investigations · {comments.length} evidence contributions{data.activityLimited?" (recent activity only)":""}</p>
      <p><strong>Role:</strong> {data.admins.includes(selected)?"Administrator":data.moderators.includes(selected)?"Moderator":"Investigator"}</p>
