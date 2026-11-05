@@ -1,16 +1,16 @@
 import "./research.css";
 import SiteHeader from "../components/SiteHeader";
-export default function ResearchArchive() {
-  return (
-    <main className="research-index-page">
+import ResearchSelector from "./ResearchSelector";
+import Episode03Research from "./episode-03/page";
+import Episode02Research from "./episode-02/page";
+import Episode01Research from "./episode-01/page";
 
-      {/* NAVIGATION */}
-
-      <SiteHeader />
-
-
-      {/* RESEARCH ARCHIVE HERO */}
-
+export default async function ResearchArchive({ searchParams }) {
+  const params = await searchParams;
+  const selected = ["01","02","03"].includes(params?.episode) ? params.episode : "03";
+  const CurrentResearch = selected === "01" ? Episode01Research : selected === "02" ? Episode02Research : Episode03Research;
+  return <main className="research-index-page">
+    <SiteHeader />
       <section className="research-page-hero">
 
         <p className="section-label">
@@ -35,78 +35,15 @@ export default function ResearchArchive() {
       </section>
 
 
-      {/* ARCHIVE */}
 
-      <section className="research-archive">
-
-        <div className="archive-heading">
-
-          <p className="section-label">
-            RESEARCH ARCHIVE
-          </p>
-
-          <h2>
-            Explore the Evidence.
-          </h2>
-
-        </div>
-
-
-        {/* EPISODE 03 */}
-        <article className="archive-entry"><div className="archive-number">03</div><div className="archive-content"><p className="archive-episode-label">EPISODE 03</p><h3>Is Technology Empowering Scammers?</h3><p>From the Spanish Prisoner and Charles Ponzi to voice cloning, deepfake video calls, modern financial fraud and 2026 U.S. Senate testimony.</p><a href="/research/episode-03" className="archive-link">View Episode Research →</a></div></article>
-
-        {/* EPISODE 02 */}
-        <article className="archive-entry">
-          <div className="archive-number">02</div>
-          <div className="archive-content">
-            <p className="archive-episode-label">EPISODE 02</p>
-            <h3>Are We Capable of Containing AI?</h3>
-            <p>Research into autonomous AI security, the OpenAI–Hugging Face incident, U.S. Senate testimony, Y2K preparedness, and October 2026 AI accountability developments.</p>
-            <a href="/research/episode-02" className="archive-link">View Episode Research →</a>
-          </div>
-        </article>
-
-                {/* EPISODE 01 */}
-
-        <article className="archive-entry">
-
-          <div className="archive-number">
-            01
-          </div>
-
-          <div className="archive-content">
-
-            <p className="archive-episode-label">
-              EPISODE 01
-            </p>
-
-            <h3>
-              Is Technology Destroying Our Attention Span?
-            </h3>
-
-            <p>
-              Research examining historical concerns surrounding
-              television and comic books alongside modern studies
-              of smartphones, notifications, short-form video,
-              attention switching, and digital media.
-            </p>
-
-            <a
-              href="/research/episode-01"
-              className="archive-link"
-            >
-              View Episode Research →
-            </a>
-
-          </div>
-
-        </article>
-
-      </section>
-
-
-      {/* FOOTER */}
-
+    <section className="research-archive research-live-archive">
+      <div className="archive-heading">
+        <p className="section-label">EXPLORE THE EVIDENCE</p>
+        <h2>Research & References</h2>
+      </div>
+      <ResearchSelector selected={selected} />
+      <div className="research-embedded"><CurrentResearch /></div>
+    </section>
 <footer className="site-footer">
 
   <div className="footer-brand">
@@ -157,6 +94,6 @@ export default function ResearchArchive() {
 
 </footer>
 
-    </main>
-  );
+
+  </main>;
 }

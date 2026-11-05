@@ -18,3 +18,19 @@
 .research-index-page .archive-entry{padding:23px 0}
 .research-index-page .archive-content>p:not(.archive-episode-label){font-size:15px;line-height:1.55;margin:0 0 12px;max-width:850px}
 @media(max-width:560px){.research-index-page .archive-heading h2{font-size:25px}.research-index-page .archive-content h3{font-size:23px}}
+
+/* Inline episode research with a single public Research Library header. */
+.research-index-page .research-live-archive .archive-heading h2{font-size:clamp(24px,2.3vw,28px)}
+.research-index-page .research-selector-row{display:flex;align-items:center;gap:20px;margin:18px 0 22px}
+.research-index-page .research-selector-row label{font-size:14px;color:#bbb9b5;white-space:nowrap}
+.research-index-page .research-selector-row select{flex:1;min-width:0;background:#222324;border:1px solid #594636;color:#f1ebe2;font-size:15px;padding:14px 16px;border-radius:3px}
+.research-index-page .research-embedded>main{background:transparent}
+.research-index-page .research-embedded .navbar,.research-index-page .research-embedded .site-footer,.research-index-page .research-embedded .research-page-nav{display:none}
+.research-index-page .research-embedded .episode-research-hero{padding:16px 0 22px;background:transparent;min-height:0;border:0}
+.research-index-page .research-embedded .episode-research-hero .research-back{display:none}
+.research-index-page .research-embedded .episode-research-hero h1{font-size:clamp(25px,2.5vw,36px);line-height:1.18;letter-spacing:-.4px;margin:10px 0 12px}
+.research-index-page .research-embedded .episode-research-intro{font-size:15px;line-height:1.6;max-width:900px}
+.research-index-page .research-embedded .episode-research-body{padding:12px 0 40px;background:transparent}
+.research-index-page .research-embedded .research-section{margin-bottom:28px}
+.research-index-page .research-embedded .research-section-heading h2{font-size:clamp(22px,2.3vw,29px)}
+@media(max-width:600px){.research-index-page .research-selector-row{align-items:stretch;flex-direction:column;gap:9px}}
