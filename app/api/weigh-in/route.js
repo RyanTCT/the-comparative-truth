@@ -1,6 +1,6 @@
 import {NextResponse} from "next/server";
 export const runtime="nodejs";export const dynamic="force-dynamic";
-const base=process.env.NEXT_PUBLIC_SUPABASE_URL?.replace(/\\/$/,""),pub=process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,secret=process.env.SUPABASE_SECRET_KEY;
+const base=process.env.NEXT_PUBLIC_SUPABASE_URL?.replace(/\/$/,""),pub=process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,secret=process.env.SUPABASE_SECRET_KEY;
 const uuid=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const respond=(body,status=200)=>NextResponse.json(body,{status,headers:{"Cache-Control":"no-store"}});
 async function db(path,method="GET",body,prefer){const r=await fetch(base+"/rest/v1/"+path,{method,headers:{apikey:secret,"Content-Type":"application/json",...(prefer?{Prefer:prefer}:{})},...(body===undefined?{}:{body:JSON.stringify(body)}),cache:"no-store"});if(!r.ok){console.error("Weigh In database failure",path.split("?")[0],r.status,(await r.text()).slice(0,200));throw Error("Database unavailable")}const t=await r.text();return t?JSON.parse(t):null;}
