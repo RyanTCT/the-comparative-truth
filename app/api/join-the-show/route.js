@@ -57,7 +57,7 @@ async function notifyNewSubmission(type, fields) {
 
 
 async function notifyFounderInApp(type, fields) {
-  const base = process.env.NEXT_PUBLIC_SUPABASE_URL?.replace(/\\/$/, "");
+  const base = process.env.NEXT_PUBLIC_SUPABASE_URL?.replace(/\/$/, "");
   const key = process.env.SUPABASE_SECRET_KEY;
   if (!base || !key) return;
   const headers = { apikey: key, "Content-Type": "application/json" };
