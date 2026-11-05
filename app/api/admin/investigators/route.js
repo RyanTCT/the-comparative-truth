@@ -28,13 +28,13 @@ export async function GET(request){
  if(!auth)return json({error:"Administrator access required."},403);
  try{
   const profiles=await db(auth,"investigator_profiles?select=user_id,display_name&order=display_name.asc&limit=1000");
-  const [threads,comments,admins,moderators]=await Promise.all([
+  const [threads,comments,admins,moderators,commentLikes,threadLikes,moderation,titles,assignments]=await Promise.all([
    db(auth,"community_threads?select=id,author_id,title,category_id,created_at&order=created_at.desc&limit=1000"),
    db(auth,"community_comments?select=id,author_id,thread_id,created_at&order=created_at.desc&limit=1000"),
    db(auth,"admin_users?select=user_id"),
    db(auth,"investigator_moderators?select=user_id").catch(()=>null)
   ]);
-  return json({profiles,threads,comments,admins:admins.map(x=>x.user_id),moderators:moderators?.map(x=>x.user_id)||[],moderatorRolesReady:moderators!==null,activityLimited:threads.length===1000||comments.length===1000});
+  return json({profiles,threads,comments,commentLikes,threadLikes,moderation,titles,assignments,admins:admins.map(x=>x.user_id),moderators:moderators?.map(x=>x.user_id)||[],moderatorRolesReady:moderators!==null,activityLimited:threads.length===1000||comments.length===1000});
  }catch(e){return json({error:"Investigator directory could not load. Verify the existing community tables and administrator access."},503)}
 }
 export async function PATCH(request){

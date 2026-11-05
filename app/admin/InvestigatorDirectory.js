@@ -1,7 +1,8 @@
 "use client";
 import {useEffect,useMemo,useState} from "react";
+const LIMIT=5;
 export default function InvestigatorDirectory({session}){
- const [data,setData]=useState(null),[error,setError]=useState(""),[busy,setBusy]=useState(false),[search,setSearch]=useState(""),[selected,setSelected]=useState(null);
+ const [data,setData]=useState(null),[error,setError]=useState(""),[busy,setBusy]=useState(false),[search,setSearch]=useState(""),[selected,setSelected]=useState(null),[activityFilter,setActivityFilter]=useState("All"),[moderationFilter,setModerationFilter]=useState("All"),[activityExpanded,setActivityExpanded]=useState(false),[moderationExpanded,setModerationExpanded]=useState(false);
  async function load(){
   if(!session?.access_token)return;
   setBusy(true);setError("");
@@ -15,43 +16,65 @@ export default function InvestigatorDirectory({session}){
  const threads=(data?.threads||[]).filter(t=>t.author_id===selected);
  const comments=(data?.comments||[]).filter(c=>c.author_id===selected);
  const threadById=Object.fromEntries((data?.threads||[]).map(t=>[t.id,t]));
- const activity=[...threads.map(t=>({...t,kind:"Investigation",thread_id:t.id})),...comments.map(c=>({...c,kind:"Evidence contribution"}))].sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+ const activity=[...threads.map(t=>({...t,kind:"Investigation",thread_id:t.id})),...comments.map(c=>({...c,kind:"Contribution"}))].sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+ const moderation=(data?.moderation||[]).filter(x=>x.author_id===selected).sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+ const given=(data?.commentLikes||[]).filter(x=>x.user_id===selected).length+(data?.threadLikes||[]).filter(x=>x.user_id===selected).length;
+ const commentIds=new Set(comments.map(x=>x.id)),threadIds=new Set(threads.map(x=>x.id));
+ const received=(data?.commentLikes||[]).filter(x=>commentIds.has(x.comment_id)).length+(data?.threadLikes||[]).filter(x=>threadIds.has(x.thread_id)).length;
+ const filteredActivity=activity.filter(a=>activityFilter==="All"||a.kind===activityFilter);
+ const filteredModeration=moderation.filter(a=>moderationFilter==="All"||a.status===moderationFilter.toLowerCase());
+ const recognition=(data?.assignments||[]).filter(a=>a.user_id===selected).map(a=>data.titles?.find(t=>t.id===a.title_id)?.name).filter(Boolean);
  async function setModerator(user_id,moderator){
   if(!window.confirm((moderator?"Grant":"Remove")+" moderator access for this Investigator?"))return;
   setBusy(true);setError("");
   try{const r=await fetch("/api/admin/investigators",{method:"PATCH",headers:{"Content-Type":"application/json",Authorization:"Bearer "+session.access_token},body:JSON.stringify({user_id,moderator})});const d=await r.json();if(!r.ok)throw Error(d.error||"Role update failed");await load()}
   catch(e){setError(e.message)}finally{setBusy(false)}
  }
+ const switchUser=id=>{setSelected(id);setActivityExpanded(false);setModerationExpanded(false);setActivityFilter("All");setModerationFilter("All")};
+ const tabs=(values,active,setter)=><div style={{display:"flex",gap:7,flexWrap:"wrap",margin:"12px 0 18px"}}>{values.map(v=><button type="button" key={v} onClick={()=>setter(v)} aria-pressed={active===v} style={{border:"1px solid #655037",padding:"8px 12px",background:active===v?"#916332":"#252322",color:"#eee8df",cursor:"pointer"}}>{v}</button>)}</div>;
+ const panelStyle={minWidth:0,border:"1px solid #51402f",background:"#141517",padding:20};
  return <section className="admin-overview-panel">
-  <h3>Investigator Directory</h3><p>Search registered Investigators, review contributions, and manage moderator assignments. Engagement badges and recognition titles are separate from permissions.</p>
+  <h3>Investigator Directory</h3><p>Search registered Investigators, review community activity and moderation records, and manage moderator assignments.</p>
   {error&&<p className="admin-error" role="alert">{error}</p>}
   <div style={{display:"flex",gap:12,flexWrap:"wrap",alignItems:"end",marginBottom:18}}>
-   <label style={{flex:"1 1 230px"}}>Search Investigators<input type="search" value={search} onChange={e=>{setSearch(e.target.value);setSelected(null)}} placeholder="Search by display name" style={{width:"100%",padding:10,marginTop:6}}/></label>
+   <label style={{flex:"1 1 230px"}}>Search Investigators<input type="search" value={search} onChange={e=>{setSearch(e.target.value);switchUser(null)}} placeholder="Search by display name" style={{width:"100%",padding:10,marginTop:6}}/></label>
    <button type="button" className="admin-section-action" disabled={busy} onClick={load}>{busy?"Loading…":"Refresh directory ↻"}</button>
   </div>
   {data&&(search.trim()?<p>Showing {profiles.length} of {matches.length} matching Investigators{matches.length>10?" (refine your search for more)":""}.</p>:<p>Search for an Investigator by username.</p>)}
-  {data&&!data.moderatorRolesReady&&<p className="admin-error">Moderator assignments are unavailable until the Batch 2 role SQL is applied. The directory remains read-only for roles.</p>}
-  <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(250px,1fr))",gap:16}}>
-   <div style={{maxHeight:460,overflowY:"auto"}}>
-    {profiles.map(p=>{const admin=data.admins.includes(p.user_id),mod=data.moderators.includes(p.user_id);return <button key={p.user_id} type="button" className="admin-section-action" style={{display:"block",width:"100%",textAlign:"left",marginBottom:8,borderColor:selected===p.user_id?"#d6a34a":undefined}} onClick={()=>setSelected(p.user_id)}>{p.display_name||"Investigator"} <small>· {admin?"Administrator":mod?"Moderator":"Investigator"}</small></button>})}
-    {data&&!!search.trim()&&!profiles.length&&<p>No Investigators match that search.</p>}
+  {data&&!data.moderatorRolesReady&&<p className="admin-error">Moderator assignments are unavailable until the role SQL is applied.</p>}
+  <div style={{display:"flex",flexWrap:"wrap",gap:8,marginBottom:20}}>{profiles.map(p=>{const admin=data.admins.includes(p.user_id),mod=data.moderators.includes(p.user_id);return <button key={p.user_id} type="button" className="admin-section-action" style={{textAlign:"left",borderColor:selected===p.user_id?"#d6a34a":undefined}} onClick={()=>switchUser(p.user_id)}>{p.display_name||"Investigator"} <small>· {admin?"Administrator":mod?"Moderator":"Investigator"}</small></button>})}</div>
+  {data&&!!search.trim()&&!profiles.length&&<p>No Investigators match that search.</p>}
+  {current&&<div style={{marginTop:22}}>
+   <div style={{display:"flex",justifyContent:"space-between",gap:18,flexWrap:"wrap",alignItems:"center"}}>
+    <div><h3 style={{margin:"0 0 8px"}}>{current.display_name||"Investigator"}</h3><p style={{margin:0}}>Role: {data.admins.includes(selected)?"Administrator":data.moderators.includes(selected)?"Moderator":"Investigator"}{recognition.length?" · "+recognition.join(", "):""}</p></div>
+    {data.moderatorRolesReady&&!data.admins.includes(selected)&&<button type="button" className="admin-section-action" disabled={busy} onClick={()=>setModerator(selected,!data.moderators.includes(selected))}>{data.moderators.includes(selected)?"Remove Moderator Role":"Grant Moderator Role"}</button>}
    </div>
-   <div>
-    {!current?<p>{search.trim()?"Select an Investigator to view their activity.":"Enter a username above to find an Investigator."}</p>:<>
-     <h3>{current.display_name||"Investigator"}</h3>
-     <p>{threads.length} investigations · {comments.length} evidence contributions{data.activityLimited?" (recent activity only)":""}</p>
-     <p><strong>Role:</strong> {data.admins.includes(selected)?"Administrator":data.moderators.includes(selected)?"Moderator":"Investigator"}</p>
-     {data.moderatorRolesReady&&!data.admins.includes(selected)&&<button type="button" className="admin-section-action" disabled={busy} onClick={()=>setModerator(selected,!data.moderators.includes(selected))}>{data.moderators.includes(selected)?"Remove Moderator Role":"Grant Moderator Role"}</button>}
-     <h4 style={{marginTop:20}}>Recent Activity</h4>
-     <div style={{maxHeight:400,overflowY:"auto"}}>
-      {activity.slice(0,100).map(a=><div className="admin-analytics-row" key={a.kind+a.id} style={{display:"block",padding:"10px 0"}}>
-       <strong>{a.kind}</strong> · <time>{new Date(a.created_at).toLocaleString()}</time><br/>
-       <a href={"/community?thread="+encodeURIComponent(a.thread_id)} style={{color:"#d6a34a"}}>{a.kind==="Investigation"?a.title:(threadById[a.thread_id]?.title||"View discussion")} ↗</a>
-      </div>)}
-      {!activity.length&&<p>No recorded community activity.</p>}
-     </div>
-    </>}
+   <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(145px,1fr))",gap:12,margin:"22px 0"}}>
+    {[["Investigations",threads.length],["Contributions",comments.length],["Likes Received",received],["Likes Given",given]].map(([label,value])=><div key={label} style={{border:"1px solid #57442f",padding:"14px 16px",textAlign:"center"}}><strong style={{display:"block",fontSize:25,color:"#d6a34a"}}>{value}</strong><span>{label}</span></div>)}
    </div>
-  </div>
- </section>
+   {data.activityLimited&&<p style={{fontSize:13,color:"#bfb2a0"}}>Activity totals reflect the most recent records available.</p>}
+   <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(min(100%,340px),1fr))",gap:18,alignItems:"start"}}>
+    <div style={panelStyle}><h4 style={{marginTop:0,fontSize:20}}>Community Activity</h4>
+     {tabs(["All","Investigation","Contribution"],activityFilter,v=>{setActivityFilter(v);setActivityExpanded(false)})}
+     {filteredActivity.slice(0,activityExpanded?undefined:LIMIT).map(a=><div className="admin-analytics-row" key={a.kind+a.id} style={{display:"block",padding:"12px 0"}}>
+      <strong>{a.kind}</strong> · <time>{new Date(a.created_at).toLocaleString()}</time><br/>
+      <a href={"/community?thread="+encodeURIComponent(a.thread_id)} style={{color:"#d6a34a"}}>{a.kind==="Investigation"?a.title:(threadById[a.thread_id]?.title||"View discussion")} ↗</a>
+     </div>)}
+     {!filteredActivity.length&&<p>No matching community activity.</p>}
+     {filteredActivity.length>LIMIT&&<button type="button" className="admin-section-action" style={{marginTop:16}} onClick={()=>setActivityExpanded(x=>!x)}>{activityExpanded?"Show Less":"View More ("+(filteredActivity.length-LIMIT)+")"}</button>}
+    </div>
+    <div style={panelStyle}><h4 style={{marginTop:0,fontSize:20}}>Moderation Record</h4>
+     <p style={{fontSize:13,color:"#bfb2a0"}}>Automated flags are not confirmed violations.</p>
+     {tabs(["All","Pending","Approved","Rejected"],moderationFilter,v=>{setModerationFilter(v);setModerationExpanded(false)})}
+     {filteredModeration.slice(0,moderationExpanded?undefined:LIMIT).map(m=><div className="admin-analytics-row" key={m.id} style={{display:"block",padding:"12px 0"}}>
+      <strong style={{textTransform:"capitalize"}}>{m.status}</strong> · <span>{m.submission_type.replaceAll("_"," ")}</span> · <time>{new Date(m.created_at).toLocaleString()}</time>
+      {m.review_note&&<p style={{margin:"7px 0",overflowWrap:"anywhere"}}>Reason: {m.review_note}</p>}
+      {m.reviewed_at&&<small>Reviewed: {new Date(m.reviewed_at).toLocaleString()}</small>}
+     </div>)}
+     {!filteredModeration.length&&<p>No matching moderation records.</p>}
+     {filteredModeration.length>LIMIT&&<button type="button" className="admin-section-action" style={{marginTop:16}} onClick={()=>setModerationExpanded(x=>!x)}>{moderationExpanded?"Show Less":"View More ("+(filteredModeration.length-LIMIT)+")"}</button>}
+    </div>
+   </div>
+  </div>}
+ </section>;
 }
