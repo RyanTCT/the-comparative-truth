@@ -2,7 +2,7 @@
 import {useEffect,useMemo,useState} from "react";
 const LIMIT=5;
 export default function InvestigatorDirectory({session}){
- const [data,setData]=useState(null),[error,setError]=useState(""),[busy,setBusy]=useState(false),[search,setSearch]=useState(""),[selected,setSelected]=useState(null),[activityFilter,setActivityFilter]=useState("All"),[moderationFilter,setModerationFilter]=useState("All"),[activityExpanded,setActivityExpanded]=useState(false),[moderationExpanded,setModerationExpanded]=useState(false);
+ const [weighExpanded,setWeighExpanded]=useState(false),[data,setData]=useState(null),[error,setError]=useState(""),[busy,setBusy]=useState(false),[search,setSearch]=useState(""),[selected,setSelected]=useState(null),[activityFilter,setActivityFilter]=useState("All"),[moderationFilter,setModerationFilter]=useState("All"),[activityExpanded,setActivityExpanded]=useState(false),[moderationExpanded,setModerationExpanded]=useState(false);
  async function load(){
   if(!session?.access_token)return;
   setBusy(true);setError("");
@@ -17,6 +17,7 @@ export default function InvestigatorDirectory({session}){
  const comments=(data?.comments||[]).filter(c=>c.author_id===selected);
  const threadById=Object.fromEntries((data?.threads||[]).map(t=>[t.id,t]));
  const activity=[...threads.map(t=>({...t,kind:"Investigation",thread_id:t.id})),...comments.map(c=>({...c,kind:"Contribution"}))].sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+ const weigh=(data?.weighVotes||[]).filter(v=>v.user_id===selected).map(v=>({...v,question:(data?.weighQuestions||[]).find(q=>q.id===v.question_id),option:(data?.weighOptions||[]).find(o=>o.id===v.option_id)})).sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
  const moderation=(data?.moderation||[]).filter(x=>x.author_id===selected).sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
  const given=(data?.commentLikes||[]).filter(x=>x.user_id===selected).length+(data?.threadLikes||[]).filter(x=>x.user_id===selected).length;
  const commentIds=new Set(comments.map(x=>x.id)),threadIds=new Set(threads.map(x=>x.id));
@@ -30,11 +31,11 @@ export default function InvestigatorDirectory({session}){
   try{const r=await fetch("/api/admin/investigators",{method:"PATCH",headers:{"Content-Type":"application/json",Authorization:"Bearer "+session.access_token},body:JSON.stringify({user_id,moderator})});const d=await r.json();if(!r.ok)throw Error(d.error||"Role update failed");await load()}
   catch(e){setError(e.message)}finally{setBusy(false)}
  }
- const switchUser=id=>{setSelected(id);setActivityExpanded(false);setModerationExpanded(false);setActivityFilter("All");setModerationFilter("All")};
+ const switchUser=id=>{setSelected(id);setActivityExpanded(false);setWeighExpanded(false);setModerationExpanded(false);setActivityFilter("All");setModerationFilter("All")};
  const tabs=(values,active,setter)=><div style={{display:"flex",gap:7,flexWrap:"wrap",margin:"12px 0 18px"}}>{values.map(v=><button type="button" key={v} onClick={()=>setter(v)} aria-pressed={active===v} style={{border:"1px solid #655037",padding:"8px 12px",background:active===v?"#916332":"#252322",color:"#eee8df",cursor:"pointer"}}>{v}</button>)}</div>;
  const panelStyle={minWidth:0,border:"1px solid #51402f",background:"#141517",padding:20};
  return <section className="admin-overview-panel">
-  <h3>Investigator Directory</h3><p>Search registered Investigators, review community activity and moderation records, and manage moderator assignments.</p>
+  <h3>Investigator Directory</h3><p>Search registered Investigators, review community activity, Weigh In votes, and moderation records, and manage moderator assignments.</p>
   {error&&<p className="admin-error" role="alert">{error}</p>}
   <div style={{display:"flex",gap:12,flexWrap:"wrap",alignItems:"end",marginBottom:18}}>
    <label style={{flex:"1 1 230px"}}>Search Investigators<input type="search" value={search} onChange={e=>{setSearch(e.target.value);switchUser(null)}} placeholder="Search by display name" style={{width:"100%",padding:10,marginTop:6}}/></label>
@@ -50,7 +51,7 @@ export default function InvestigatorDirectory({session}){
     {data.moderatorRolesReady&&!data.admins.includes(selected)&&<button type="button" className="admin-section-action" disabled={busy} onClick={()=>setModerator(selected,!data.moderators.includes(selected))}>{data.moderators.includes(selected)?"Remove Moderator Role":"Grant Moderator Role"}</button>}
    </div>
    <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(145px,1fr))",gap:12,margin:"22px 0"}}>
-    {[["Investigations",threads.length],["Contributions",comments.length],["Likes Received",received],["Likes Given",given]].map(([label,value])=><div key={label} style={{border:"1px solid #57442f",padding:"14px 16px",textAlign:"center"}}><strong style={{display:"block",fontSize:25,color:"#d6a34a"}}>{value}</strong><span>{label}</span></div>)}
+    {[["Investigations",threads.length],["Contributions",comments.length],["Likes Received",received],["Likes Given",given],["Polls Participated In",weigh.length]].map(([label,value])=><div key={label} style={{border:"1px solid #57442f",padding:"14px 16px",textAlign:"center"}}><strong style={{display:"block",fontSize:25,color:"#d6a34a"}}>{value}</strong><span>{label}</span></div>)}
    </div>
    {data.activityLimited&&<p style={{fontSize:13,color:"#bfb2a0"}}>Activity totals reflect the most recent records available.</p>}
    <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(min(100%,340px),1fr))",gap:18,alignItems:"start"}}>
@@ -63,7 +64,19 @@ export default function InvestigatorDirectory({session}){
      {!filteredActivity.length&&<p>No matching community activity.</p>}
      {filteredActivity.length>LIMIT&&<button type="button" className="admin-section-action" style={{marginTop:16}} onClick={()=>setActivityExpanded(x=>!x)}>{activityExpanded?"Show Less":"View More ("+(filteredActivity.length-LIMIT)+")"}</button>}
     </div>
-    <div style={panelStyle}><h4 style={{marginTop:0,fontSize:20}}>Moderation Record</h4>
+    <div style={panelStyle}><h4 style={{marginTop:0,fontSize:20}}>Weigh In Activity</h4>
+     <p style={{fontSize:13,color:"#bfb2a0"}}>Current votes for episode questions.</p>
+     {weigh.slice(0,weighExpanded?undefined:LIMIT).map(v=><div className="admin-analytics-row" key={v.question_id} style={{display:"block",padding:"12px 0"}}>
+      <strong>Episode {String(v.question?.episode_number||"?").padStart(2,"0")}</strong> · <time>{new Date(v.created_at).toLocaleString()}</time>
+      <div style={{margin:"7px 0",overflowWrap:"anywhere"}}>{v.question?.question||"Episode question unavailable"}</div>
+      <div style={{color:"#d6a34a",overflowWrap:"anywhere"}}>Voted: {v.option?.option_text||"Answer unavailable"}</div>
+     </div>)}
+     {!weigh.length&&<p>No Weigh In votes yet.</p>}
+     {weigh.length>LIMIT&&<button type="button" className="admin-section-action" style={{marginTop:16}} onClick={()=>setWeighExpanded(x=>!x)}>{weighExpanded?"Show Less":"View More ("+(weigh.length-LIMIT)+")"}</button>}
+    </div>
+   </div>
+   <div style={{...panelStyle,marginTop:18}}><h4 style={{marginTop:0,fontSize:20}}>Moderation Record</h4>
+
      <p style={{fontSize:13,color:"#bfb2a0"}}>Automated flags are not confirmed violations.</p>
      {tabs(["All","Pending","Approved","Rejected"],moderationFilter,v=>{setModerationFilter(v);setModerationExpanded(false)})}
      {filteredModeration.slice(0,moderationExpanded?undefined:LIMIT).map(m=><div className="admin-analytics-row" key={m.id} style={{display:"block",padding:"12px 0"}}>

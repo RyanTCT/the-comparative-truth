@@ -28,7 +28,7 @@ export async function GET(request){
  if(!auth)return json({error:"Administrator access required."},403);
  try{
   const profiles=await db(auth,"investigator_profiles?select=user_id,display_name,created_at&order=display_name.asc&limit=1000");
-  const [threads,comments,admins,moderators,commentLikes,threadLikes,moderation,titles,assignments]=await Promise.all([
+  const [threads,comments,admins,moderators,commentLikes,threadLikes,moderation,titles,assignments,weighVotes,weighQuestions,weighOptions]=await Promise.all([
    db(auth,"community_threads?select=id,author_id,title,category_id,created_at&order=created_at.desc&limit=1000"),
    db(auth,"community_comments?select=id,author_id,thread_id,created_at&order=created_at.desc&limit=1000"),
    db(auth,"admin_users?select=user_id"),
@@ -37,9 +37,12 @@ export async function GET(request){
    db(auth,"community_thread_likes?select=user_id,thread_id&limit=10000"),
    db(auth,"community_moderation_queue?select=id,author_id,submission_type,status,review_note,created_at,reviewed_at&order=created_at.desc&limit=1000"),
    db(auth,"community_titles?select=id,name"),
-   db(auth,"investigator_title_assignments?select=user_id,title_id")
+   db(auth,"investigator_title_assignments?select=user_id,title_id"),
+   db(auth,"weigh_in_votes?select=user_id,question_id,option_id,created_at&order=created_at.desc&limit=10000"),
+   db(auth,"weigh_in_questions?select=id,episode_number,question,published"),
+   db(auth,"weigh_in_options?select=id,option_text")
   ]);
-  return json({profiles,threads,comments,commentLikes,threadLikes,moderation,titles,assignments,admins:admins.map(x=>x.user_id),moderators:moderators?.map(x=>x.user_id)||[],moderatorRolesReady:moderators!==null,activityLimited:threads.length===1000||comments.length===1000});
+  return json({profiles,threads,comments,commentLikes,threadLikes,moderation,titles,assignments,weighVotes,weighQuestions,weighOptions,admins:admins.map(x=>x.user_id),moderators:moderators?.map(x=>x.user_id)||[],moderatorRolesReady:moderators!==null,activityLimited:threads.length===1000||comments.length===1000});
  }catch(e){return json({error:"Investigator directory could not load. Verify the existing community tables and administrator access."},503)}
 }
 export async function PATCH(request){
