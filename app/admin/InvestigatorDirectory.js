@@ -69,7 +69,7 @@ export default function InvestigatorDirectory({session}){
      {filteredModeration.slice(0,moderationExpanded?undefined:LIMIT).map(m=><div className="admin-analytics-row" key={m.id} style={{display:"block",padding:"12px 0"}}>
       <strong style={{textTransform:"capitalize"}}>{m.status}</strong> · <span>{m.submission_type.replaceAll("_"," ")}</span> · <time>{new Date(m.created_at).toLocaleString()}</time>
       {m.review_note&&<p style={{margin:"7px 0",overflowWrap:"anywhere"}}>Reason: {m.review_note}</p>}
-      {m.reviewed_at&&<small>Reviewed: {new Date(m.reviewed_at).toLocaleString()}</small>}
+      {m.reviewed_at&&<small style={{display:"block",marginTop:8}}>Reviewed: {new Date(m.reviewed_at).toLocaleString()}</small>}
      </div>)}
      {!filteredModeration.length&&<p>No matching moderation records.</p>}
      {filteredModeration.length>LIMIT&&<button type="button" className="admin-section-action" style={{marginTop:16}} onClick={()=>setModerationExpanded(x=>!x)}>{moderationExpanded?"Show Less":"View More ("+(filteredModeration.length-LIMIT)+")"}</button>}

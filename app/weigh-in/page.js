@@ -1,27 +1,23 @@
+"use client";
+import {useEffect,useMemo,useState} from "react";
 import Link from "next/link";
+import {createClient} from "@supabase/supabase-js";
 import SiteHeader from "../components/SiteHeader";
-
-export const metadata = {
-  title: "Weigh In",
-  description: "The Comparative Truth's community voting experience is coming soon. Investigators will be able to weigh in on each episode's central question.",
-};
-
-export default function WeighInPage() {
-  return (
-    <main style={{minHeight:"100vh",background:"#090a0c",color:"#f2eee6"}}>
-      <SiteHeader />
-      <section style={{maxWidth:880,margin:"0 auto",padding:"clamp(80px,12vw,145px) 24px 110px",textAlign:"center"}}>
-        <p style={{color:"#c18b4d",letterSpacing:"3px",fontSize:12,fontWeight:700,textTransform:"uppercase",marginBottom:24}}>The Comparative Truth · Investigator Community</p>
-        <h1 style={{fontFamily:"Georgia,serif",fontWeight:400,fontSize:"clamp(44px,8vw,78px)",lineHeight:1.1,margin:"0 0 24px"}}>Weigh <em style={{color:"#c18b4d"}}>In.</em></h1>
-        <p style={{color:"#c6c1b8",fontSize:"clamp(17px,2.5vw,21px)",lineHeight:1.7,maxWidth:670,margin:"0 auto 42px"}}>Every investigation begins with a question. Soon, registered Investigators will be able to cast their vote, see where the community stands, and reconsider the evidence.</p>
-        <div style={{border:"1px solid #56432d",background:"linear-gradient(140deg,#1b1916,#101113)",padding:"clamp(28px,5vw,52px)",borderRadius:4}}>
-          <p style={{color:"#c18b4d",letterSpacing:"2px",fontSize:11,fontWeight:700,textTransform:"uppercase",margin:"0 0 15px"}}>Community voting · Coming soon</p>
-          <h2 style={{fontFamily:"Georgia,serif",fontSize:"clamp(26px,4vw,39px)",fontWeight:400,margin:"0 0 18px"}}>The Verdict Is Still Out.</h2>
-          <p style={{color:"#bcb7ae",lineHeight:1.7,margin:"0 auto 28px",maxWidth:530}}>We're preparing episode-by-episode polls and community results. No votes are being collected yet. In the meantime, join the discussion and share your perspective.</p>
-          <Link href="/community" style={{display:"inline-block",padding:"13px 23px",background:"#c18b4d",color:"#101010",fontSize:12,fontWeight:700,letterSpacing:"1px",textTransform:"uppercase"}}>Visit the Community Board →</Link>
-        </div>
-        <p style={{marginTop:35,fontSize:12,color:"#938a7f",letterSpacing:"1px"}}>OBSERVE. COMPARE. DISCERN. AND UNDERSTAND.</p>
-      </section>
-    </main>
-  );
+import "./weigh-in.css";
+let supabase;
+function client(){if(!supabase)supabase=createClient(process.env.NEXT_PUBLIC_SUPABASE_URL,process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY);return supabase;}
+export default function WeighIn(){
+ const [session,setSession]=useState(null),[polls,setPolls]=useState([]),[mine,setMine]=useState({}),[loading,setLoading]=useState(true),[error,setError]=useState(""),[notice,setNotice]=useState(""),[busy,setBusy]=useState(""),[episode,setEpisode]=useState("recent"),[expanded,setExpanded]=useState(false);
+ async function load(s){try{const r=await fetch("/api/weigh-in",{headers:s?.access_token?{Authorization:"Bearer "+s.access_token}:{},cache:"no-store"});const d=await r.json();if(!r.ok)throw Error(d.error||"Unable to load polls.");setPolls(d.questions||[]);setMine(d.myVotes||{});setError("");}catch(e){setError(e.message)}finally{setLoading(false)}}
+ useEffect(()=>{let active=true;client().auth.getSession().then(({data})=>{if(active){setSession(data.session);load(data.session)}});const {data:{subscription}}=client().auth.onAuthStateChange((_,s)=>{if(active){setSession(s);load(s)}});return()=>{active=false;subscription.unsubscribe()}},[]);
+ const sorted=useMemo(()=>[...polls].sort((a,b)=>b.episode_number-a.episode_number||new Date(b.created_at)-new Date(a.created_at)),[polls]);
+ const displayed=episode!=="recent"?sorted.filter(q=>q.id===episode):expanded?sorted:sorted.slice(0,3);
+ async function vote(q,option){if(!session){setError("Sign in as an Investigator to cast your vote.");return}setBusy(q.id);setNotice("");setError("");try{const r=await fetch("/api/weigh-in",{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+session.access_token},body:JSON.stringify({question_id:q.id,option_id:option})});const d=await r.json();if(!r.ok)throw Error(d.error||"Unable to save vote.");await load(session);setNotice("Your vote has been recorded. You can change it anytime.");}catch(e){setError(e.message)}finally{setBusy("")}}
+ return <main className="weigh-page"><SiteHeader/><section className="weigh-wrap"><p className="weigh-eyebrow">THE COMPARATIVE TRUTH · INVESTIGATOR COMMUNITY</p><h1>Weigh <em>In.</em></h1><p className="weigh-intro">You've heard the evidence. Now tell us where you stand. Explore the community's perspective on every investigation.</p>
+ <div className="weigh-toolbar"><label htmlFor="weigh-episode">Explore an episode</label><select id="weigh-episode" value={episode} onChange={e=>{setEpisode(e.target.value);setExpanded(false)}}><option value="recent">Latest Episodes</option>{sorted.map(q=><option value={q.id} key={q.id}>Episode {String(q.episode_number).padStart(2,"0")} — {q.question}</option>)}</select></div>
+ {!session&&<p className="weigh-signin">Results are open to everyone. <Link href="/investigator/login">Sign in</Link> or <Link href="/investigator/register">become an Investigator</Link> to cast your vote.</p>}
+ {error&&<p className="weigh-error" role="alert">{error}</p>}{notice&&<p className="weigh-success" role="status">{notice}</p>}
+ {loading?<p className="weigh-empty">Loading investigations…</p>:!sorted.length?<div className="weigh-empty"><h2>The Verdict Is Still Out.</h2><p>No episode polls have been published yet. Check back soon.</p></div>:<div className="weigh-list">{displayed.map(q=><article className="weigh-card" key={q.id}><p className="weigh-eyebrow">EPISODE {String(q.episode_number).padStart(2,"0")} · COMMUNITY POLL</p><h2>{q.question}</h2><p className="weigh-prompt">After examining the evidence, where do you stand?</p><div className="weigh-options">{q.options.map(o=>{const selected=mine[q.id]===o.id;const pct=q.totalVotes?o.votes/q.totalVotes*100:0;return <div className="weigh-option" key={o.id}><div className="weigh-option-head"><span>{o.option_text}{selected&&<strong className="weigh-your-vote"> · Your vote</strong>}</span><strong>{Math.round(pct)}%</strong></div><div className="weigh-track" role="meter" aria-label={o.option_text+" result"} aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(pct)}><div style={{width:pct+"%"}}/></div><div className="weigh-option-foot"><small>{o.votes} {o.votes===1?"vote":"votes"}</small>{session&&<button type="button" className={selected?"weigh-vote selected":"weigh-vote"} disabled={busy===q.id||selected} onClick={()=>vote(q,o.id)}>{busy===q.id?"Saving…":selected?"Selected":mine[q.id]?"Change vote":"Vote"}</button>}</div></div>})}</div><p className="weigh-total">{q.totalVotes.toLocaleString()} total {q.totalVotes===1?"vote":"votes"}{mine[q.id]?" · You can change your vote anytime.":""}</p></article>)}</div>}
+ {episode==="recent"&&sorted.length>3&&<button className="weigh-more" type="button" onClick={()=>setExpanded(x=>!x)}>{expanded?"Show Less ↑":"View More Episodes ↓"}</button>}
+ <p className="weigh-disclaimer">Results reflect the opinions of participating Investigators and are not a scientific poll.</p><p className="weigh-mantra">OBSERVE. COMPARE. DISCERN. AND UNDERSTAND.</p></section></main>;
 }
