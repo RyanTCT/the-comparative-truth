@@ -28,3 +28,8 @@
 .weigh-page .weigh-section-heading h2{font-family:Georgia,"Times New Roman",serif;font-weight:700}
 .weigh-page .weigh-card h2{font-family:Georgia,"Times New Roman",serif}
 @media(max-width:800px){.weigh-page .weigh-hero{padding:30px 6% 24px}.weigh-page .weigh-wrap{padding:20px 6% 55px}}
+
+/* Use the same viewport gutters as Community Board, including the hero. */
+.weigh-page .weigh-hero{box-sizing:border-box;width:100%;max-width:none;margin:0;padding:35px 5% 29px}
+.weigh-page .weigh-wrap{padding-left:5%;padding-right:5%}
+@media(max-width:800px){.weigh-page .weigh-hero{padding:30px 6% 24px}.weigh-page .weigh-wrap{padding-left:6%;padding-right:6%}}
