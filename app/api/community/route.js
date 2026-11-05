@@ -46,16 +46,32 @@ async function screen(text){
   if(!response.ok)throw Error("Moderation unavailable");
   const result=await response.json();
   if(!Array.isArray(result.results)||!result.results.length)throw Error("Moderation unavailable");
-  return result.results.some(item=>item.flagged);
+  return result.results[0];
  }finally{clearTimeout(timer)}
 }
+
+async function queueFlag(user,data,screening){
+ const payload={author_id:user.id,submission_type:data.kind,body:data.body,title:data.title||null,category_id:data.category_id||null,thread_id:data.thread_id||null,target_id:data.kind==="edit_thread"?data.thread_id:data.kind==="edit_comment"?data.comment_id:null,parent_comment_id:data.parent_comment_id||null,reply_to_comment_id:data.reply_to_comment_id||null,moderation_model:"omni-moderation-latest",moderation_categories:screening.categories||{},moderation_scores:screening.category_scores||{}};
+ const cases=await database("community_moderation_queue","POST",payload,"return=representation");
+ const id=cases?.[0]?.id;
+ if(!id)throw Error("Moderation case could not be saved");
+ const url="/admin/moderation?case="+encodeURIComponent(id);
+ const recipients=await Promise.all([database("admin_users?select=user_id"),database("investigator_moderators?select=user_id")]);
+ const reviewers=[...new Set(recipients.flat().map(x=>x.user_id))];
+ await Promise.all(reviewers.map(async recipient=>{
+  try{await database("investigator_notifications","POST",{recipient_id:recipient,actor_id:user.id,notification_type:"moderation_review",title:"Contribution awaiting review",message:"An Investigator submission needs moderation review.",target_url:url},"return=minimal")}catch(e){console.error("Moderation reviewer alert failed",e.message)}
+ }));
+ try{await database("investigator_notifications","POST",{recipient_id:user.id,actor_id:user.id,notification_type:"moderation_pending",title:"Your contribution is being reviewed",message:"Your contribution has been submitted for moderator review. You will be notified when a decision is made.",target_url:"/community"},"return=minimal")}catch(e){console.error("Moderation author alert failed",e.message)}
+ return reply({ok:true,pending_review:true,message:"Your contribution has been submitted for moderator review."},202);
+}
+
 export async function POST(request){
  if(!base||!publicKey||!secret)return reply({error:"Community configuration unavailable."},503);
  try{
   const user=await userFor(request);
   if(!user)return reply({error:"Sign in with a verified Investigator account and a username to participate."},401);
   const data=await request.json();
-  if(!["accept","thread","comment","edit_thread","edit_comment","delete_comment","withdraw_thread","toggle_like"].includes(data.kind))return reply({error:"Unknown action."},400);
+  if(!["accept","thread","comment","edit_thread","edit_comment","delete_comment","withdraw_thread","toggle_like","toggle_thread_like"].includes(data.kind))return reply({error:"Unknown action."},400);
   if(data.kind==="accept"){
    if(data.accept!==true)return reply({error:"You must accept the Community Guidelines."},400);
    await database("community_guideline_acceptances?on_conflict=user_id","POST",{user_id:user.id,version:VERSION,accepted_at:new Date().toISOString()},"resolution=merge-duplicates,return=minimal");
@@ -106,7 +122,7 @@ export async function POST(request){
     const title=typeof data.title==="string"?data.title.trim():"";
     const body=typeof data.body==="string"?data.body.trim():"";
     if(title.length<5||title.length>120||body.length<10||body.length>5000)return reply({error:"Title must be 5–120 characters and opening evidence 10–5,000 characters."},400);
-    if(await screen(title+"\n"+body))return reply({error:"This edit requires moderator review and was not published."},422);
+    {const screening=await screen(title+"\n"+body);if(screening.flagged)return queueFlag(user,{kind:"edit_thread",body,title,thread_id:id},screening);}
     await database(table+"?id=eq."+encodeURIComponent(id)+"&author_id=eq."+encodeURIComponent(user.id),"PATCH",{title,body,updated_at:new Date().toISOString()},"return=minimal");
     return reply({ok:true});
    }
@@ -115,7 +131,7 @@ export async function POST(request){
     if(!parent.length||parent[0].is_hidden||parent[0].is_locked)return reply({error:"This investigation is closed."},403);
     const body=typeof data.body==="string"?data.body.trim():"";
     if(body.length<2||body.length>2000)return reply({error:"Evidence must be 2–2,000 characters."},400);
-    if(await screen(body))return reply({error:"This edit requires moderator review and was not published."},422);
+    {const screening=await screen(body);if(screening.flagged)return queueFlag(user,{kind:"edit_comment",body,comment_id:id,thread_id:record.thread_id},screening);}
     await database(table+"?id=eq."+encodeURIComponent(id)+"&author_id=eq."+encodeURIComponent(user.id),"PATCH",{body,updated_at:new Date().toISOString()},"return=minimal");
     return reply({ok:true});
    }
@@ -139,7 +155,7 @@ export async function POST(request){
    if(!/^[0-9a-f-]{36}$/i.test(data.category_id||""))return reply({error:"Select a category."},400);
    const categories=await database("community_categories?id=eq."+encodeURIComponent(data.category_id)+"&select=id");
    if(!categories.length)return reply({error:"Category not found."},404);
-   if(await screen(title+"\n"+body))return reply({error:"This submission requires moderator review and was not published."},422);
+   {const screening=await screen(title+"\n"+body);if(screening.flagged)return queueFlag(user,{kind:"thread",body,title,category_id:data.category_id},screening);}
    const rows=await database("community_threads","POST",{category_id:data.category_id,author_id:user.id,title,body},"return=representation");
    return reply({ok:true,id:rows[0].id},201);
   }
@@ -148,7 +164,7 @@ export async function POST(request){
   const threads=await database("community_threads?id=eq."+encodeURIComponent(data.thread_id)+"&select=id,is_locked,is_hidden,author_id,title");
   if(!threads.length||threads[0].is_hidden)return reply({error:"Investigation not found."},404);
   if(threads[0].is_locked)return reply({error:"This investigation is closed."},403);
-  if(await screen(body))return reply({error:"This contribution requires moderator review and was not published."},422);
+  /* moderation screening after reply target validation */
   let parentId=null;let replyTarget=null;
   if(data.parent_comment_id!=null){
    if(typeof data.parent_comment_id!=="string"||!/^[0-9a-f-]{36}$/i.test(data.parent_comment_id))return reply({error:"Invalid reply target."},400);
@@ -156,6 +172,7 @@ export async function POST(request){
    if(!target.length||target[0].is_hidden||target[0].thread_id!==data.thread_id)return reply({error:"Reply target not found."},404);
    parentId=target[0].parent_comment_id||target[0].id;replyTarget=target[0];
   }
+  {const screening=await screen(body);if(screening.flagged)return queueFlag(user,{kind:"comment",body,thread_id:data.thread_id,parent_comment_id:parentId,reply_to_comment_id:data.parent_comment_id||null},screening);}
   const inserted=await database("community_comments","POST",{thread_id:data.thread_id,author_id:user.id,body,parent_comment_id:parentId,reply_to_comment_id:data.parent_comment_id||null},"return=representation");
   const notificationUrl="/community?thread="+encodeURIComponent(data.thread_id)+"&comment="+encodeURIComponent(inserted?.[0]?.id||"");
   if(replyTarget)await notify(replyTarget.author_id,user.id,"reply","New reply to your contribution","An Investigator replied to your evidence.",notificationUrl,"reply_alerts");
