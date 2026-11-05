@@ -19,3 +19,8 @@
 .episodes-page .platform-buttons{gap:9px}
 @media(max-width:800px){.episodes-page .research-page-hero{padding:30px 6% 25px}.episodes-page .research-archive{padding:28px 6% 60px}.episodes-page .archive-entry{grid-template-columns:52px minmax(0,1fr);gap:15px}.episodes-page .archive-number{font-size:39px}.episodes-page .archive-episode-layout{grid-template-columns:120px minmax(0,1fr);gap:17px}.episodes-page .archive-artwork{width:120px;height:120px}.episodes-page .archive-research-aligned{margin-left:137px}}
 @media(max-width:560px){.episodes-page .archive-entry{grid-template-columns:1fr;gap:10px;padding:24px 0}.episodes-page .archive-number{font-size:30px}.episodes-page .archive-episode-layout{grid-template-columns:92px minmax(0,1fr);gap:14px}.episodes-page .archive-artwork{width:92px;height:92px}.episodes-page .archive-content h3{font-size:25px}.episodes-page .archive-research-aligned{margin-left:0}.episodes-page .research-page-hero h1{font-size:36px}}
+
+/* Shared masthead small-type scale: Community Board / Weigh In */
+.episodes-page .research-page-hero>.section-label{font-size:10px;letter-spacing:2.6px;font-weight:700;line-height:1.5;margin:0;color:#c18b4d}
+.episodes-page .research-page-hero>p:not(.section-label){font-size:14px;line-height:1.6;color:#bbb9b5;max-width:900px;margin:0}
+.episodes-page .research-page-hero h1{font-size:clamp(28px,3.5vw,45px);line-height:1.12;margin:9px 0 10px;letter-spacing:-.6px}
