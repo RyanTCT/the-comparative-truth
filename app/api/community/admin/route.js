@@ -86,7 +86,7 @@ async function handler(request){
     await db("community_moderation_queue?id=eq."+encodeURIComponent(item.id)+"&reviewed_by=eq."+encodeURIComponent(user.id),"PATCH",{status:"pending",reviewed_by:null,reviewed_at:null,review_note:null});
     return json({error:"Unable to publish approved content: "+e.message},409);
    }
-   try{await db("investigator_notifications","POST",{recipient_id:item.author_id,actor_id:user.id,notification_type:"moderation_decision",title:decision==="approved"?"Your contribution was approved":"Your contribution was not approved",message:decision==="approved"?"Your contribution has been approved and published.":"Reason: "+reason+". "+(explanation?explanation+" ":"")+"Your contribution was not approved under the Community Guidelines.",target_url:published||"/community"})}catch(e){console.error("Moderation decision notification failed",e.message)}
+   try{await db("investigator_notifications","POST",{recipient_id:item.author_id,actor_id:user.id,notification_type:"moderation_decision",title:decision==="approved"?"Your contribution was approved":"Your contribution was not approved",message:decision==="approved"?"Your contribution has been approved and published.":"Reason: "+reason+". "+(explanation?explanation+" ":"")+"Your contribution was not approved under the Community Guidelines.",target_url:published})}catch(e){console.error("Moderation decision notification failed",e.message)}
    return json({ok:true,status:decision});
   }
   if(!user.isAdmin)return json({error:"Administrator access required for this action."},403);

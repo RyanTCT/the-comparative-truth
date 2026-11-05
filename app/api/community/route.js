@@ -61,7 +61,7 @@ async function queueFlag(user,data,screening){
  await Promise.all(reviewers.map(async recipient=>{
   try{await database("investigator_notifications","POST",{recipient_id:recipient,actor_id:user.id,notification_type:"moderation_review",title:"Contribution awaiting review",message:"An Investigator submission needs moderation review.",target_url:url},"return=minimal")}catch(e){console.error("Moderation reviewer alert failed",e.message)}
  }));
- try{await database("investigator_notifications","POST",{recipient_id:user.id,actor_id:user.id,notification_type:"moderation_pending",title:"Your contribution is being reviewed",message:"Your contribution has been submitted for moderator review. You will be notified when a decision is made.",target_url:"/community"},"return=minimal")}catch(e){console.error("Moderation author alert failed",e.message)}
+ try{await database("investigator_notifications","POST",{recipient_id:user.id,actor_id:user.id,notification_type:"moderation_pending",title:"Your contribution is being reviewed",message:"Your contribution has been submitted for moderator review. You will be notified when a decision is made.",target_url:null},"return=minimal")}catch(e){console.error("Moderation author alert failed",e.message)}
  return reply({ok:true,pending_review:true,message:"Your contribution has been submitted for moderator review."},202);
 }
 
