@@ -32,7 +32,12 @@ export async function GET(request){
    db(auth,"community_threads?select=id,author_id,title,category_id,created_at&order=created_at.desc&limit=1000"),
    db(auth,"community_comments?select=id,author_id,thread_id,created_at&order=created_at.desc&limit=1000"),
    db(auth,"admin_users?select=user_id"),
-   db(auth,"investigator_moderators?select=user_id").catch(()=>null)
+   db(auth,"investigator_moderators?select=user_id").catch(()=>null),
+   db(auth,"community_comment_likes?select=user_id,comment_id&limit=10000"),
+   db(auth,"community_thread_likes?select=user_id,thread_id&limit=10000"),
+   db(auth,"community_moderation_queue?select=id,author_id,submission_type,status,review_note,created_at,reviewed_at&order=created_at.desc&limit=1000"),
+   db(auth,"community_titles?select=id,name"),
+   db(auth,"investigator_title_assignments?select=user_id,title_id")
   ]);
   return json({profiles,threads,comments,commentLikes,threadLikes,moderation,titles,assignments,admins:admins.map(x=>x.user_id),moderators:moderators?.map(x=>x.user_id)||[],moderatorRolesReady:moderators!==null,activityLimited:threads.length===1000||comments.length===1000});
  }catch(e){return json({error:"Investigator directory could not load. Verify the existing community tables and administrator access."},503)}
