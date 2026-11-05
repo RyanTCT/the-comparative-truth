@@ -33,3 +33,8 @@
 .weigh-page .weigh-hero{box-sizing:border-box;width:100%;max-width:none;margin:0;padding:35px 5% 29px}
 .weigh-page .weigh-wrap{padding-left:5%;padding-right:5%}
 @media(max-width:800px){.weigh-page .weigh-hero{padding:30px 6% 24px}.weigh-page .weigh-wrap{padding-left:6%;padding-right:6%}}
+
+/* Pixel-consistent with Community Board masthead and forum gutters */
+.weigh-page .weigh-hero{padding-left:max(5%,calc((100vw - 1160px)/2));padding-right:max(5%,calc((100vw - 1160px)/2))}
+.weigh-page .weigh-wrap{padding-left:max(5%,calc((100vw - 1160px)/2));padding-right:max(5%,calc((100vw - 1160px)/2))}
+@media(max-width:800px){.weigh-page .weigh-hero,.weigh-page .weigh-wrap{padding-left:6%;padding-right:6%}}
