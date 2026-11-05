@@ -1,5 +1,6 @@
 "use client";
 import SiteHeader from "../components/SiteHeader";
+import "./join.css";
 
 import { useState } from "react";
 
@@ -40,7 +41,7 @@ export default function JoinTheShow() {
   };
 
   return (
-    <main>
+    <main className="join-index-page">
       <SiteHeader />
 
       <section className="join-hero">
@@ -88,7 +89,7 @@ export default function JoinTheShow() {
             <p className="join-privacy">Please do not submit confidential, sensitive, or private information. Submissions may be reviewed for future episodes; submitting does not guarantee selection.</p>
             <button className="join-submit" type="submit" disabled={submitting}>{submitting ? "Submitting…" : "Submit " + (selected === "guest" ? "Guest Application" : "Episode Idea") + " →"}</button>
             {feedback && <p role="status" className={"join-delivery-note " + (feedback.success ? "join-success" : "join-error")}>{feedback.message}</p>}
-            <p className="join-delivery-note">Your submission is saved privately for review. Email notifications are not yet enabled.</p>
+            <p className="join-delivery-note">Your submission is saved privately for review. The team is notified when your submission is received.</p>
           </form>
         </div>
       </section>

@@ -1,0 +1,19 @@
+/* Shared editorial masthead: Episodes, Community, Weigh In and Research. */
+.join-index-page .join-hero{box-sizing:border-box;padding:35px max(5%,calc((100vw - 1160px)/2)) 30px;background:#101113;border-bottom:0}
+.join-index-page .join-hero>.section-label{font-size:10px;letter-spacing:2.6px;font-weight:700;line-height:normal;margin:1em 0;color:#c18b4d}
+.join-index-page .join-hero h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(28px,3.5vw,45px);font-weight:500;letter-spacing:-.6px;line-height:1.12;margin:9px 0 10px;max-width:none;color:#f4f0e9}
+.join-index-page .join-hero h1 em{font-style:italic;color:#c18b4d}
+.join-index-page .join-hero>p:not(.section-label){font-size:14px;line-height:1.6;color:#bbb9b5;max-width:900px;margin:0}
+.join-index-page .join-rule{max-width:580px;margin:15px 0 9px}
+.join-index-page .join-hero .join-motto{font:italic 14px/1.6 Georgia,"Times New Roman",serif!important;color:#d7c7ad!important}
+.join-index-page .join-body{box-sizing:border-box;padding:34px max(5%,calc((100vw - 1160px)/2)) 75px;background:#171819}
+.join-index-page .join-heading h2,.join-index-page .join-form-intro h2{font:400 clamp(24px,2.3vw,28px)/1.2 Georgia,"Times New Roman",serif;margin:8px 0 10px;color:#eee8df}
+.join-index-page .join-heading>p:last-child,.join-index-page .join-form-intro>p:last-child{font-size:15px;line-height:1.55;margin:0;color:#bbb9b5}
+.join-index-page .join-options{gap:16px;margin:24px 0 34px}
+.join-index-page .join-option{min-height:180px;padding:23px;gap:10px}
+.join-index-page .join-option strong{font-size:23px}
+.join-index-page .join-option-number{font-size:24px}
+.join-index-page .join-form-shell{gap:35px;padding-top:30px}
+.join-index-page .join-form{gap:18px}
+@media(max-width:800px){.join-index-page .join-hero{padding:30px 6% 25px}.join-index-page .join-body{padding:28px 6% 60px}.join-index-page .join-form-shell{grid-template-columns:1fr}}
+@media(max-width:560px){.join-index-page .join-hero h1{font-size:36px}.join-index-page .join-options{grid-template-columns:1fr}.join-index-page .join-option{min-height:150px}}
