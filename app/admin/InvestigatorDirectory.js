@@ -87,7 +87,6 @@ export default function InvestigatorDirectory({session}){
      {!filteredModeration.length&&<p>No matching moderation records.</p>}
      {filteredModeration.length>LIMIT&&<button type="button" className="admin-section-action" style={{marginTop:16}} onClick={()=>setModerationExpanded(x=>!x)}>{moderationExpanded?"Show Less":"View More ("+(filteredModeration.length-LIMIT)+")"}</button>}
     </div>
-   </div>
   </div>}
  </section>;
 }
