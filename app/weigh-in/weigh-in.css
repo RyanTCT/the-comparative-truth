@@ -1,1 +1,21 @@
 .weigh-page{min-height:100vh;background:#090a0c;color:#f2eee6}.weigh-wrap{max-width:880px;margin:auto;padding:clamp(85px,12vw,145px) 24px 95px}.weigh-eyebrow{font-size:11px;letter-spacing:2px;font-weight:700;color:#c18b4d;text-transform:uppercase}.weigh-wrap>h1{font-family:Georgia,serif;font-size:clamp(46px,8vw,78px);font-weight:400;margin:14px 0}.weigh-wrap>h1 em{color:#c18b4d}.weigh-intro{color:#c6c1b8;line-height:1.75;font-size:18px;max-width:680px}.weigh-toolbar{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin:40px 0 20px}.weigh-toolbar label{color:#c6c1b8;font-size:13px}.weigh-toolbar select{flex:1;min-width:230px;background:#18191b;color:#f2eee6;border:1px solid #685034;padding:13px 15px;border-radius:3px;font-size:14px}.weigh-signin,.weigh-error,.weigh-success{padding:14px 17px;background:#191817;border:1px solid #5c472f;color:#d2c9bd;line-height:1.6}.weigh-signin a{color:#d6a34a}.weigh-error{border-color:#9e5a50}.weigh-success{border-color:#6b794a}.weigh-list{display:grid;gap:22px;margin-top:25px}.weigh-card{border:1px solid #54402d;background:linear-gradient(145deg,#1b1916,#111214);padding:clamp(20px,4vw,34px)}.weigh-card h2{font-family:Georgia,serif;font-size:clamp(23px,3.5vw,32px);font-weight:400;line-height:1.3;margin:12px 0}.weigh-prompt{color:#bcb7ae;font-size:14px;margin-bottom:24px}.weigh-options{display:grid;gap:19px}.weigh-option-head,.weigh-option-foot{display:flex;align-items:center;justify-content:space-between;gap:12px}.weigh-option-head{font-size:14px;line-height:1.5;margin-bottom:8px}.weigh-option-head>strong{color:#e3ba7c;white-space:nowrap}.weigh-your-vote{color:#d6a34a;font-size:12px}.weigh-track{height:9px;background:#302a23;overflow:hidden;border-radius:5px}.weigh-track>div{height:100%;background:linear-gradient(90deg,#926333,#d6a34a);transition:width .25s}.weigh-option-foot{margin-top:8px}.weigh-option-foot small,.weigh-total{color:#a9a196;font-size:12px}.weigh-vote,.weigh-more{background:transparent;color:#e2b879;border:1px solid #87613b;padding:8px 15px;cursor:pointer;font-weight:600}.weigh-vote:hover:not(:disabled),.weigh-more:hover{background:#3b2b1d}.weigh-vote.selected{color:#c6c1b8;border-color:#4d473f;cursor:default}.weigh-vote:disabled{opacity:.7}.weigh-total{margin:23px 0 0;border-top:1px solid #393129;padding-top:15px}.weigh-more{display:block;margin:28px auto 0;padding:13px 25px}.weigh-empty{padding:40px 20px;border:1px solid #54402d;text-align:center;color:#c6c1b8}.weigh-empty h2{font-family:Georgia,serif;font-weight:400;color:#f2eee6}.weigh-disclaimer{font-size:12px;color:#9f978c;line-height:1.6;margin-top:38px;text-align:center}.weigh-mantra{font-size:11px;letter-spacing:1.6px;color:#938a7f;text-align:center;margin-top:30px}@media(max-width:540px){.weigh-toolbar{align-items:stretch;flex-direction:column}.weigh-toolbar select{min-width:0;width:100%}}
+/* Match Community Board editorial layout */
+.weigh-page{background:#101113;color:#eee8df}
+.weigh-hero{max-width:1160px;margin:auto;padding:35px 5% 29px}
+.weigh-hero .weigh-eyebrow,.weigh-section-heading .weigh-eyebrow{font-size:10px;letter-spacing:2.6px}
+.weigh-hero h1{font-size:clamp(28px,3.5vw,45px);line-height:1.12;letter-spacing:-.6px;margin:9px 0 10px;color:#f4f0e9}
+.weigh-hero h1 em{color:#c18b4d}
+.weigh-hero .weigh-intro{font-size:14px;line-height:1.6;max-width:900px;margin:0;color:#bbb9b5}
+.weigh-wrap{max-width:none;margin:0;padding:24px max(5%,calc((100vw - 1160px)/2)) 55px;background:#171819}
+.weigh-section-heading{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:15px}
+.weigh-section-heading h2{font-size:23px;margin:4px 0 0;color:#f4f0e9}
+.weigh-section-heading>span{font-size:12px;color:#a9a7a3}
+.weigh-toolbar{margin:16px 0 20px}
+.weigh-toolbar select{background:#222324;border-color:#51402f}
+.weigh-list{gap:16px;margin-top:18px}
+.weigh-card{background:#1e2021;border:1px solid rgba(193,139,77,.28);padding:24px 26px}
+.weigh-card h2{font-size:clamp(21px,2.5vw,28px);line-height:1.3;margin:10px 0;font-weight:600}
+.weigh-prompt{margin-bottom:20px}
+.weigh-options{gap:15px}
+@media(max-width:800px){.weigh-hero{padding:30px 6% 24px}.weigh-wrap{padding:20px 6% 55px}.weigh-section-heading{align-items:start;flex-direction:column;gap:7px}}
+@media(max-width:540px){.weigh-card{padding:18px 16px}.weigh-section-heading h2{font-size:22px}}
