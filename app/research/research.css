@@ -34,3 +34,14 @@
 .research-index-page .research-embedded .research-section{margin-bottom:28px}
 .research-index-page .research-embedded .research-section-heading h2{font-size:clamp(22px,2.3vw,29px)}
 @media(max-width:600px){.research-index-page .research-selector-row{align-items:stretch;flex-direction:column;gap:9px}}
+
+/* Compact section rhythm for research displayed inside the episode selector. */
+.research-index-page .research-embedded .research-section{padding:30px 0 34px;margin:0;max-width:1100px}
+.research-index-page .research-embedded .research-section:first-child{padding-top:14px}
+.research-index-page .research-embedded .research-section-heading{margin-bottom:15px;gap:20px}
+.research-index-page .research-embedded .research-section-summary{margin-top:0;margin-bottom:17px;line-height:1.6}
+.research-index-page .research-embedded .source-card{margin-top:14px;margin-bottom:14px;padding:23px 27px}
+.research-index-page .research-embedded .research-note{margin-top:18px;margin-bottom:20px;padding:22px 26px}
+.research-index-page .research-embedded .research-takeaway{margin-top:26px;padding:26px}
+.research-index-page .research-embedded .episode-research-body{padding-bottom:26px}
+@media(max-width:600px){.research-index-page .research-embedded .research-section{padding:24px 0 28px}.research-index-page .research-embedded .source-card{padding:20px 18px;margin-left:0}.research-index-page .research-embedded .research-note{padding:20px 18px}}
