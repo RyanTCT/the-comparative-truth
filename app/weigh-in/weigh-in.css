@@ -19,3 +19,12 @@
 .weigh-options{gap:15px}
 @media(max-width:800px){.weigh-hero{padding:30px 6% 24px}.weigh-wrap{padding:20px 6% 55px}.weigh-section-heading{align-items:start;flex-direction:column;gap:7px}}
 @media(max-width:540px){.weigh-card{padding:18px 16px}.weigh-section-heading h2{font-size:22px}}
+
+/* Match the Community Board's editorial typography and exact horizontal gutters */
+.weigh-page .weigh-hero{max-width:1160px;margin:0 auto;padding:35px 5% 29px}
+.weigh-page .weigh-hero h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(28px,3.5vw,45px);font-weight:400;letter-spacing:-.6px;line-height:1.12;margin:9px 0 10px}
+.weigh-page .weigh-hero h1 em{font-family:inherit;font-weight:inherit;font-style:italic;color:#c18b4d}
+.weigh-page .weigh-wrap{box-sizing:border-box;width:100%;max-width:none;padding:24px max(5%,calc((100vw - 1160px)/2)) 55px}
+.weigh-page .weigh-section-heading h2{font-family:Georgia,"Times New Roman",serif;font-weight:700}
+.weigh-page .weigh-card h2{font-family:Georgia,"Times New Roman",serif}
+@media(max-width:800px){.weigh-page .weigh-hero{padding:30px 6% 24px}.weigh-page .weigh-wrap{padding:20px 6% 55px}}
