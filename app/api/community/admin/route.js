@@ -45,8 +45,13 @@ async function handler(request){
    const cases=await db("community_moderation_queue?id=eq."+encodeURIComponent(data.id)+"&status=eq.pending&select=*");
    const item=cases[0];if(!item)return json({error:"Pending case not found."},404);
    if(item.author_id===user.id)return json({error:"You cannot review your own submission."},403);
+   const rejectionReasons=["Threats or intimidation","Harassment or bullying","Hateful or discriminatory conduct","Personal information or doxxing","Spam or deceptive content","Graphic or inappropriate content","Other Community Guidelines violation"];
+   const reason=typeof data.reason==="string"?data.reason:"";
+   if(data.action==="reject_pending"&&!rejectionReasons.includes(reason))return json({error:"Select a valid rejection reason."},400);
+   const explanation=typeof data.explanation==="string"?data.explanation.trim().slice(0,350):"";
+   const reviewNote=data.action==="reject_pending"?reason+(explanation?" — "+explanation:""):null;
    const now=new Date().toISOString(),decision=data.action==="approve_pending"?"approved":"rejected";
-   const claim=await db("community_moderation_queue?id=eq."+encodeURIComponent(item.id)+"&status=eq.pending","PATCH",{status:decision,reviewed_by:user.id,reviewed_at:now,review_note:typeof data.note==="string"?data.note.slice(0,1000):null});
+   const claim=await db("community_moderation_queue?id=eq."+encodeURIComponent(item.id)+"&status=eq.pending","PATCH",{status:decision,reviewed_by:user.id,reviewed_at:now,review_note:reviewNote});
    if(!claim.length)return json({error:"This case has already been reviewed."},409);
    let published=null;
    try{
@@ -81,7 +86,7 @@ async function handler(request){
     await db("community_moderation_queue?id=eq."+encodeURIComponent(item.id)+"&reviewed_by=eq."+encodeURIComponent(user.id),"PATCH",{status:"pending",reviewed_by:null,reviewed_at:null,review_note:null});
     return json({error:"Unable to publish approved content: "+e.message},409);
    }
-   try{await db("investigator_notifications","POST",{recipient_id:item.author_id,actor_id:user.id,notification_type:"moderation_decision",title:decision==="approved"?"Your contribution was approved":"Your contribution was not approved",message:decision==="approved"?"Your contribution has been approved and published.":"Your contribution was reviewed and was not approved for publication.",target_url:published||"/community"})}catch(e){console.error("Moderation decision notification failed",e.message)}
+   try{await db("investigator_notifications","POST",{recipient_id:item.author_id,actor_id:user.id,notification_type:"moderation_decision",title:decision==="approved"?"Your contribution was approved":"Your contribution was not approved",message:decision==="approved"?"Your contribution has been approved and published.":"Reason: "+reason+". "+(explanation?explanation+" ":"")+"Your contribution was not approved under the Community Guidelines.",target_url:published||"/community"})}catch(e){console.error("Moderation decision notification failed",e.message)}
    return json({ok:true,status:decision});
   }
   if(!user.isAdmin)return json({error:"Administrator access required for this action."},403);
