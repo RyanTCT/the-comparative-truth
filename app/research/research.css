@@ -10,3 +10,11 @@
 .research-index-page .archive-number{font-size:49px}
 .research-index-page .archive-content h3{font-size:clamp(25px,2.5vw,36px);line-height:1.16;margin:0 0 12px}
 @media(max-width:800px){.research-index-page .research-page-hero{padding:30px 6% 25px}.research-index-page .research-archive{padding:28px 6% 60px}}
+
+/* Research archive hierarchy: secondary headings must remain below the masthead scale. */
+.research-index-page .archive-heading h2{font-family:Georgia,"Times New Roman",serif;font-size:clamp(24px,2.3vw,28px);line-height:1.2;font-weight:400;letter-spacing:0;margin:8px 0 0;color:#d7c7ad}
+.research-index-page .archive-content h3{font-size:clamp(22px,2.15vw,26px);line-height:1.22;margin:0 0 10px}
+.research-index-page .archive-heading{margin-bottom:18px}
+.research-index-page .archive-entry{padding:23px 0}
+.research-index-page .archive-content>p:not(.archive-episode-label){font-size:15px;line-height:1.55;margin:0 0 12px;max-width:850px}
+@media(max-width:560px){.research-index-page .archive-heading h2{font-size:25px}.research-index-page .archive-content h3{font-size:23px}}
