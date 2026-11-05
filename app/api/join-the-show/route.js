@@ -55,6 +55,52 @@ async function notifyNewSubmission(type, fields) {
   }
 }
 
+
+async function notifyFounderInApp(type, fields) {
+  const base = process.env.NEXT_PUBLIC_SUPABASE_URL?.replace(/\\/$/, "");
+  const key = process.env.SUPABASE_SECRET_KEY;
+  if (!base || !key) return;
+  const headers = { apikey: key, "Content-Type": "application/json" };
+  async function get(table) {
+    const response = await fetch(base + "/rest/v1/" + table, { headers, cache: "no-store" });
+    if (!response.ok) throw new Error("Notification recipient lookup failed: " + response.status);
+    return response.json();
+  }
+  try {
+    const titles = await get("community_titles?name=eq." + encodeURIComponent("Founder & Host") + "&select=id");
+    if (!titles.length) {
+      console.warn("Founder & Host notification skipped: title not found");
+      return;
+    }
+    const assignments = await get("investigator_title_assignments?title_id=eq." + titles[0].id + "&select=user_id");
+    const recipients = [...new Set(assignments.map(item => item.user_id))];
+    if (!recipients.length) {
+      console.warn("Founder & Host notification skipped: no title assignment");
+      return;
+    }
+    const guest = type === "guest";
+    const label = guest ? "Guest Application" : "Investigation Idea";
+    const payload = recipients.map(id => ({
+      recipient_id: id,
+      actor_id: id,
+      notification_type: "admin_alert",
+      title: "New " + label,
+      message: fields.name + " submitted " + (guest ? "a guest application" : "an investigation idea") + ": " + fields.topic,
+      target_url: "/admin"
+    }));
+    const response = await fetch(base + "/rest/v1/investigator_notifications", {
+      method: "POST",
+      headers: { ...headers, Prefer: "return=minimal" },
+      body: JSON.stringify(payload),
+      cache: "no-store",
+      signal: AbortSignal.timeout(8000)
+    });
+    if (!response.ok) throw new Error("Notification insert failed: " + response.status);
+  } catch (error) {
+    console.error("Founder & Host in-app notification failed", error?.message || "unknown");
+  }
+}
+
 export async function POST(request) {
   const origin = request.headers.get("origin");
   const allowedOrigin = process.env.NEXT_PUBLIC_SITE_URL || "https://www.comparativetruth.com";
@@ -165,7 +211,7 @@ export async function POST(request) {
       console.error("Join submission upstream failure", { status: response.status, code: errorCode });
       return invalid("We couldn't save your submission. Reference: " + diagnosticId + "_" + errorCode, 502);
     }
-    await notifyNewSubmission(submission_type, fields);
+    await Promise.all([notifyNewSubmission(submission_type, fields), notifyFounderInApp(submission_type, fields)]);
     return NextResponse.json({ ok: true }, { status: 201, headers: { "Cache-Control": "no-store" } });
   } catch (error) {
     console.error("Join submission request failed:", error?.name || "unknown");
