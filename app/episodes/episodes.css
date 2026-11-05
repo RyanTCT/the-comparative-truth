@@ -1,0 +1,21 @@
+/* Episode archive: match Community Board / Weigh In page rhythm. */
+.episodes-page{background:#101113;color:#eee8df}
+.episodes-page .research-page-hero{box-sizing:border-box;padding:35px max(5%,calc((100vw - 1160px)/2)) 30px;background:#101113;border-bottom:0}
+.episodes-page .research-page-hero h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(32px,3.5vw,48px);font-weight:400;letter-spacing:-.6px;line-height:1.12;margin:12px 0 12px;max-width:none;color:#f4f0e9}
+.episodes-page .research-page-hero h1 em{color:#c18b4d;font-weight:400;font-style:italic}
+.episodes-page .research-page-hero>p:not(.section-label){font-size:17px;line-height:1.65;color:#bbb9b5;max-width:900px;margin:0}
+.episodes-page .research-archive{box-sizing:border-box;padding:34px max(5%,calc((100vw - 1160px)/2)) 75px;background:#171819}
+.episodes-page .archive-heading{margin:0 0 24px}
+.episodes-page .archive-heading h2{font-size:30px;font-weight:700;letter-spacing:-.3px;margin:8px 0 0;color:#f4f0e9}
+.episodes-page .archive-entry{box-sizing:border-box;max-width:none;grid-template-columns:72px minmax(0,1fr);gap:22px;padding:27px 0;border-color:#34312d}
+.episodes-page .archive-number{font-size:49px}
+.episodes-page .archive-content{max-width:none;min-width:0}
+.episodes-page .archive-episode-label{margin:0 0 8px}
+.episodes-page .archive-episode-layout{grid-template-columns:155px minmax(0,1fr);gap:24px;align-items:center;margin-top:8px}
+.episodes-page .archive-artwork{width:155px;height:155px;max-width:100%;object-fit:cover}
+.episodes-page .archive-content h3{font-size:clamp(25px,2.5vw,36px);line-height:1.16;margin:0 0 12px}
+.episodes-page .archive-episode-details>p{font-size:15px;line-height:1.55;margin:0 0 14px;color:#bbb9b5;max-width:750px}
+.episodes-page .archive-research-aligned{margin:13px 0 0 179px}
+.episodes-page .platform-buttons{gap:9px}
+@media(max-width:800px){.episodes-page .research-page-hero{padding:30px 6% 25px}.episodes-page .research-archive{padding:28px 6% 60px}.episodes-page .archive-entry{grid-template-columns:52px minmax(0,1fr);gap:15px}.episodes-page .archive-number{font-size:39px}.episodes-page .archive-episode-layout{grid-template-columns:120px minmax(0,1fr);gap:17px}.episodes-page .archive-artwork{width:120px;height:120px}.episodes-page .archive-research-aligned{margin-left:137px}}
+@media(max-width:560px){.episodes-page .archive-entry{grid-template-columns:1fr;gap:10px;padding:24px 0}.episodes-page .archive-number{font-size:30px}.episodes-page .archive-episode-layout{grid-template-columns:92px minmax(0,1fr);gap:14px}.episodes-page .archive-artwork{width:92px;height:92px}.episodes-page .archive-content h3{font-size:25px}.episodes-page .archive-research-aligned{margin-left:0}.episodes-page .research-page-hero h1{font-size:36px}}
