@@ -69,7 +69,7 @@ export default function InvestigatorDirectory({session}){
      {weigh.slice(0,weighExpanded?undefined:LIMIT).map(v=><div className="admin-analytics-row" key={v.question_id} style={{display:"block",padding:"12px 0"}}>
       <strong>Episode {String(v.question?.episode_number||"?").padStart(2,"0")}</strong> · <time>{new Date(v.created_at).toLocaleString()}</time>
       <div style={{margin:"7px 0",overflowWrap:"anywhere"}}>{v.question?.question||"Episode question unavailable"}</div>
-      <div style={{color:"#d6a34a",overflowWrap:"anywhere"}}>Voted: {v.option?.option_text||"Answer unavailable"}</div>
+      <div style={{overflowWrap:"anywhere"}}><span style={{color:"#d6a34a"}}>Voted:</span> <span style={{color:"#bfb2a0"}}>{v.option?.option_text||"Answer unavailable"}</span></div>
      </div>)}
      {!weigh.length&&<p>No Weigh In votes yet.</p>}
      {weigh.length>LIMIT&&<button type="button" className="admin-section-action" style={{marginTop:16}} onClick={()=>setWeighExpanded(x=>!x)}>{weighExpanded?"Show Less":"View More ("+(weigh.length-LIMIT)+")"}</button>}
