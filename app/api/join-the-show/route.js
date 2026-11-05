@@ -56,7 +56,7 @@ async function notifyNewSubmission(type, fields) {
 }
 
 
-async function notifyFounderInApp(type, fields) {
+async function notifyFounderInApp(type, fields, submissionId) {
   const base = process.env.NEXT_PUBLIC_SUPABASE_URL?.replace(/\/$/, "");
   const key = process.env.SUPABASE_SECRET_KEY;
   if (!base || !key) return;
@@ -86,7 +86,7 @@ async function notifyFounderInApp(type, fields) {
       notification_type: "admin_alert",
       title: "New " + label,
       message: fields.name + " submitted " + (guest ? "a guest application" : "an investigation idea") + ": " + fields.topic,
-      target_url: "/admin"
+      target_url: "/admin?section=join&submission=" + encodeURIComponent(submissionId)
     }));
     const response = await fetch(base + "/rest/v1/investigator_notifications", {
       method: "POST",
@@ -187,7 +187,7 @@ export async function POST(request) {
       headers: {
         "Content-Type": "application/json",
         "apikey": key,
-        "Prefer": "return=minimal",
+        "Prefer": "return=representation",
       },
       body: JSON.stringify({
         submission_type,
@@ -211,7 +211,9 @@ export async function POST(request) {
       console.error("Join submission upstream failure", { status: response.status, code: errorCode });
       return invalid("We couldn't save your submission. Reference: " + diagnosticId + "_" + errorCode, 502);
     }
-    await Promise.all([notifyNewSubmission(submission_type, fields), notifyFounderInApp(submission_type, fields)]);
+    const saved = await response.json();
+    const submissionId = saved?.[0]?.id;
+    await Promise.all([notifyNewSubmission(submission_type, fields), submissionId ? notifyFounderInApp(submission_type, fields, submissionId) : Promise.resolve()]);
     return NextResponse.json({ ok: true }, { status: 201, headers: { "Cache-Control": "no-store" } });
   } catch (error) {
     console.error("Join submission request failed:", error?.name || "unknown");
