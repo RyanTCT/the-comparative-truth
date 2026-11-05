@@ -27,7 +27,7 @@ export async function GET(request){
  let auth;try{auth=await authorize(request)}catch{return json({error:"Administrator authorization unavailable."},503)}
  if(!auth)return json({error:"Administrator access required."},403);
  try{
-  const profiles=await db(auth,"investigator_profiles?select=user_id,display_name&order=display_name.asc&limit=1000");
+  const profiles=await db(auth,"investigator_profiles?select=user_id,display_name,created_at&order=display_name.asc&limit=1000");
   const [threads,comments,admins,moderators,commentLikes,threadLikes,moderation,titles,assignments]=await Promise.all([
    db(auth,"community_threads?select=id,author_id,title,category_id,created_at&order=created_at.desc&limit=1000"),
    db(auth,"community_comments?select=id,author_id,thread_id,created_at&order=created_at.desc&limit=1000"),

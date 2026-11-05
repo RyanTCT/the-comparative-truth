@@ -46,7 +46,7 @@ export default function InvestigatorDirectory({session}){
   {data&&!!search.trim()&&!profiles.length&&<p>No Investigators match that search.</p>}
   {current&&<div style={{marginTop:22}}>
    <div style={{display:"flex",justifyContent:"space-between",gap:18,flexWrap:"wrap",alignItems:"center"}}>
-    <div><h3 style={{margin:"0 0 8px"}}>{current.display_name||"Investigator"}</h3><p style={{margin:0}}>Role: {data.admins.includes(selected)?"Administrator":data.moderators.includes(selected)?"Moderator":"Investigator"}{recognition.length?" · "+recognition.join(", "):""}</p></div>
+    <div><h3 style={{margin:"0 0 8px"}}>{current.display_name||"Investigator"}</h3><p style={{margin:0}}>Role: {data.admins.includes(selected)?"Administrator":data.moderators.includes(selected)?"Moderator":"Investigator"}{recognition.length?" · "+recognition.join(", "):""}</p>{current.created_at&&<p style={{margin:"7px 0 0",color:"#bfb2a0",fontSize:14}}>Member since {new Date(current.created_at).toLocaleDateString(undefined,{month:"long",year:"numeric"})}</p>}</div>
     {data.moderatorRolesReady&&!data.admins.includes(selected)&&<button type="button" className="admin-section-action" disabled={busy} onClick={()=>setModerator(selected,!data.moderators.includes(selected))}>{data.moderators.includes(selected)?"Remove Moderator Role":"Grant Moderator Role"}</button>}
    </div>
    <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(145px,1fr))",gap:12,margin:"22px 0"}}>
