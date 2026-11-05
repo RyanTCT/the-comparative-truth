@@ -48,6 +48,6 @@ export default function ReplyComposer({initial="",target=null,onSubmit,onCancel,
    <textarea ref={input} autoFocus required minLength={2} maxLength={2000} rows={3} placeholder="Write a reply or share a source… Use @ to mention an Investigator." value={value} onChange={e=>{caret.current=e.target.selectionStart;setValue(e.target.value)}} onClick={e=>{caret.current=e.target.selectionStart;setValue(v=>v)}} onKeyDown={keyDown}/>
    {suggestions.length>0&&<div className="community-mention-suggestions" role="listbox" aria-label="Investigator usernames">{suggestions.map((p,i)=><button type="button" role="option" aria-selected={i===active} key={p.user_id} onMouseDown={e=>e.preventDefault()} onClick={()=>choose(p)}>{p.display_name}</button>)}</div>}
   </div>
-  <div><button type="button" onClick={onCancel}>Cancel</button><button className="community-action" disabled={busy}>{busy?"Posting…":"Post Reply"}</button></div>
+  <div style={{marginTop:18,display:"flex",gap:12,flexWrap:"wrap"}}><button type="button" onClick={onCancel}>Cancel</button><button className="community-action" disabled={busy}>{busy?"Posting…":"Post Reply"}</button></div>
  </form>;
 }
