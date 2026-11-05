@@ -1,7 +1,8 @@
+import "./research.css";
 import SiteHeader from "../components/SiteHeader";
 export default function ResearchArchive() {
   return (
-    <main>
+    <main className="research-index-page">
 
       {/* NAVIGATION */}
 
@@ -17,7 +18,7 @@ export default function ResearchArchive() {
         </p>
 
         <h1>
-          Research & Sources
+          Research & <em>Sources.</em>
         </h1>
 
         <p className="research-intro-lead">
